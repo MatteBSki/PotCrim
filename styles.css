@@ -578,7 +578,8 @@ section .lead {
 }
 .schedule-time {
   font-size: 1.1rem;
-  color: var(--pc-black);
+  font-weight: 700;
+  color: var(--pc-white);
 }
 .schedule-divider {
   margin: 1rem auto;
@@ -598,6 +599,10 @@ section .lead {
 .schedule-link:hover .schedule-card {
   background-color: rgba(255, 255, 255, 0.1);
   transform: translateY(-5px);
+}
+
+.schedule-time .snarky-comment {
+  color: var(--pc-lightest-grey);
 }
 
 /*
