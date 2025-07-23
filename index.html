@@ -432,7 +432,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-    // Share button notification logic
     const shareButton = document.getElementById('shareButton');
     const shareNotification = document.getElementById('shareNotification');
     shareButton.addEventListener('click', () => {
@@ -442,12 +441,10 @@
       }, 4000);
     });
 
-    // Automatic copyright year logic
     document.getElementById('copyright-year').textContent = new Date().getFullYear();
 
-    // --- SIMPLIFIED Testimonial Swiper initialization ---
     var testimonialSwiper = new Swiper(".testimonial-swiper", {
-      slidesPerView: 1, // ALWAYS show 1 slide at a time
+      slidesPerView: 1,
       spaceBetween: 30,
       loop: true,
       autoplay: {
@@ -464,7 +461,6 @@
       },
     });
 
-    // SCRIPT to pause/resume testimonials on click
     const testimonialContainer = document.querySelector('.testimonial-swiper');
     testimonialContainer.addEventListener('click', () => {
       if (testimonialSwiper.autoplay.running) {
