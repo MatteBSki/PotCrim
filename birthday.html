@@ -88,7 +88,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Share button notification logic
     const shareButton = document.getElementById('shareButton');
     const shareNotification = document.getElementById('shareNotification');
     if (shareButton && shareNotification) {
@@ -100,20 +99,18 @@
       });
     }
 
-    // Automatic copyright year logic
     const yearSpan = document.getElementById('copyright-year');
     if (yearSpan) {
       yearSpan.textContent = new Date().getFullYear();
     }
 
-    // --- BIRTHDAY COUNTDOWN & CONFETTI ---
     const countdownEl = document.getElementById("countdown");
     const messageEl = document.getElementById("message");
 
     if (countdownEl && messageEl) {
       let timer;
-      const birthdayMonth = 7; // August (0-based: January=0)
-      const birthdayDay = 10;  // 10th
+      const birthdayMonth = 7;
+      const birthdayDay = 10;
 
       const updateCountdown = () => {
         const now = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
@@ -137,7 +134,6 @@
         } else {
           const diff = birthday - now;
 
-          // --- REVISED & CORRECTED DATE CALCULATION ---
           const seconds = Math.floor((diff / 1000) % 60);
           const minutes = Math.floor((diff / 1000 / 60) % 60);
           const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
@@ -145,16 +141,12 @@
           let months = (birthday.getFullYear() - now.getFullYear()) * 12 + (birthday.getMonth() - now.getMonth());
           let days = birthday.getDate() - now.getDate();
 
-          // If the birthday day of the month is less than the current day, we haven't completed a full month
           if (days < 0) {
               months--;
-              // Get the last day of the month before the target month to find remaining days
               const lastDayOfPrevMonth = new Date(birthday.getFullYear(), birthday.getMonth(), 0).getDate();
               days += lastDayOfPrevMonth;
           }
-          // --- END OF FIX ---
           
-          // Logic for pluralization & display
           const timeParts = [
             { value: months, label: 'Month' },
             { value: days, label: 'Day' },
