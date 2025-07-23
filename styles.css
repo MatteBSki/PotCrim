@@ -800,3 +800,20 @@ h2.display-5 {
   #countdown { font-size: 1.2em; }
   #message { font-size: 1.8em; }
 }
+
+/*
+==============================================
+19. Custom Link Styles
+==============================================
+*/
+#hidden-link {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+  transition: text-decoration 0.3s ease;
+}
+
+#hidden-link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
