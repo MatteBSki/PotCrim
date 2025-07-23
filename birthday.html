@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <title>Sean's Birthday Countdown</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-custom px-3">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">
+      <img src="img/logo.png" alt="Potentially Criminal Logo" height="30">
+    </a>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="channelsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Channels</a>
+          <ul class="dropdown-menu" aria-labelledby="channelsDropdown">
+            <li><a class="dropdown-item" href="https://youtube.com/@potentiallycriminal" target="_blank">YouTube</a></li>
+            <li><a class="dropdown-item" href="https://potentiallycriminal.locals.com" target="_blank">Locals</a></li>
+            <li><a class="dropdown-item" href="https://x.com/lawtubesean" target="_blank">X (Twitter)</a></li>
+            <li><a class="dropdown-item" href="https://www.youtube.com/@SeansModelBench" target="_blank">Sean's Model Bench</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="https://potentiallycriminal.creator-spring.com/" target="_blank">Merch</a></li>
+        <li class="nav-item"><a class="nav-link" href="http://www.seanpmartinlaw.com/" target="_blank">Law Firm</a></li>
+        <li class="nav-item"><a class="nav-link active" href="birthday.html">Is It His Birthday?</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="birthday-wrapper">
+    <div id="countdown"></div>
+    <div id="message">🎉 HAPPY BIRTHDAY SEAN! 🎉</div>
+  </main>
+  
+  <footer class="footer-custom">
+    <div class="container text-center text-md-start">
+      <div class="row mt-3">
+        <div class="col-md-4 col-lg-3 mx-auto mb-4">
+          <a href="index.html">
+            <img style="width: 180px; height: 18px;" src="img/logo.png" alt="Potentially Criminal Logo" class="footer-logo">
+          </a>
+          <p class="text-white-50 mt-3"> PO BOX 716 <br>
+            Willoughby, OH 44096 </p>
+          
+          <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p>
+
+        </div>
+        <div class="col-md-2 col-lg-2 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Links</h6>
+          <p><a href="index.html" class="footer-link">Home</a></p>
+          <p><a href="about.html" class="footer-link">About</a></p>
+          <p><a href="https://www.youtube.com/@potentiallycriminal" class="footer-link">Channels</a></p>
+          <p><a href="https://potentiallycriminal.creator-spring.com/" class="footer-link">Merch</a></p>
+          <p><a href="http://www.seanpmartinlaw.com" class="footer-link">Law Firm</a></p>
+        </div>
+        <div class="col-md-4 col-lg-3 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Join the Green Army</h6>
+          <p class="text-white-50">DO YOUR PART!</p>
+          <a href="https://www.youtube.com/@PotentiallyCriminal/membership" target="_blank" class="btn btn-subscribe mt-2">
+            Pay Dues </a>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p class="text-white-50 small"> © <span id="copyright-year"></span>
+          Potentially Criminal. All rights reserved. </p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="floating-button-container">
+    <button id="shareButton">SHARE SCREEN!</button>
+  </div>
+  <div id="shareNotification">Sean Received The Message<br>He Still Wont Read It</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Share button notification logic
+    const shareButton = document.getElementById('shareButton');
+    const shareNotification = document.getElementById('shareNotification');
+    if (shareButton && shareNotification) {
+      shareButton.addEventListener('click', () => {
+        shareNotification.classList.add('show');
+        setTimeout(() => {
+          shareNotification.classList.remove('show');
+        }, 4000);
+      });
+    }
+
+    // Automatic copyright year logic
+    const yearSpan = document.getElementById('copyright-year');
+    if (yearSpan) {
+      yearSpan.textContent = new Date().getFullYear();
+    }
+
+    // --- BIRTHDAY COUNTDOWN & CONFETTI ---
+    const countdownEl = document.getElementById("countdown");
+    const messageEl = document.getElementById("message");
+
+    if (countdownEl && messageEl) {
+      let timer;
+      const birthdayMonth = 7; // August (0-based: January=0)
+      const birthdayDay = 10;  // 10th
+
+      const updateCountdown = () => {
+        const now = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
+        let targetYear = now.getFullYear();
+
+        const hasBirthdayPassed = now.getMonth() > birthdayMonth || 
+                                  (now.getMonth() === birthdayMonth && now.getDate() > birthdayDay);
+        
+        if (hasBirthdayPassed) {
+          targetYear++;
+        }
+
+        const birthday = new Date(targetYear, birthdayMonth, birthdayDay, 0, 0, 0);
+        const isBirthdayToday = now.getMonth() === birthdayMonth && now.getDate() === birthdayDay;
+
+        if (isBirthdayToday) {
+          countdownEl.style.display = "none";
+          messageEl.style.display = "block";
+          if (!document.querySelector('.confetti')) launchConfetti();
+          clearInterval(timer);
+        } else {
+          const diff = birthday - now;
+
+          // --- REVISED & CORRECTED DATE CALCULATION ---
+          const seconds = Math.floor((diff / 1000) % 60);
+          const minutes = Math.floor((diff / 1000 / 60) % 60);
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          
+          let months = (birthday.getFullYear() - now.getFullYear()) * 12 + (birthday.getMonth() - now.getMonth());
+          let days = birthday.getDate() - now.getDate();
+
+          // If the birthday day of the month is less than the current day, we haven't completed a full month
+          if (days < 0) {
+              months--;
+              // Get the last day of the month before the target month to find remaining days
+              const lastDayOfPrevMonth = new Date(birthday.getFullYear(), birthday.getMonth(), 0).getDate();
+              days += lastDayOfPrevMonth;
+          }
+          // --- END OF FIX ---
+          
+          // Logic for pluralization & display
+          const timeParts = [
+            { value: months, label: 'Month' },
+            { value: days, label: 'Day' },
+            { value: hours, label: 'Hour' },
+            { value: minutes, label: 'Min' },
+            { value: seconds, label: 'Sec' }
+          ];
+
+          let displayString = '';
+          let firstValueFound = false;
+
+          for (const part of timeParts) {
+            if (part.value > 0 || firstValueFound) {
+              firstValueFound = true;
+              const label = part.value !== 1 ? part.label + 's' : part.label;
+              displayString += `${part.value} ${label} `;
+            }
+          }
+          
+          countdownEl.innerHTML = `Sean's Birthday is in<br>${displayString.trim()}`;
+        }
+      };
+
+      const launchConfetti = () => {
+        const wrapper = document.querySelector('.birthday-wrapper');
+        if (!wrapper) return;
+        for (let i = 0; i < 200; i++) {
+          const confetti = document.createElement("div");
+          confetti.classList.add("confetti");
+          confetti.style.left = Math.random() * 100 + "vw";
+          confetti.style.animationDelay = Math.random() * 3 + "s";
+          confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+          wrapper.appendChild(confetti);
+        }
+      };
+
+      timer = setInterval(updateCountdown, 1000);
+      updateCountdown();
+    }
+</script>
+</body>
+</html>

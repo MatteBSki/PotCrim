@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <title>Potentially Criminal</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-custom px-3">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">
+      <img src="img/logo.png" alt="Potentially Criminal Logo" height="30">
+    </a>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="channelsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Channels</a>
+          <ul class="dropdown-menu" aria-labelledby="channelsDropdown">
+            <li><a class="dropdown-item" href="https://youtube.com/@potentiallycriminal" target="_blank">YouTube</a></li>
+            <li><a class="dropdown-item" href="https://potentiallycriminal.locals.com" target="_blank">Locals</a></li>
+            <li><a class="dropdown-item" href="https://x.com/lawtubesean" target="_blank">X (Twitter)</a></li>
+            <li><a class="dropdown-item" href="https://www.youtube.com/@SeansModelBench" target="_blank">Sean's Model Bench</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="https://potentiallycriminal.creator-spring.com/" target="_blank">Merch</a></li>
+        <li class="nav-item"><a class="nav-link" href="http://www.seanpmartinlaw.com/" target="_blank">Law Firm</a></li>
+        <li class="nav-item"><a class="nav-link" href="birthday.html">Is It His Birthday?</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero-section">
+    <div class="hero-content">
+      <h1>"Just Because You Did It, <br>
+        Doesn't Mean You're Guilty"</h1>
+      <p>- Sean, Potentially Criminal</p>
+    </div>
+  </header>
+
+<section id="about-intro" class="bg-custom-white">
+    <div class="container py-5">
+      <div class="row align-items-center">
+        <div class="col-lg-7 text-start">
+          <h2 class="display-5">Law & Clyde</h2>
+          <p class="lead text-muted mt-4">Potentially Criminal is a livestream show focused on trials, legal news, internet personalities, and current events.<br><br>
+          The show is hosted by Cleveland-based defense attorney Sean Martin, who, unlike other online legal experts, actually practices law. It offers factual legal analysis, humor, and a regular disregard for the chat.<br><br>
+          While the goal is to make complex legal matters understandable, most viewers are just here to watch for Clyde, who makes regular appearances and is much more popular than the host.
+          </p>
+        </div>
+        <div class="col-lg-5 text-center">
+          <img src="img/Sean-about.png" alt="Sean Martin with a surprised expression" class="img-fluid rounded-circle d-block mx-auto mb-4">
+          <img src="img/signature.png" alt="Signature of Sean P. Martin" class="img-fluid d-block mx-auto">
+        </div>
+      </div>
+    </div>
+  </section>
+  
+    <section id="who-are-we" class="text-center bg-custom-lightest-grey">
+    <div class="container py-5">
+      <h2 class="display-5">The Bloggers</h2>
+      <p class="lead text-muted mb-5">Disregarding the video and ignoring the chat, Sean prefers to grace everyone with his own narration.<br>Let's be honest though, the others on the show are far more important.</p>
+      
+      <div class="row">
+        <div class="col-lg-4 mb-4">
+          <img src="img/not-trew.png" alt="Sean" class="img-fluid rounded-circle about-image mb-3">
+          <h4>Sean</h4>
+          <p class="lead text-muted">Penny Lawyer</p>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+          <img src="img/ChefClyde-About.png" alt="Chef Clyde" class="img-fluid rounded-circle about-image mb-3">
+          <h4>Chef Clyde</h4>
+          <p class="lead text-muted">He's SOOOOOO Cute!!!!</p>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+          <img src="img/Mods-about.png" alt="The Mods" class="img-fluid rounded-circle about-image mb-3">
+          <h4>The Mods</h4>
+          <p class="lead text-muted">They are TOTALLY USELESS</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section id="topics" class="text-center bg-custom-dark-grey">
+  <div class="container py-5">
+    <h2 class="display-5 mb-2">Unrelated, but Deeply Important</h2>
+    <p class="lead text-white-50 mb-5">These topics have no legal value, but infinite emotional value to Sean.</p>
+    <div class="row g-4">
+        
+        <div class="col-sm-6 col-lg-3">
+          <div id="tile-sandwiches" class="topic-tile">
+            <div class="tile-overlay">
+              <h4>Sandwiches</h4>
+              <div class="tile-details">
+                <p class="mb-2">"Chef Clyde can stack a sammich"</p>
+                <a href="https://www.jimmyjohns.com" target="_blank" class="btn btn-sm btn-outline-light">Visit Site</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div id="tile-models" class="topic-tile">
+            <div class="tile-overlay">
+              <h4>Model Building</h4>
+              <div class="tile-details">
+                <p class="mb-2">Watch Sean live out his WWII fantasies in 1/35 scale</p>
+                <a href="https://www.youtube.com/@SeansModelBench" target="_blank" class="btn btn-sm btn-outline-light">Get Yelled At</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div id="tile-trains" class="topic-tile">
+            <div class="tile-overlay">
+              <h4>Trains</h4>
+              <div class="tile-details">
+                <p class="mb-2">Foamers Unite!</p>
+                <a href="https://letmegooglethat.com/?q=What+is+a+Train+Foamer" target="_blank" class="btn btn-sm btn-outline-light">All Aboard</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div id="tile-birthday" class="topic-tile">
+            <div class="tile-overlay">
+              <h4>Is it Seans Birthday?</h4>
+              <div class="tile-details">
+                <p class="mb-2">"Is it today? Yes, it's today"</p>
+                <a href="birthday.html" class="btn btn-sm btn-outline-light">Happy Birthday Sean!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+      <div class="row mt-3 pt-5">
+        <div class="col-lg-8 mx-auto text-center">
+          <h2 class="display-5">Why Does This Matter?</h2>
+          <p class="lead text-white-50 mt-4">If you're wondering why this isn't about the law,
+          it's because Sean lives in Cleveland. It's a landscape defined by perpetually bad weather and urban decay, 
+            but he finds a way to cope. So, he retreats into hobbies that provide the brief, fragile illusion of joy. It’s completely irrelevant, 
+          and depressingly sad, but it’s a welcome distraction when the alternative is explaining that it's not his birthday for the thousandth time.</p>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+	
+	
+ <section id="superchat-stats" class="bg-custom-white py-5">
+    <div class="container">
+      <div class="row align-items-start">
+        
+        <div class="col-lg-6 text-center mb-5 mb-lg-0">
+            <div class="stat-circle stat-circle-gray mx-auto">
+              <span class="stat-percentage">100%</span>
+              <span class="stat-label">Late Rate</span>
+            </div>
+    
+            <h2 class="stat-section-heading mt-5">Late & Gray</h2>
+    
+            <p class="lead text-muted mt-3 px-3">Sean suffers from a medical condition called "time blindness" where it is impossible for him to start a show when scheduled.</p>
+    
+            <div class="d-flex justify-content-center text-center mt-4 gap-5">
+              <div>
+                <p class="stat-number">1006</p>
+                <p class="stat-number-label">Scheduled Shows</p>
+              </div>
+              <div>
+                <p class="stat-number">1006</p>
+                <p class="stat-number-label">Late Shows</p>
+              </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 text-center">
+            <div class="stat-circle stat-circle-green mx-auto">
+              <span class="stat-percentage">88%</span>
+              <span class="stat-label">Success Rate</span>
+            </div>
+            <h2 class="stat-section-heading mt-5">Because Chat Matters</h2>
+            <p class="lead text-muted mt-3 px-3">Sean takes immense pride in reading almost every Super Chat, ensuring most messages get their moment in the spotlight.</p>
+            <div class="d-flex justify-content-center text-center mt-4 gap-5">
+              <div>
+                <p class="stat-number">42069</p>
+                <p class="stat-number-label">Total Superchats</p>
+              </div>
+              <div>
+                <p class="stat-number">37020</p>
+                <p class="stat-number-label">Superchats Read</p>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+ <section id="testimonials" class="text-center bg-custom-medium-grey">
+    <div class="container py-5">
+      <h2 class="display-5">Somehow The Chat Knows How to Spell</h2>
+	  
+      <div class="swiper testimonial-swiper mt-5">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="testimonial-card">
+              <p class="testimonial-text">"I was accused of stealing a train from a marshalling yard in
+                  Ohio.<br>
+                  I was charged with Grand Theft Locomotive and Sean, with his
+                  train expertise, <br>
+                  was able to lower the charge down to simple theft.<br>
+                  I wanted to reenact the Great Locomotive Chase from the Civil
+                  War.<br>
+                  10/10 Greater than great! Would recommend"</p>
+              <img src="https://yt3.googleusercontent.com/ytc/AIdro_mZxzR8mRaC7cEntOZl-L_47qOUApfCtjQlFs0ulvI6vnU=s160-c-k-c0x00ffffff-no-rj" onerror="this.onerror=null;this.src='img/default-avatar.png';" alt="EDWRaptor" class="testimonial-image">
+              <h5 class="testimonial-name">- EDWRaptor</h5>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="testimonial-card">
+              <p class="testimonial-text">"Because of Sean's blogs, I decided to make a move to the
+                  Pacific Northwest.<br>
+                  There was an overwhelming urge to finish what my predecessor
+                  at the school started.<br>
+                  Between work and stargazing, I'm gonna take a stab at meeting
+                  some new people.<br>
+                  They even have canned cheese!"</p>
+              <img src="https://yt3.googleusercontent.com/4UD_PvOP9HL-CKa76f9LDaW7zLnHEDBXf0iKsqtgEtS5VlRKY0qKDBBdiAHt7u0L6Phex5IIoNw=s900-c-k-c0x00ffffff-no-rj" onerror="this.onerror=null;this.src='img/default-avatar.png';" alt="AgBiochemist" class="testimonial-image">
+              <h5 class="testimonial-name">- AgBiochemist</h5>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="testimonial-card">
+              <p class="testimonial-text">"Becoming a janny for Sean’s channel was truly life-changing.<br>I used to have hopes and dreams, but now I spend my free time being harassed by the chat.<br>
+			  It's exactly what I pictured when I went to college.<br>Nothing brings joy to my life quite like being ignored by Sean<br>
+			  while he forgets to share the screen."</p>
+              <img src="https://yt3.googleusercontent.com/OqYYshTo28GizWUKtDjlRpp4RB1UZGn5-kqKL1o63tPbqMjfeW_cjyTwPo_qaC5aX_fEk2f7Gw=s900-c-k-c0x00ffffff-no-rj" onerror="this.onerror=null;this.src='img/default-avatar.png';" alt="Matty B" class="testimonial-image">
+              <h5 class="testimonial-name">- Matty B</h5>
+            </div>
+          </div>
+		  		  <div class="swiper-slide">
+            <div class="testimonial-card">
+              <p class="testimonial-text">"I started watching Sean’s show thinking it was about crime,<br>
+			  but the real offense is how little Clyde is on camera.<br>
+			  Sure, Sean’s a lawyer, but if I wanted to hear a guy ramble on and on,<br>
+			  I’d call up Matty. Clyde’s the only one holding it together.<br>
+			  Someone give that dog his own channel already."</p>
+              <img src="https://yt3.googleusercontent.com/GIMLg2djjVG91A7unzR12snULz018C5oB6Wxyxn0GhB1kKsdeQ1s1PYvlgazHP_ilggIxj63ig=s160-c-k-c0x00ffffff-no-rj" onerror="this.onerror=null;this.src='img/default-avatar.png';" alt="Katie" class="testimonial-image">
+              <h5 class="testimonial-name">- Kay_el_eff </h5>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="testimonial-card">
+              <p class="testimonial-text">"N"</p>
+              <img src="https://yt3.googleusercontent.com/eOfqOI4NCtA0f4JfFt_zux5m36eXrTSKE8inLcfrqjRnI5UG7zrF8W-8AGzJhI51v7AZ7v2vFA=s160-c-k-c0x00ffffff-no-rj" onerror="this.onerror=null;this.src='img/default-avatar.png';" alt="jrock" class="testimonial-image">
+              <h5 class="testimonial-name">- jrock</h5>
+            </div>
+          </div>
+		  <div class="swiper-slide">
+            <div class="testimonial-card">
+              <p class="testimonial-text">"Tell Angela to unblock me"</p>
+              <img src="https://yt3.googleusercontent.com/akEUpLBLLr0Cp0770I476czmjuNzJNrwGm4g5Zw7Tp4Ly5fvjIMmqAq_aQWT2WYmWJxJar9VtA=s900-c-k-c0x00ffffff-no-rj" onerror="this.onerror=null;this.src='img/default-avatar.png';" alt="Mysterysniper" class="testimonial-image">
+              <h5 class="testimonial-name">- Mysterysniper </h5>
+            </div>
+          </div>
+		  <div class="swiper-slide">
+            <div class="testimonial-card">
+              <p class="testimonial-text">"Let’s be real... I only watch for Clyde. He’s way hotter than Sean.<br>
+			  I mean, if Clyde ever wants a belly rub, I volunteer.<br>
+			  Honestly, I’d sit, beg, or roll over for Chef Clyde."</p>
+              <img src="https://yt3.googleusercontent.com/ytc/AIdro_lTxKd24BzJUVqr9ZySolJ2Y2XaVWUe_16d5iIfL0_MhXgf=s160-c-k-c0x00ffffff-no-rj" onerror="this.onerror=null;this.src='img/default-avatar.png';" alt="Katie" class="testimonial-image">
+              <h5 class="testimonial-name">- Katie </h5>
+            </div>
+          </div>
+		  <div class="swiper-slide">
+            <div class="testimonial-card">
+              <p class="testimonial-text">"Before I swam across the Rio Grande to escape my favela,<br> I had no idea what life in America would be like.<br> 
+			  But thanks to Sean’s show, I learned everything I needed:<br>
+			  how to pronounce “y’all,” the proper way to order a sandwich, and that it’s totally normal<br> 
+			  for strangers to talk about court cases for hours on end.<br>
+			  Without Sean, I’d probably still think “plead the Fifth” was an excuse for coming home at 5am. "</p>
+              <img src="https://yt3.googleusercontent.com/QUpOEX9FH4dA1ykInmB2Vs-7sQoh9de13UbHY0CHU2ZS0C_cPQEJfMFsblICbv8_l7WMDpxH=s900-c-k-c0x00ffffff-no-rj" onerror="this.onerror=null;this.src='img/default-avatar.png';" alt="Erika Thorpe" class="testimonial-image">
+              <h5 class="testimonial-name">- Erika Thorpe</h5>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="schedule" class="text-center bg-custom-dark-grey">
+    <div class="container py-5">
+      <h2 class="display-5 mb-5">Weekly Livestream Schedule</h2>
+      
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <a href="https://potentiallycriminal.locals.com" target="_blank" class="schedule-link">
+            <div class="schedule-card">
+              <h5 class="schedule-day">Monday</h5>
+              <p class="schedule-event">Locals Stream</p>
+              <p class="schedule-time">9:00 PM ET</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-lg-4">
+          <a href="https://www.youtube.com/@potentiallycriminal" target="_blank" class="schedule-link">
+            <div class="schedule-card">
+              <h5 class="schedule-day">Tuesday</h5>
+              <p class="schedule-event">YouTube Stream</p>
+              <p class="schedule-time">9:30 PM ET</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-lg-4">
+          <a href="https://www.youtube.com/@potentiallycriminal" target="_blank" class="schedule-link">
+            <div class="schedule-card">
+              <h5 class="schedule-day">Wednesday</h5>
+              <p class="schedule-event">YouTube Members Only</p>
+              <p class="schedule-time">9:00 PM ET</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="row g-4 mt-4">
+        <div class="col-lg-12">
+          <a href="https://www.youtube.com/@potentiallycriminal" target="_blank" class="schedule-link">
+            <div class="schedule-card">
+              <h5 class="schedule-day">Thursday</h5>
+              <p class="schedule-event">CrimeStream || Locals Afterparty</p>
+              <p class="schedule-time">9:30 PM ET</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="row g-4 mt-4">
+        <div class="col-lg-4">
+          <a href="#" class="schedule-link">
+            <div class="schedule-card">
+              <h5 class="schedule-day">Friday</h5>
+              <p class="schedule-event">To Be Announced</p>
+              <p class="schedule-time">(Sub for notifications)</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-lg-4">
+          <a href="#" class="schedule-link">
+            <div class="schedule-card">
+              <h5 class="schedule-day">Saturday</h5>
+              <p class="schedule-event">To Be Announced</p>
+              <p class="schedule-time">(Sub for notifications)</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-lg-4">
+          <a href="#" class="schedule-link">
+            <div class="schedule-card">
+              <h5 class="schedule-day">Sunday</h5>
+              <p class="schedule-event">To Be Announced</p>
+              <p class="schedule-time">(Sub for notifications)</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer-custom">
+    <div class="container text-center text-md-start">
+      <div class="row mt-3">
+        <div class="col-md-4 col-lg-3 mx-auto mb-4">
+          <a href="index.html">
+            <img style="width: 180px; height: 18px;" src="img/logo.png" alt="Potentially Criminal Logo" class="footer-logo">
+          </a>
+          <p class="text-white-50 mt-3"> PO BOX 716 <br>
+            Willoughby, OH 44096 </p>
+          
+          <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p>
+
+        </div>
+        <div class="col-md-2 col-lg-2 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Links</h6>
+          <p><a href="index.html" class="footer-link">Home</a></p>
+          <p><a href="about.html" class="footer-link">About</a></p>
+          <p><a href="https://www.youtube.com/@potentiallycriminal" class="footer-link">Channels</a></p>
+          <p><a href="https://potentiallycriminal.creator-spring.com/" class="footer-link">Merch</a></p>
+          <p><a href="http://www.seanpmartinlaw.com" class="footer-link">Law Firm</a></p>
+        </div>
+        <div class="col-md-4 col-lg-3 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Join the Green Army</h6>
+          <p class="text-white-50">DO YOUR PART!</p>
+          <a href="https://www.youtube.com/@PotentiallyCriminal/membership" target="_blank" class="btn btn-subscribe mt-2">
+            Pay Dues </a>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p class="text-white-50 small"> © <span id="copyright-year"></span>
+          Potentially Criminal. All rights reserved. </p>
+      </div>
+    </div>
+  </footer>
+
+<div class="floating-button-container">
+    <button id="shareButton">SHARE SCREEN!</button>
+  </div>
+  <div id="shareNotification">Sean Received The Message<br>He Still Wont Read It</div>
+    
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    // Share button notification logic
+    const shareButton = document.getElementById('shareButton');
+    const shareNotification = document.getElementById('shareNotification');
+    shareButton.addEventListener('click', () => {
+      shareNotification.classList.add('show');
+      setTimeout(() => {
+        shareNotification.classList.remove('show');
+      }, 4000);
+    });
+
+    // Automatic copyright year logic
+    document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
+    // --- SIMPLIFIED Testimonial Swiper initialization ---
+    var testimonialSwiper = new Swiper(".testimonial-swiper", {
+      slidesPerView: 1, // ALWAYS show 1 slide at a time
+      spaceBetween: 30,
+      loop: true,
+      autoplay: {
+        delay: 7000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+
+    // SCRIPT to pause/resume testimonials on click
+    const testimonialContainer = document.querySelector('.testimonial-swiper');
+    testimonialContainer.addEventListener('click', () => {
+      if (testimonialSwiper.autoplay.running) {
+        testimonialSwiper.autoplay.stop();
+        testimonialContainer.classList.add('autoplay-paused');
+      } else {
+        testimonialSwiper.autoplay.start();
+        testimonialContainer.classList.remove('autoplay-paused');
+      }
+    });
+  </script>
+</body>
+</html>
