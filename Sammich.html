@@ -15,7 +15,6 @@
     }
     canvas {
       display: block;
-      background: #c2e0ff;
       width: 100vw;
       height: 100vh;
     }
@@ -23,7 +22,7 @@
 </head>
 <body>
   <canvas id="game"></canvas>
-<script>
+  <script>
     const LANDING_OFFSET_X = 20;
     const LANDING_OFFSET_Y = 228;
     const STACK_SPACING = 9;
@@ -34,13 +33,44 @@
     const SANDWICH_LAYER_HEIGHT = 20;
     const MAX_MISSES = 5;
     const NO_SPAWN_ZONE_WIDTH = 200;
+    const CHARACTER_VERTICAL_OFFSET = 50;
+    const SCREEN_VERTICAL_SHIFT = -60;
+
+    const REGISTER_SCALE = 0.25;
+    const REGISTER_X_OFFSET = 150;
+    const REGISTER_Y_OFFSET = 40;  
+
+    const PLAY_BUTTON_SCALE = 0.5;
+    const SPAWN_INTERVAL_REDUCTION = 300;
 
     const canvas = document.getElementById("game");
     const ctx = canvas.getContext("2d");
 
+    const clyde = {
+      x: canvas.width / 2 - CHARACTER_WIDTH / 2,
+      y: canvas.height - CHARACTER_HEIGHT - CHARACTER_VERTICAL_OFFSET,
+      width: CHARACTER_WIDTH,
+      height: CHARACTER_HEIGHT,
+      baseSpeed: 2,
+      speed: 2,
+      maxSpeed: 10,
+      acceleration: 0.2
+    };
+
+    // --- 1. DEVICE DETECTION ---
+    function isMobileDevice() {
+      return /Mobi/i.test(navigator.userAgent);
+    }
+    const isMobile = isMobileDevice();
+
+
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      
+      clyde.x = canvas.width / 2 - clyde.width / 2;
+      
+      clyde.y = canvas.height - clyde.height - CHARACTER_VERTICAL_OFFSET;
     }
 
     resizeCanvas();
@@ -57,6 +87,10 @@
     let showStartScreen = true;
     let highScore = 0;
     let levelStartTime = 0;
+    let playButton = { x: 0, y: 0, width: 0, height: 0 };
+    
+    let showNextLevelScreen = false;
+
 
     const toppings = [];
     const sandwich = [];
@@ -70,6 +104,7 @@
       bread: "#f5deb3"
     };
 
+    // Load all game images
     const toppingImages = {
       bacon: new Image(),
       lettuce: new Image(),
@@ -86,16 +121,27 @@
     const clydeImg = new Image();
     clydeImg.src = "img/sammich_clyde.png";
 
-    const clyde = {
-      x: canvas.width / 2 - CHARACTER_WIDTH / 2,
-      y: canvas.height - CHARACTER_HEIGHT,
-      width: CHARACTER_WIDTH,
-      height: CHARACTER_HEIGHT,
-      baseSpeed: 2,
-      speed: 2,
-      maxSpeed: 10,
-      acceleration: 0.2
-    };
+    const logoImg = new Image();
+    logoImg.src = "img/game_logo.png"; 
+
+    const gameOverImg = new Image();
+    gameOverImg.src = "img/game_over.png";
+
+    const counterImg = new Image();
+    counterImg.src = "img/counter.png";
+    
+    const registerImg = new Image();
+    registerImg.src = "img/register.png";
+    
+    const backgroundImg = new Image();
+    backgroundImg.src = "img/deli.png";
+
+    const clickToPlayImg = new Image();
+    clickToPlayImg.src = "img/click_play.png";
+    
+    const nextLevelImg = new Image();
+    nextLevelImg.src = "img/next_level.png";
+
 
     const keys = {
       ArrowLeft: false,
@@ -103,19 +149,6 @@
     };
 
     document.addEventListener("keydown", (e) => {
-      if (gameOver) {
-        resetGame();
-        return;
-      }
-
-      if (showStartScreen) {
-        gameStarted = true;
-        showStartScreen = false;
-        levelStartTime = Date.now();
-        lastSpawnTime = Date.now();
-        return;
-      }
-
       if (e.key in keys) {
         keys[e.key] = true;
       }
@@ -124,6 +157,38 @@
     document.addEventListener("keyup", (e) => {
       if (e.key in keys) keys[e.key] = false;
       clyde.speed = clyde.baseSpeed;
+    });
+
+    // --- 2. UPDATED CLICK HANDLER ---
+    canvas.addEventListener('click', function(event) {
+        // Disable all clicks if on a mobile device
+        if (isMobile) return;
+
+        if (!showStartScreen && !gameOver && !showNextLevelScreen) {
+            return;
+        }
+
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        if (mouseX >= playButton.x && mouseX <= playButton.x + playButton.width &&
+            mouseY >= playButton.y && mouseY <= playButton.y + playButton.height) {
+            
+            if (showStartScreen) {
+                gameStarted = true;
+                showStartScreen = false;
+                levelStartTime = Date.now();
+                lastSpawnTime = Date.now();
+            } else if (gameOver) {
+                resetGame();
+            } else if (showNextLevelScreen) {
+                showNextLevelScreen = false;
+                gameStarted = true;
+                levelStartTime = Date.now();
+                lastSpawnTime = Date.now();
+            }
+        }
     });
 
     function resetGame() {
@@ -162,20 +227,14 @@
     function drawClyde() {
       if (clydeImg.complete && clydeImg.naturalWidth !== 0) {
         ctx.drawImage(clydeImg, clyde.x, clyde.y, clyde.width, clyde.height);
-      } else {
-        ctx.fillStyle = "#444";
-        ctx.fillRect(clyde.x, clyde.y, clyde.width, clyde.height);
       }
     }
 
     function drawToppings() {
       for (let t of toppings) {
         const img = toppingImages[t.type];
-        if (img && img.complete && img.naturalWidth !== 0) {
+        if (img.complete && img.naturalWidth !== 0) {
           ctx.drawImage(img, t.x, t.y, t.width, t.height);
-        } else {
-          ctx.fillStyle = toppingColors[t.type] || "gray";
-          ctx.fillRect(t.x, t.y, t.width, t.height);
         }
       }
     }
@@ -192,42 +251,160 @@
         const part = sandwich[i];
         const img = toppingImages[part];
         const { x: breadX, y: breadY } = getBreadPosition(i);
-        if (img && img.complete && img.naturalWidth !== 0) {
+        if (img.complete && img.naturalWidth !== 0) {
           ctx.drawImage(img, breadX, breadY, TOPPING_WIDTH, SANDWICH_LAYER_HEIGHT);
-        } else {
-          ctx.fillStyle = toppingColors[part] || "gray";
-          ctx.fillRect(breadX, breadY, TOPPING_WIDTH, SANDWICH_LAYER_HEIGHT);
         }
       }
     }
 
+    // --- 3. UPDATED START SCREEN FUNCTION ---
     function drawStartScreen() {
-      ctx.fillStyle = "black";
-      ctx.font = "40px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("Press Any Key to Start", canvas.width / 2, canvas.height / 2);
+      if (logoImg.complete && logoImg.naturalWidth !== 0) {
+        const maxWidth = 500;
+        const scaledWidth = canvas.width * 0.6;
+        const imgWidth = Math.min(maxWidth, scaledWidth);
+        const imgHeight = logoImg.height * (imgWidth / logoImg.width); 
+
+        const x = canvas.width / 2 - imgWidth / 2;
+        const y = (canvas.height / 2 - imgHeight / 2 - 50) + SCREEN_VERTICAL_SHIFT;
+        ctx.drawImage(logoImg, x, y, imgWidth, imgHeight);
+      }
+      
+      if (isMobile) {
+        // On mobile, show the "PC Only" message
+        ctx.font = "bold 45px 'Comic Sans MS', cursive";
+        ctx.textAlign = "center";
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 4;
+        const textY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT;
+        ctx.strokeText("Sorry, PC Only!", canvas.width / 2, textY);
+        ctx.fillStyle = "white";
+        ctx.fillText("Sorry, PC Only!", canvas.width / 2, textY);
+      } else {
+        // On PC, show the clickable button
+        if (clickToPlayImg.complete && clickToPlayImg.naturalWidth !== 0) {
+            const baseMaxWidth = 400;
+            const baseScaledWidth = canvas.width * 0.5;
+            let btnWidth = Math.min(baseMaxWidth, baseScaledWidth);
+            
+            btnWidth *= PLAY_BUTTON_SCALE;
+
+            const btnHeight = clickToPlayImg.height * (btnWidth / clickToPlayImg.width);
+            const btnX = canvas.width / 2 - btnWidth / 2;
+            const btnY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT;
+            
+            ctx.drawImage(clickToPlayImg, btnX, btnY, btnWidth, btnHeight);
+            playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight };
+        }
+      }
     }
 
     function drawGameOverScreen() {
-      ctx.fillStyle = "black";
-      ctx.font = "40px sans-serif";
+      if (gameOverImg.complete && gameOverImg.naturalWidth !== 0) {
+        const maxWidth = 500;
+        const scaledWidth = canvas.width * 0.6;
+        const imgWidth = Math.min(maxWidth, scaledWidth);
+        const imgHeight = gameOverImg.height * (imgWidth / gameOverImg.width); 
+
+        const x = canvas.width / 2 - imgWidth / 2;
+        const y = (canvas.height / 2 - imgHeight / 2 - 90) + SCREEN_VERTICAL_SHIFT;
+        ctx.drawImage(gameOverImg, x, y, imgWidth, imgHeight);
+      }
+      
+      ctx.font = "bold 70px 'Comic Sans MS', cursive";
       ctx.textAlign = "center";
-      ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 40);
-      ctx.fillText("High Score: " + highScore, canvas.width / 2, canvas.height / 2);
-      ctx.fillText("Press Any Key to Restart", canvas.width / 2, canvas.height / 2 + 40);
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 5;
+
+      ctx.strokeText(highScore, canvas.width / 2, (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT);
+      
+      ctx.fillStyle = "white"; 
+      ctx.fillText(highScore, canvas.width / 2, (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT);
+      
+      if (clickToPlayImg.complete && clickToPlayImg.naturalWidth !== 0) {
+          const baseMaxWidth = 400;
+          const baseScaledWidth = canvas.width * 0.5;
+          let btnWidth = Math.min(baseMaxWidth, baseScaledWidth);
+
+          btnWidth *= PLAY_BUTTON_SCALE;
+
+          const btnHeight = clickToPlayImg.height * (btnWidth / clickToPlayImg.width);
+          const btnX = canvas.width / 2 - btnWidth / 2;
+          const btnY = (canvas.height / 2 + 180) + SCREEN_VERTICAL_SHIFT;
+          
+          ctx.drawImage(clickToPlayImg, btnX, btnY, btnWidth, btnHeight);
+          playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight };
+      }
     }
 
-    // Restructured update() function for a clean game loop
+    function drawNextLevelScreen() {
+        if (nextLevelImg.complete && nextLevelImg.naturalWidth !== 0) {
+            const maxWidth = 500;
+            const scaledWidth = canvas.width * 0.6;
+            const imgWidth = Math.min(maxWidth, scaledWidth);
+            const imgHeight = nextLevelImg.height * (imgWidth / nextLevelImg.width); 
+
+            const x = canvas.width / 2 - imgWidth / 2;
+            const y = (canvas.height / 2 - imgHeight / 2) + SCREEN_VERTICAL_SHIFT;
+            ctx.drawImage(nextLevelImg, x, y, imgWidth, imgHeight);
+        }
+
+        if (clickToPlayImg.complete && clickToPlayImg.naturalWidth !== 0) {
+            const baseMaxWidth = 400;
+            const baseScaledWidth = canvas.width * 0.5;
+            let btnWidth = Math.min(baseMaxWidth, baseScaledWidth);
+
+            btnWidth *= PLAY_BUTTON_SCALE;
+
+            const btnHeight = clickToPlayImg.height * (btnWidth / clickToPlayImg.width);
+            const btnX = canvas.width / 2 - btnWidth / 2;
+            const btnY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT;
+            
+            ctx.drawImage(clickToPlayImg, btnX, btnY, btnWidth, btnHeight);
+            playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight };
+        }
+    }
+
+
+    function drawCounter() {
+      if (counterImg.complete && counterImg.naturalWidth !== 0) {
+        const desiredHeight = canvas.height * 0.10;
+        const y = canvas.height - desiredHeight;
+        ctx.drawImage(counterImg, 0, y, canvas.width, desiredHeight);
+      }
+    }
+    
+    function drawRegister() {
+        if (registerImg.complete && registerImg.naturalWidth !== 0) {
+            const imgHeight = canvas.height * REGISTER_SCALE;
+            const imgWidth = registerImg.width * (imgHeight / registerImg.height);
+            
+            const x = canvas.width - imgWidth - REGISTER_X_OFFSET;
+            const y = canvas.height - imgHeight - REGISTER_Y_OFFSET;
+
+            ctx.drawImage(registerImg, x, y, imgWidth, imgHeight);
+        }
+    }
+
+    function drawBackground() {
+        if (backgroundImg.complete && backgroundImg.naturalWidth !== 0) {
+            ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
+        } else {
+            ctx.fillStyle = "#c2e0ff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+
     function update() {
-      // Clear the entire canvas on every frame
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBackground();
 
       if (showStartScreen) {
         drawStartScreen();
+      } else if (showNextLevelScreen) {
+        drawNextLevelScreen();
       } else if (gameOver) {
         drawGameOverScreen();
       } else if (gameStarted) {
-        // --- Active Gameplay Logic ---
 
         if (keys.ArrowLeft) {
           clyde.x -= clyde.speed;
@@ -268,15 +445,18 @@
 
             if (t.type === "bread") {
               sandwichCompleted = true;
+              
               setTimeout(() => {
                 level++;
                 score += 5;
-                spawnInterval = Math.max(500, spawnInterval - 100);
+                spawnInterval = Math.max(400, spawnInterval - SPAWN_INTERVAL_REDUCTION);
+                
                 toppings.length = 0;
                 sandwich.length = 0;
                 sandwichCompleted = false;
-                showStartScreen = true;
                 gameStarted = false;
+                
+                showNextLevelScreen = true;
               }, 2000);
             } else {
               score++;
@@ -299,12 +479,14 @@
         ctx.fillText("Level: " + level, 10, 90);
       }
 
-      // Keep the loop running continuously
+      drawCounter();
+      drawRegister();
+
       requestAnimationFrame(update);
     }
 
-    // Initial call to start the game loop
+    // --- UPDATED: The game loop now always starts, letting the start screen handle the mobile message ---
     update();
-</script>
+  </script>
 </body>
 </html>
