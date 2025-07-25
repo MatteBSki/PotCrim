@@ -20,14 +20,14 @@
     }
     
     /* --- YouTube Chat Styles --- */
-    .yt-chat-container {
-      background-color: #0f0f0f;
-      border: 1px solid #333;
-      border-radius: 8px;
-      height: 450px;
-      overflow-y: scroll;
-      padding: 1rem;
-    }
+.yt-chat-container {
+  background-color: #0f0f0f;
+  border: 2px solid white; 
+  border-radius: 8px;
+  height: 450px;
+  overflow-y: scroll;
+  padding: 1rem;
+}
     .yt-chat-message { margin-bottom: 0.75rem; }
     .yt-chat-name {
       color: var(--pc-green);
@@ -36,24 +36,24 @@
     }
     .yt-chat-text { color: #fff; }
 
-/* --- UPDATED SUBMISSION BOX STYLES --- */
+/* --- SUBMISSION BOX STYLES --- */
 #birthdayForm {
-  background-color: #0f0f0f; /* Black background for the form box */
-  border: 2px solid white;   /* White outline for the entire box */
+  background-color: #0f0f0f;
+  border: 2px solid white;  
 }
 #card-section .form-label {
   color: var(--pc-white); 
 }
 #birthdayForm .form-control {
-  background-color: #0f0f0f;   /* Black background for input fields */
+  background-color: #0f0f0f;   
   color: var(--pc-white);
-  border: 1px solid white;     /* White outline for input fields */
+  border: 1px solid white;     
 }
 #birthdayForm .form-control:focus {
-  background-color: #0f0f0f; /* Keeps background black on focus */
-  color: var(--pc-white);      /* Keeps text white on focus */
-  border-color: white;         /* Keeps the border white on focus */
-  box-shadow: none;            /* Removes the default blue/green glow */
+  background-color: #0f0f0f; 
+  color: var(--pc-white);      
+  border-color: white;        
+  box-shadow: none;            
 }
     #submitButton {
       background-color: var(--pc-green);
@@ -62,7 +62,7 @@
       font-weight: bold;
     }
     #submitButton:hover {
-      background-color: #72a82d; /* A slightly darker green */
+      background-color: #72a82d; 
       border-color: #72a82d;
     }
   </style>
@@ -105,7 +105,8 @@
     <div class="container-lg">
       <div class="row align-items-center">
         <div class="col-lg-6 mb-5 mb-lg-0">
-          <h2 class="display-5 text-center text-white mb-4">Birthday Messages</h2>
+          <h2 class="display-5 text-center text-white mb-4">Birthday Chat</h2>
+          <p>Live Messages</p>
           <div id="birthday-chat-log" class="yt-chat-container">
             <div class="yt-chat-message"><span class="yt-chat-name">Clyde:</span><span class="yt-chat-text">Happy Birthday fat man daddy! Where's mom?</span></div>
             <div class="yt-chat-message"><span class="yt-chat-name">Matty B:</span><span class="yt-chat-text">Happy Birthday Sammich Man! Now youre old like us!</span></div>
