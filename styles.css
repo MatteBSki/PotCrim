@@ -202,9 +202,7 @@ h1, h2, h3, h4, h5, h6 {
 5. General Page Sections
 ==============================================
 */
-section {
-  padding: 4rem 0;
-}
+
 
 section .lead {
   font-size: 1.6rem; 
