@@ -13,21 +13,42 @@
 
   <style>
     .birthday-wrapper {
-      min-height: 85vh;
+      min-height: 80vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
     
     /* --- YouTube Chat Styles --- */
-.yt-chat-container {
-  background-color: #0f0f0f;
-  border: 2px solid white; 
-  border-radius: 8px;
-  height: 450px;
-  overflow-y: scroll;
-  padding: 1rem;
-}
+    .yt-chat-container {
+      background-color: #0f0f0f;
+      border: 2px solid white; 
+      border-radius: 12px;
+      height: 500px; /* Increased height slightly */
+      display: flex;
+      flex-direction: column; /* To position header at top */
+    }
+    .yt-chat-header {
+      padding: 1rem 1rem 0.75rem 1rem;
+      flex-shrink: 0; /* Prevents header from shrinking */
+    }
+    .yt-chat-header h2 {
+      font-family: var(--font-body); /* Use Roboto font */
+      font-size: 1.5rem; /* Adjusted size */
+    }
+    .yt-chat-header p {
+      color: #aaa;
+      margin-bottom: 0.75rem;
+    }
+    .yt-chat-header hr {
+      border-color: #333;
+      margin: 0;
+    }
+    .yt-chat-messages {
+      padding: 1rem;
+      overflow-y: scroll;
+      flex-grow: 1; /* Allows this area to fill remaining space */
+    }
     .yt-chat-message { margin-bottom: 0.75rem; }
     .yt-chat-name {
       color: var(--pc-green);
@@ -36,25 +57,25 @@
     }
     .yt-chat-text { color: #fff; }
 
-/* --- SUBMISSION BOX STYLES --- */
-#birthdayForm {
-  background-color: #0f0f0f;
-  border: 2px solid white;  
-}
-#card-section .form-label {
-  color: var(--pc-white); 
-}
-#birthdayForm .form-control {
-  background-color: #0f0f0f;   
-  color: var(--pc-white);
-  border: 1px solid white;     
-}
-#birthdayForm .form-control:focus {
-  background-color: #0f0f0f; 
-  color: var(--pc-white);      
-  border-color: white;        
-  box-shadow: none;            
-}
+    /* --- Submission Box Styles --- */
+    #birthdayForm {
+      background-color: #0f0f0f;
+      border: 2px solid white;   
+    }
+    #card-section .form-label {
+      color: var(--pc-white); 
+    }
+    #birthdayForm .form-control {
+      background-color: #0f0f0f;
+      color: var(--pc-white);
+      border: 1px solid white;
+    }
+    #birthdayForm .form-control:focus {
+      background-color: #0f0f0f;
+      color: var(--pc-white);
+      border-color: white;
+      box-shadow: none;
+    }
     #submitButton {
       background-color: var(--pc-green);
       border-color: var(--pc-green);
@@ -62,7 +83,7 @@
       font-weight: bold;
     }
     #submitButton:hover {
-      background-color: #72a82d; 
+      background-color: #72a82d;
       border-color: #72a82d;
     }
   </style>
@@ -101,15 +122,20 @@
     <div id="message" style="display:none;">🎉 HAPPY BIRTHDAY SEAN! 🎉</div>
   </main>
   
-  <section id="card-section" class="bg-custom-dark-grey py-5">
+  <section id="card-section" class="bg-black py-5">
     <div class="container-lg">
       <div class="row align-items-center">
         <div class="col-lg-6 mb-5 mb-lg-0">
-          <h2 class="display-5 text-center text-white mb-4">Birthday Chat</h2>
-          <p>Live Messages</p>
           <div id="birthday-chat-log" class="yt-chat-container">
-            <div class="yt-chat-message"><span class="yt-chat-name">Clyde:</span><span class="yt-chat-text">Happy Birthday fat man daddy! Where's mom?</span></div>
-            <div class="yt-chat-message"><span class="yt-chat-name">Matty B:</span><span class="yt-chat-text">Happy Birthday Sammich Man! Now youre old like us!</span></div>
+            <div class="yt-chat-header">
+              <h2 class="text-white">Birthday Chat</h2>
+              <p>Live Messages</p>
+              <hr/>
+            </div>
+            <div class="yt-chat-messages">
+              <div class="yt-chat-message"><span class="yt-chat-name">Clyde:</span><span class="yt-chat-text">Happy Birthday fat man daddy! Where's mom?</span></div>
+              <div class="yt-chat-message"><span class="yt-chat-name">Matty B:</span><span class="yt-chat-text">Happy Birthday Sammich Man! Now youre old like us!</span></div>
+            </div>
           </div>
         </div>
 
@@ -125,8 +151,7 @@
                 <label for="message-input" class="form-label">Your Message</label>
                 <div id="char-counter" class="form-text text-white-50">0 / 280</div>
               </div>
-              <textarea class="form-control" id="message-input" name="message" rows="4" required maxlength="280"></textarea>
-            </div>
+              <textarea class="form-control" id="message-input" name="message" rows="4" required></textarea> </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
               <button type="button" class="btn btn-secondary" id="cancelButton">Cancel</button>
               <button type="submit" class="btn btn-success" id="submitButton">Submit Message</button>
@@ -142,9 +167,7 @@
     <div class="container-lg text-center text-md-start">
       <div class="row mt-3">
         <div class="col-md-3 col-lg-3 mx-auto mb-4">
-          <a href="index.html">
-            <img style="width: 180px; height: 18px;" src="img/logo.png" alt="Potentially Criminal Logo" class="footer-logo">
-          </a>
+          <a href="index.html"><img style="width: 180px; height: 18px;" src="img/logo.png" alt="Potentially Criminal Logo" class="footer-logo"></a>
           <p class="text-white-50 mt-3"> PO BOX 716 <br> Willoughby, OH 44096 </p>
           <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p>
         </div>
@@ -225,25 +248,27 @@
     // --- Character Counter Logic ---
     const messageInput = document.getElementById('message-input');
     const charCounter = document.getElementById('char-counter');
-    const maxLength = messageInput.getAttribute('maxlength');
+    const submitButton = document.getElementById('submitButton');
+    const maxLength = 280;
 
     messageInput.addEventListener('input', () => {
       const currentLength = messageInput.value.length;
       charCounter.textContent = `${currentLength} / ${maxLength}`;
       
-      // Turn counter red if over the limit
       if (currentLength > maxLength) {
         charCounter.classList.add('text-danger');
+        charCounter.classList.remove('text-white-50');
+        submitButton.disabled = true; // Disable submit button if over limit
       } else {
         charCounter.classList.remove('text-danger');
-        charCounter.classList.add('text-white-50'); // Ensure it's white if not over limit
+        charCounter.classList.add('text-white-50');
+        submitButton.disabled = false; // Enable submit button if within limit
       }
     });
 
     // --- Form Submission Logic ---
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwjfE1qCVMakGdEH6u_hwNtpnCCmgzEuUqweYuUrjduRRGI0xjdydvzS5Epxq8M3vZbIw/exec'; 
+    const scriptURL = 'YOUR_APPS_SCRIPT_URL_HERE'; // Make sure this is your latest URL!
     const form = document.getElementById('birthdayForm');
-    const submitButton = document.getElementById('submitButton');
     const cancelButton = document.getElementById('cancelButton');
     const formResponse = document.getElementById('form-response');
     form.addEventListener('submit', e => {
@@ -273,6 +298,7 @@
       charCounter.textContent = `0 / ${maxLength}`;
       charCounter.classList.remove('text-danger');
       charCounter.classList.add('text-white-50');
+      submitButton.disabled = false; // Re-enable submit on cancel
     });
     
     document.getElementById('copyright-year').textContent = new Date().getFullYear();
