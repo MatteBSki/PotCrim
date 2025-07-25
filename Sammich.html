@@ -42,7 +42,7 @@
   font-size: 1rem;
   cursor: pointer;
 ">
-🔊 Music Off
+🔇 Music On
 </button>
 
   <script>
@@ -517,7 +517,7 @@
 const bgMusic = document.getElementById('bgMusic');
 const toggleMusicBtn = document.getElementById('musicToggle');
 
-let musicEnabled = true; // default ON
+let musicEnabled = false; // default ON
 
 function initMusic() {
   if (musicEnabled && bgMusic.paused) {
