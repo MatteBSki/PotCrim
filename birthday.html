@@ -18,28 +18,52 @@
       flex-direction: column;
       justify-content: center;
     }
-    #card-section .form-label {
-        color: var(--pc-black);
-    }
     
+    /* --- YouTube Chat Styles --- */
     .yt-chat-container {
-      background-color: #0f0f0f; /* YouTube Dark BG */
+      background-color: #0f0f0f;
       border: 1px solid #333;
       border-radius: 8px;
-      height: 450px; /* Fixed height for scrolling */
+      height: 450px;
       overflow-y: scroll;
       padding: 1rem;
     }
-    .yt-chat-message {
-      margin-bottom: 0.75rem;
-    }
+    .yt-chat-message { margin-bottom: 0.75rem; }
     .yt-chat-name {
-      color: var(--pc-green); /* Your custom green color */
+      color: var(--pc-green);
       font-weight: bold;
       margin-right: 0.5rem;
     }
-    .yt-chat-text {
-      color: #fff;
+    .yt-chat-text { color: #fff; }
+
+    /* --- NEW SUBMISSION BOX STYLES --- */
+    #birthdayForm {
+      background-color: var(--pc-dark-grey);
+      border: 2px solid white;
+    }
+    #card-section .form-label {
+      color: var(--pc-white); /* White labels for dark background */
+    }
+    #birthdayForm .form-control {
+      background-color: #0f0f0f;
+      color: var(--pc-white);
+      border-color: #333;
+    }
+    #birthdayForm .form-control:focus {
+      background-color: #0f0f0f;
+      color: var(--pc-white);
+      border-color: var(--pc-green);
+      box-shadow: 0 0 0 0.25rem rgba(134, 194, 50, 0.25);
+    }
+    #submitButton {
+      background-color: var(--pc-green);
+      border-color: var(--pc-green);
+      color: var(--pc-black);
+      font-weight: bold;
+    }
+    #submitButton:hover {
+      background-color: #72a82d; /* A slightly darker green */
+      border-color: #72a82d;
     }
   </style>
 </head>
@@ -90,7 +114,7 @@
 
         <div class="col-lg-6">
            <h3 class="text-center text-white mb-4">Leave a Birthday Message</h3>
-          <form id="birthdayForm" name="submit-to-google-sheet" class="p-4 rounded" style="background-color: var(--pc-lightest-grey);">
+          <form id="birthdayForm" name="submit-to-google-sheet" class="p-4 rounded">
             <div class="mb-3">
               <label for="name" class="form-label">Your Name</label>
               <input type="text" class="form-control" id="name" name="name" required>
@@ -98,7 +122,7 @@
             <div class="mb-3">
               <div class="d-flex justify-content-between">
                 <label for="message-input" class="form-label">Your Message</label>
-                <div id="char-counter" class="form-text">0 / 280</div>
+                <div id="char-counter" class="form-text text-white-50">0 / 280</div>
               </div>
               <textarea class="form-control" id="message-input" name="message" rows="4" required maxlength="280"></textarea>
             </div>
@@ -197,6 +221,7 @@
         updateCountdown();
     }
     
+    // --- Character Counter Logic ---
     const messageInput = document.getElementById('message-input');
     const charCounter = document.getElementById('char-counter');
     const maxLength = messageInput.getAttribute('maxlength');
@@ -205,15 +230,17 @@
       const currentLength = messageInput.value.length;
       charCounter.textContent = `${currentLength} / ${maxLength}`;
       
+      // Turn counter red if over the limit
       if (currentLength > maxLength) {
         charCounter.classList.add('text-danger');
       } else {
         charCounter.classList.remove('text-danger');
+        charCounter.classList.add('text-white-50'); // Ensure it's white if not over limit
       }
     });
 
     // --- Form Submission Logic ---
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwjfE1qCVMakGdEH6u_hwNtpnCCmgzEuUqweYuUrjduRRGI0xjdydvzS5Epxq8M3vZbIw/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwjfE1qCVMakGdEH6u_hwNtpnCCmgzEuUqweYuUrjduRRGI0xjdydvzS5Epxq8M3vZbIw/exec'; 
     const form = document.getElementById('birthdayForm');
     const submitButton = document.getElementById('submitButton');
     const cancelButton = document.getElementById('cancelButton');
@@ -226,8 +253,9 @@
         .then(response => {
           formResponse.innerHTML = '<div class="alert alert-success" role="alert">Thank you! Your message has been submitted for review.</div>';
           form.reset();
-          charCounter.textContent = `0 / ${maxLength}`; 
+          charCounter.textContent = `0 / ${maxLength}`;
           charCounter.classList.remove('text-danger');
+          charCounter.classList.add('text-white-50');
         })
         .catch(error => {
           formResponse.innerHTML = '<div class="alert alert-danger" role="alert">An error occurred. Please try again later.</div>';
@@ -241,8 +269,9 @@
     cancelButton.addEventListener('click', () => {
       form.reset();
       formResponse.innerHTML = '';
-      charCounter.textContent = `0 / ${maxLength}`; // Reset counter text
+      charCounter.textContent = `0 / ${maxLength}`;
       charCounter.classList.remove('text-danger');
+      charCounter.classList.add('text-white-50');
     });
     
     document.getElementById('copyright-year').textContent = new Date().getFullYear();
