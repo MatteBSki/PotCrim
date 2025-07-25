@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
   <link rel="stylesheet" href="styles.css">
 
   <style>
@@ -19,19 +18,28 @@
       flex-direction: column;
       justify-content: center;
     }
-    .testimonial-card p,
-    .testimonial-card h5 {
-      color: var(--pc-black);
-    }
-      .swiper-pagination-fraction {
-      color: var(--pc-black);
-      font-size: 1.2rem;
-      font-weight: bold;
-      bottom: -5px; 
-    }
     #card-section .form-label {
         color: var(--pc-black);
     }
+    
+    .yt-chat-container {
+      background-color: #0f0f0f; /* YouTube Dark BG */
+      border: 1px solid #333;
+      border-radius: 8px;
+      height: 450px; /* Fixed height for scrolling */
+      overflow-y: scroll;
+      padding: 1rem;
+    }
+    .yt-chat-message {
+      margin-bottom: 0.75rem;
+    }
+    .yt-chat-name {
+      color: var(--pc-green); /* Your custom green color */
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+    .yt-chat-text {
+      color: #fff;
     }
   </style>
 </head>
@@ -73,21 +81,10 @@
     <div class="container-lg">
       <div class="row align-items-center">
         <div class="col-lg-6 mb-5 mb-lg-0">
-          <h2 class="display-5 text-center text-white mb-4">Sean's Birthday Card</h2>
-          <div class="swiper testimonial-swiper">
-            <div class="swiper-wrapper">
-              <!-- Add your approved messages here -->
-              <div class="swiper-slide"><div class="testimonial-card"><p class="testimonial-text">"Happy Birthday fat man daddy! Where's mom?"</p><h5 class="testimonial-name">- Clyde</h5></div></div>
-              <div class="swiper-slide">
-                <div class="testimonial-card">
-                  <p class="testimonial-text">"Happy Birthday Sammich Man! Now youre old like us!"</p>
-                  <h5 class="testimonial-name">- Matty B</h5>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination"></div>
+          <h2 class="display-5 text-center text-white mb-4">Birthday Messages</h2>
+          <div id="birthday-chat-log" class="yt-chat-container">
+            <div class="yt-chat-message"><span class="yt-chat-name">Clyde:</span><span class="yt-chat-text">Happy Birthday fat man daddy! Where's mom?</span></div>
+            <div class="yt-chat-message"><span class="yt-chat-name">Matty B:</span><span class="yt-chat-text">Happy Birthday Sammich Man! Now youre old like us!</span></div>
           </div>
         </div>
 
@@ -99,8 +96,11 @@
               <input type="text" class="form-control" id="name" name="name" required>
             </div>
             <div class="mb-3">
-              <label for="message-input" class="form-label">Your Message</label>
-              <textarea class="form-control" id="message-input" name="message" rows="4" required></textarea>
+              <div class="d-flex justify-content-between">
+                <label for="message-input" class="form-label">Your Message</label>
+                <div id="char-counter" class="form-text">0 / 280</div>
+              </div>
+              <textarea class="form-control" id="message-input" name="message" rows="4" required maxlength="280"></textarea>
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
               <button type="button" class="btn btn-secondary" id="cancelButton">Cancel</button>
@@ -113,63 +113,54 @@
     </div>
   </section>
   
-<footer class="footer-custom">
-  <div class="container text-center text-md-start">
-    <div class="row mt-3">
-      <div class="col-md-3 col-lg-3 mx-auto mb-4">
-        <a href="index.html">
-          <img style="width: 180px; height: 18px;" src="img/logo.png" alt="Potentially Criminal Logo" class="footer-logo">
-        </a>
-        <p class="text-white-50 mt-3"> PO BOX 716 <br>
-          Willoughby, OH 44096 </p>
-        
-        <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p>
-
-      </div>
-      
-      <div class="col-md-6 col-lg-5 mx-auto mb-4">
-        <div class="row">
-          <div class="col-md-6">
-            <h6 class="text-uppercase fw-bold mb-4">Site Links</h6>
-            <p><a href="index.html" class="footer-link">Home</a></p>
-            <p><a href="about.html" class="footer-link">About</a></p>
-            <p><a href="https://potentiallycriminal.creator-spring.com/" class="footer-link" target="_blank">Merch</a></p>
-            <p><a href="http://www.seanpmartinlaw.com" class="footer-link" target="_blank">Law Firm</a></p>
-          </div>
-          <div class="col-md-6">
-            <h6 class="text-uppercase fw-bold mb-4">Channels</h6>
-            <p><a href="https://youtube.com/@potentiallycriminal" class="footer-link" target="_blank">Potentially Criminal</a></p>
-            <p><a href="https://www.youtube.com/@SeansModelBench" class="footer-link" target="_blank">Sean's Model Bench</a></p>
-            <p><a href="https://potentiallycriminal.locals.com" class="footer-link" target="_blank">Locals</a></p>
-            <p><a href="https://x.com/lawtubesean" class="footer-link" target="_blank">X (Twitter)</a></p>
+  <footer class="footer-custom">
+    <div class="container-lg text-center text-md-start">
+      <div class="row mt-3">
+        <div class="col-md-3 col-lg-3 mx-auto mb-4">
+          <a href="index.html">
+            <img style="width: 180px; height: 18px;" src="img/logo.png" alt="Potentially Criminal Logo" class="footer-logo">
+          </a>
+          <p class="text-white-50 mt-3"> PO BOX 716 <br> Willoughby, OH 44096 </p>
+          <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p>
+        </div>
+        <div class="col-md-6 col-lg-5 mx-auto mb-4">
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="text-uppercase fw-bold mb-4">Site Links</h6>
+              <p><a href="index.html" class="footer-link">Home</a></p>
+              <p><a href="about.html" class="footer-link">About</a></p>
+              <p><a href="https://potentiallycriminal.creator-spring.com/" class="footer-link" target="_blank">Merch</a></p>
+              <p><a href="http://www.seanpmartinlaw.com" class="footer-link" target="_blank">Law Firm</a></p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-uppercase fw-bold mb-4">Channels</h6>
+              <p><a href="https://youtube.com/@potentiallycriminal" class="footer-link" target="_blank">Potentially Criminal</a></p>
+              <p><a href="https://www.youtube.com/@SeansModelBench" class="footer-link" target="_blank">Sean's Model Bench</a></p>
+              <p><a href="https://potentiallycriminal.locals.com" class="footer-link" target="_blank">Locals</a></p>
+              <p><a href="https://x.com/lawtubesean" class="footer-link" target="_blank">X (Twitter)</a></p>
+            </div>
           </div>
         </div>
+        <div class="col-md-3 col-lg-3 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Join the Green Army</h6>
+          <p class="text-white-50">DO YOUR PART!</p>
+          <a href="https://www.youtube.com/@PotentiallyCriminal/membership" target="_blank" class="btn btn-subscribe mt-2"> Pay Dues </a>
+        </div>
       </div>
-      <div class="col-md-3 col-lg-3 mx-auto mb-4">
-        <h6 class="text-uppercase fw-bold mb-4">Join the Green Army</h6>
-        <p class="text-white-50">DO YOUR PART!</p>
-        <a href="https://www.youtube.com/@PotentiallyCriminal/membership" target="_blank" class="btn btn-subscribe mt-2">
-          Pay Dues </a>
+      <hr class="my-4">
+      <div class="text-center">
+        <p class="text-white-50 small"> © <span id="copyright-year"></span> Potentially Criminal. All rights reserved. </p>
       </div>
     </div>
-    <hr class="my-4">
-    <div class="text-center">
-      <p class="text-white-50 small"> © <span id="copyright-year">2024</span>
-        Potentially Criminal. All rights reserved. </p>
-    </div>
-  </div>
-</footer>
+  </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
     // --- Countdown Logic ---
     const countdownEl = document.getElementById("countdown");
     const happyBirthdayMessageEl = document.getElementById("message");
     if (countdownEl && happyBirthdayMessageEl) {
-        let timer;
-        const birthdayMonth = 7;
-        const birthdayDay = 10;
+        let timer; const birthdayMonth = 7; const birthdayDay = 10;
         const updateCountdown = () => {
             const now = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
             let targetYear = now.getFullYear();
@@ -192,8 +183,7 @@
             }
         };
         const launchConfetti = () => {
-            const wrapper = document.querySelector('.birthday-wrapper');
-            if (!wrapper) return;
+            const wrapper = document.querySelector('.birthday-wrapper'); if (!wrapper) return;
             for (let i = 0; i < 200; i++) {
                 const confetti = document.createElement("div");
                 confetti.classList.add("confetti");
@@ -207,22 +197,23 @@
         updateCountdown();
     }
     
-    // --- Swiper Slider Logic ---
-    var testimonialSwiper = new Swiper(".testimonial-swiper", {
-      // loop: true, // Loop is removed for accurate fraction counting
-      autoplay: { delay: 5000, disableOnInteraction: false },
-      pagination: { 
-        el: ".swiper-pagination", 
-        type: "fraction", // This creates the "X / Y" counter
-      },
-      navigation: { 
-        nextEl: ".swiper-button-next", 
-        prevEl: ".swiper-button-prev" 
-      },
+    const messageInput = document.getElementById('message-input');
+    const charCounter = document.getElementById('char-counter');
+    const maxLength = messageInput.getAttribute('maxlength');
+
+    messageInput.addEventListener('input', () => {
+      const currentLength = messageInput.value.length;
+      charCounter.textContent = `${currentLength} / ${maxLength}`;
+      
+      if (currentLength > maxLength) {
+        charCounter.classList.add('text-danger');
+      } else {
+        charCounter.classList.remove('text-danger');
+      }
     });
 
     // --- Form Submission Logic ---
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxAHfTEcEHT-wcSYnj08u4unNYf9j5QpETeyPzfJinDlwxVNsKfDU5QxCV9LKYxMBIY6g/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwjfE1qCVMakGdEH6u_hwNtpnCCmgzEuUqweYuUrjduRRGI0xjdydvzS5Epxq8M3vZbIw/exec';
     const form = document.getElementById('birthdayForm');
     const submitButton = document.getElementById('submitButton');
     const cancelButton = document.getElementById('cancelButton');
@@ -235,6 +226,8 @@
         .then(response => {
           formResponse.innerHTML = '<div class="alert alert-success" role="alert">Thank you! Your message has been submitted for review.</div>';
           form.reset();
+          charCounter.textContent = `0 / ${maxLength}`; 
+          charCounter.classList.remove('text-danger');
         })
         .catch(error => {
           formResponse.innerHTML = '<div class="alert alert-danger" role="alert">An error occurred. Please try again later.</div>';
@@ -248,6 +241,8 @@
     cancelButton.addEventListener('click', () => {
       form.reset();
       formResponse.innerHTML = '';
+      charCounter.textContent = `0 / ${maxLength}`; // Reset counter text
+      charCounter.classList.remove('text-danger');
     });
     
     document.getElementById('copyright-year').textContent = new Date().getFullYear();
