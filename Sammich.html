@@ -517,20 +517,7 @@
 const bgMusic = document.getElementById('bgMusic');
 const toggleMusicBtn = document.getElementById('musicToggle');
 
-let musicEnabled = false; // default ON
-
-function initMusic() {
-  if (musicEnabled && bgMusic.paused) {
-    bgMusic.play().then(() => {
-      toggleMusicBtn.textContent = '🔊 Music Off';
-    }).catch(() => {
-      toggleMusicBtn.textContent = '🔇 Music On';
-    });
-  }
-}
-
-window.addEventListener('click', initMusic, { once: true });
-window.addEventListener('keydown', initMusic, { once: true });
+let musicEnabled = false; // default OFF
 
 toggleMusicBtn.addEventListener('click', () => {
   if (bgMusic.paused) {
