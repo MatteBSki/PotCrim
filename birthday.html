@@ -36,25 +36,25 @@
     }
     .yt-chat-text { color: #fff; }
 
-    /* --- NEW SUBMISSION BOX STYLES --- */
-    #birthdayForm {
-      background-color: var(--pc-dark-grey);
-      border: 2px solid white;
-    }
-    #card-section .form-label {
-      color: var(--pc-white); /* White labels for dark background */
-    }
-    #birthdayForm .form-control {
-      background-color: #0f0f0f;
-      color: var(--pc-white);
-      border-color: #333;
-    }
-    #birthdayForm .form-control:focus {
-      background-color: #0f0f0f;
-      color: var(--pc-white);
-      border-color: var(--pc-green);
-      box-shadow: 0 0 0 0.25rem rgba(134, 194, 50, 0.25);
-    }
+/* --- UPDATED SUBMISSION BOX STYLES --- */
+#birthdayForm {
+  background-color: #0f0f0f; /* Black background for the form box */
+  border: 2px solid white;   /* White outline for the entire box */
+}
+#card-section .form-label {
+  color: var(--pc-white); 
+}
+#birthdayForm .form-control {
+  background-color: #0f0f0f;   /* Black background for input fields */
+  color: var(--pc-white);
+  border: 1px solid white;     /* White outline for input fields */
+}
+#birthdayForm .form-control:focus {
+  background-color: #0f0f0f; /* Keeps background black on focus */
+  color: var(--pc-white);      /* Keeps text white on focus */
+  border-color: white;         /* Keeps the border white on focus */
+  box-shadow: none;            /* Removes the default blue/green glow */
+}
     #submitButton {
       background-color: var(--pc-green);
       border-color: var(--pc-green);
