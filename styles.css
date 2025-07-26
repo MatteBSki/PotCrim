@@ -815,3 +815,77 @@ h2.display-5 {
   text-decoration: underline;
   cursor: pointer;
 }
+
+/*
+==============================================
+20. YouTube-Style Chat Box
+==============================================
+*/
+.yt-chat-container {
+  background-color: #0f0f0f;
+  border: 2px solid var(--pc-medium-grey);
+  border-radius: 12px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.yt-chat-header {
+  padding: 1rem 1rem 0.75rem 1rem;
+  flex-shrink: 0;
+  text-align: left; /* Aligns header text to the left */
+}
+
+.yt-chat-header p {
+  color: var(--pc-light-grey); /* Lighter grey for visibility */
+  margin-bottom: 0.75rem;
+}
+
+.yt-chat-header hr {
+  border-color: var(--pc-grey); /* Lighter, more visible separator */
+  margin: 0;
+}
+
+.yt-chat-messages {
+  padding: 1rem;
+  overflow-y: scroll;
+  flex-grow: 1;
+}
+
+/* For Birthday Page (No Avatar) */
+.yt-chat-message {
+  margin-bottom: 0.75rem;
+}
+
+/* STYLES for Index Page Testimonials */
+.testimonial-chat-message {
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.testimonial-chat-avatar {
+  width: clamp(60px, 12vw, 100px);
+  height: clamp(60px, 12vw, 100px);
+  border-radius: 50%;
+  margin-right: 1.5rem;
+  flex-shrink: 0;
+}
+
+.testimonial-chat-content {
+  text-align: left;
+}
+
+.testimonial-chat-name {
+  color: var(--pc-green);
+  font-weight: bold;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  margin-right: 0.5rem;
+}
+
+.testimonial-chat-text {
+  color: #fff;
+  word-break: break-word;
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+}
