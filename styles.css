@@ -178,6 +178,14 @@ h6 {
   }
 }
 
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    max-height: 50vh;         /* Prevents full-screen takeover */
+    overflow-y: auto;         /* Allows scrolling when needed */
+    padding: 1rem;            /* Optional: adds breathing room */
+  }
+}
+
 /*
 ==============================================
 5. Hero Section
