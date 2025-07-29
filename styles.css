@@ -793,6 +793,57 @@ section .lead {
   padding: 1rem;
 }
 
+.stat-circle-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-circle .stat-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.stat-circle .stat-percentage {
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+@media (max-width: 767px) {
+  .stat-circle {
+    width: 180px;
+    height: 180px;
+  }
+
+  .stat-circle .stat-percentage {
+    font-size: 2.2rem;
+  }
+
+  .stat-number {
+    font-size: 2.2rem;
+  }
+
+  .stat-number-label {
+    font-size: 1rem;
+  }
+
+  .bar-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .bar-percentage {
+    text-align: right;
+    width: 100%;
+  }
+}
+
+
+
+
 /* Typography for elements within both stat sections */
 section[id*="-stats"] .stat-percentage {
   font-size: 4.5rem;
@@ -1124,6 +1175,8 @@ Ensure Blogger Section Hidden Links Don't Visually Appear as Links
   word-break: break-word;
   font-size: clamp(1rem, 1.8vw, 1.3rem);
 }
+
+
 
 /*
 ==============================================
