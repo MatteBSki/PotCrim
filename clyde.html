@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <title>Clyde! - Potentially Criminal</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts (from your main site) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Swiper CSS for the photo gallery -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+  <!-- AOS CSS for scroll animations -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Your Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* Custom styles for Clyde's page specifically */
+
+    /* This applies the hero image for Clyde's page. 
+       The main hero styles (like height) are in your styles.css */
+    .clyde-hero-background {
+      background-image: url('clydeImg/robo-clyde.png');
+    }
+
+    @media (max-width: 1200px) {
+      .clyde-hero-background {
+        background-position: 90% center;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .clyde-hero-background {
+        background-position: 75% center;
+      }
+    }
+
+    @media (max-width: 850px) {
+      .clyde-hero-background {
+        background-position: 58% center;
+      }
+    }
+
+    /* Use the heading font from your site for Clyde's hero title */
+    .hero-content h1 {
+      font-family: var(--font-heading);
+    }
+
+    /* Styling for the images within the Swiper gallery */
+    .clyde-swiper .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 600px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    /* Style for the Swiper navigation arrows */
+    .clyde-swiper .swiper-button-next,
+    .clyde-swiper .swiper-button-prev {
+      color: green;
+    }
+
+    /* --- NEW STYLES FOR ENLARGING THE CENTER IMAGE --- */
+
+    /* Add some padding to the top and bottom of the swiper container 
+       to prevent the scaled-up image from being cut off. */
+    .clyde-swiper {
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+
+    /* Add a smooth transition effect to all slides */
+    .clyde-swiper .swiper-slide {
+      transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+      transform: scale(0.85);
+      /* Start non-active slides slightly smaller */
+      opacity: 1;
+      /* Make non-active slides slightly faded */
+    }
+
+    /* Target the active (centered) slide to make it larger and fully opaque */
+    .clyde-swiper .swiper-slide-active {
+      transform: scale(1.6);
+      /* Enlarge the active slide */
+      opacity: 1;
+      /* Make it fully visible */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation Bar (from your index.html) -->
+  <nav class="navbar navbar-expand-lg navbar-custom px-3">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="index.html">
+      <img src="img/logo.png" alt="Potentially Criminal Logo" height="30"
+        onerror="this.onerror=null;this.src='https://placehold.co/150x30/000000/ffffff?text=Logo';">
+    </a>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="birthday.html">Is It His Birthday?</a></li>
+        <li class="nav-item"><a class="nav-link active" href="clyde.html">Clyde</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="channelsDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">Channels</a>
+          <ul class="dropdown-menu" aria-labelledby="channelsDropdown">
+            <li><a class="dropdown-item" href="https://youtube.com/@potentiallycriminal" target="_blank">Potentially
+                Criminal (YouTube)</a></li>
+            <li><a class="dropdown-item" href="https://www.youtube.com/@SeansModelBench" target="_blank">Sean's Model
+                Bench (YouTube)</a></li>
+            <li><a class="dropdown-item" href="https://potentiallycriminal.locals.com" target="_blank">Locals</a></li>
+            <li><a class="dropdown-item" href="https://x.com/lawtubesean" target="_blank">X (Twitter)</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="https://potentiallycriminal.creator-spring.com/"
+            target="_blank">Merch</a></li>
+        <li class="nav-item"><a class="nav-link" href="http://www.seanpmartinlaw.com/" target="_blank">Law Firm</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="legalDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Legal Disclosure
+          </a>
+          <ul class="dropdown-menu wide-dropdown" aria-labelledby="legalDropdown">
+            <li class="dropdown-item text-wrap">
+              Nothing provided by Sean P. Martin, Esq., Martin Media LLC, or Martin Law Office LLC, expressly or
+              implied, shall be deemed legal advice and shall not be construed as the creation of an attorney-client
+              relationship in any way. The viewer has responsibility of obtaining legal advise from a competent and
+              licensed attorney, and should do so.
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section - Uses the same structure as your homepage for consistency -->
+  <header class="hero-section clyde-hero-background">
+    <div class="hero-content">
+      <h1>Crush the Grays</h1>
+      <p>- Robo-Clyde, Mech Warrior</p>
+    </div>
+    <!-- Down Arrow - Copied from your homepage -->
+    <a href="#about" class="hero-down-button" aria-label="Scroll down">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+      </svg>
+    </a>
+  </header>
+
+  <!-- Main Content Area -->
+  <main>
+    <!-- About Section -->
+    <section id="about" class="bg-custom-white styled-section">
+      <div class="container py-5" data-aos="fade-up">
+
+        <div class="row">
+          <div class="col-12 text-center mb-4">
+            <h2 class="display-5 playfair">About Clyde</h2>
+            <hr>
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-6" style="text-align: justify; hyphens: auto;">
+              <p class="lead text-muted">
+                Hi, I’m Clyde—rescue dog turned rescue hero. I might look small, but I ran that pound, hand‑picked my
+                humans, and now I’m the boss.
+                My two awesome parents are 2.0 (the real MVP) and Sean (sandwich artist extraordinaire).
+              </p>
+              <p class="lead text-muted">
+                By day I’m Chef Clyde, crafting sammiches so legendary they belong in museums: think Van Gogh meets the
+                deli counter.
+                National Sandwich Day? Yeah, that’s my Super Bowl.
+              </p>
+              <p class="lead text-muted">
+                By night I’m Robo‑Clyde, Mech Warrior dog stomping grays into dust.
+                In our videos, I stride across the battlefield with steel paws and zero mercy—greens only beyond this
+                point.
+              </p>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-6" style="text-align: justify; hyphens: auto;">
+              <p class="lead text-muted">
+                My best friend Lainey may be shy, but she always leaves me room on the bed and stays by my side when
+                storms roll in.
+              </p>
+              <p class="lead text-muted">
+                I keep my AWOOOHs off‑screen (showbiz rule: leave ’em wanting more), and no, I’m not talking about that
+                “pee incident.”
+              </p>
+              <p class="lead text-muted">
+                And let’s be real—I’m kind of a big deal. I launched Clyde Coin to the moon, diamond paws chat, diamond
+                paws. I live for treats, new peen day, and every one of you on the green team.
+                Grays, you know what’s coming...
+              </p>
+              <p class="lead text-muted">
+                I’m Clyde, I'm here to eat sammiches and destroy grays — and I’m all out of sammiches.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery" class="styled-section bg-custom-lightest-grey">
+          <div class="container" data-aos="fade-up">
+            <h2 class="display-5 text-center mb-5">A Day in the Life of Clyde</h2>
+            <hr>
+            <!-- Swiper component for the gallery -->
+            <div class="swiper clyde-swiper">
+                <div class="swiper-wrapper" id="clyde-gallery">
+                    <!-- Images will be injected here by the JavaScript below -->
+                </div>
+                <!-- Swiper UI elements -->
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Embedded Video Section -->
+    <section id="video" class="styled-section bg-custom-white">
+      <div class="container" data-aos="fade-up">
+        <h2 class="display-5 text-center mb-5">Clyde's Adeventures</h2>
+        <hr>
+        <div class="row">
+          <div class="col-lg-10 mx-auto">
+            <!-- HTML5 Video Player -->
+            <!-- 'controls' adds play/pause, volume, etc. -->
+            <!-- 'playsinline' helps with playback on iOS -->
+            <!-- 'autoplay' and 'muted' are often needed for videos to play automatically in modern browsers -->
+            <!-- 'loop' makes the video repeat -->
+            <div class="ratio ratio-16x9">
+              <video controls playsinline>
+                <!-- Provide the path to your video file. You can include multiple formats for better browser compatibility. -->
+                <source src="clydeImg/tothemoon.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (from your index.html) -->
+  <footer class="footer-custom">
+    <div class="container text-center text-md-start">
+      <div class="row mt-3">
+        <div class="col-md-3 col-lg-3 mx-auto mb-4">
+          <a href="index.html">
+            <img style="width: 180px; height: 18px;" src="img/logo.png" alt="Potentially Criminal Logo"
+              class="footer-logo">
+          </a>
+          <p class="text-white-50 mt-3"> PO BOX 716 <br>
+            Willoughby, OH 44096 </p>
+
+          <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p>
+
+        </div>
+
+        <div class="col-md-6 col-lg-5 mx-auto mb-4">
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="text-uppercase fw-bold mb-4">Site Links</h6>
+              <p><a href="index.html" class="footer-link">Home</a></p>
+              <p><a href="about.html" class="footer-link">About</a></p>
+              <p><a href="https://potentiallycriminal.creator-spring.com/" class="footer-link" target="_blank">Merch</a>
+              </p>
+              <p><a href="http://www.seanpmartinlaw.com" class="footer-link" target="_blank">Law Firm</a></p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-uppercase fw-bold mb-4">Channels</h6>
+              <p><a href="https://youtube.com/@potentiallycriminal" class="footer-link" target="_blank">Potentially
+                  Criminal</a></p>
+              <p><a href="https://www.youtube.com/@SeansModelBench" class="footer-link" target="_blank">Sean's Model
+                  Bench</a></p>
+              <p><a href="https://potentiallycriminal.locals.com" class="footer-link" target="_blank">Locals</a></p>
+              <p><a href="https://x.com/lawtubesean" class="footer-link" target="_blank">X (Twitter)</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-lg-3 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Join the Green Army</h6>
+          <p class="text-white-50">DO YOUR PART!</p>
+          <a href="https://www.youtube.com/@PotentiallyCriminal/membership" target="_blank"
+            class="btn btn-subscribe mt-2">Enlist</a>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p class="text-white-50 small"> © <span id="copyright-year">2024</span>
+          Potentially Criminal. All rights reserved. </p>
+      </div>
+    </div>
+  </footer>
+  <div class="floating-button-container">
+    <button id="shareButton">SHARE SCREEN!</button>
+  </div>
+  <div id="shareNotification">Sean Received The Message<br>He Still Wont Read It</div>
+  <!-- JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    // This function runs once the entire HTML document is loaded and ready.
+    document.addEventListener('DOMContentLoaded', function () {
+
+      // This forces the browser to scroll to the top of the page on reload.
+      window.scrollTo(0, 0);
+
+      // --- Share Button Logic ---
+      const shareButton = document.getElementById('shareButton');
+      const shareNotification = document.getElementById('shareNotification');
+      shareButton.addEventListener('click', () => {
+        shareNotification.classList.add('show');
+        setTimeout(() => {
+          shareNotification.classList.remove('show');
+        }, 4000);
+      });
+
+
+      // Initialize the Animate on Scroll (AOS) library for fade-in effects.
+      AOS.init({
+        duration: 800, // Animation duration in milliseconds
+        once: true,    // Whether animation should happen only once
+      });
+
+      // Automatically update the copyright year in the footer.
+      document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
+      // --- Clyde's Photo Gallery Setup ---
+
+      // Get the container where the gallery images will be placed.
+      const gallery = document.getElementById('clyde-gallery');
+
+      // An array of image URLs for the gallery.
+      const images = [
+        'clydeImg/clyde1.jpg',
+        'clydeImg/clyde2.jpg',
+        'clydeImg/clyde3.jpg',
+        'clydeImg/clyde4.jpg',
+        'clydeImg/clyde5.jpg',
+        'clydeImg/clyde6.jpg',
+        'clydeImg/clyde7.jpg',
+        'clydeImg/clyde8.jpg',
+        'clydeImg/clyde9.jpg',
+        'clydeImg/clyde10.jpg',
+        'clydeImg/clyde11.jpg',
+        'clydeImg/clyde12.jpg',
+        'clydeImg/clyde13.jpg',
+        'clydeImg/clyde14.jpg',
+        'clydeImg/clyde15.jpg',
+        'clydeImg/clyde16.jpg',
+        'clydeImg/clyde17.jpg',
+        'clydeImg/clyde18.jpg',
+        'clydeImg/clyde19.jpg',
+        'clydeImg/clydePanda.jpg',
+        'clydeImg/clydeSit.png',
+        'clydeImg/clydeKoala.png',
+        'clydeImg/clydeElissa.png',
+        'clydeImg/clydeEepy.png',
+        'clydeImg/clydeDali.png',
+        'clydeImg/clydeCouch.png',
+        'clydeImg/clydeCar.png',
+        'clydeImg/clydeBelly.png',
+      ];
+
+      // Loop through the 'images' array and create the HTML for each slide.
+      images.forEach(src => {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide';
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = "A photo of Clyde";
+        slide.appendChild(img);
+        gallery.appendChild(slide);
+      });
+
+      // Initialize the Swiper library for the gallery.
+      const swiper = new Swiper('.clyde-swiper', {
+        effect: 'coverflow', // Using coverflow effect can enhance the centered look
+        grabCursor: true,
+        loop: true, // Enables continuous looping
+        slidesPerView: 1, // How many slides to show at once on small screens
+        spaceBetween: 30, // Space between slides in pixels
+        centeredSlides: true, // Centers the active slide
+        autoplay: {
+          delay: 3000, // Time between slides in milliseconds
+          disableOnInteraction: false, // Autoplay won't stop if you interact with the slider
+        },
+        coverflowEffect: {
+          rotate: 0,
+          stretch: 0,
+          depth: 100,
+          modifier: 2.5,
+          slideShadows: true,
+        },
+        // Pagination dots
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        // Navigation arrows
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        // Responsive settings: change the number of slides based on screen width
+        breakpoints: {
+          // when window width is >= 768px (tablets)
+          768: {
+            slidesPerView: 2,
+          },
+          // when window width is >= 992px (desktops)
+          992: {
+            slidesPerView: 3,
+          }
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

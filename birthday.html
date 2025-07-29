@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <title>Sean's Birthday Card</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .birthday-wrapper {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* --- YouTube Chat Styles --- */
+    .yt-chat-container {
+      background-color: #0f0f0f;
+      border: 2px solid var(--pc-medium-grey);
+      border-radius: 12px;
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .yt-chat-header {
+      padding: 1rem 1rem 0.75rem 1rem;
+      flex-shrink: 0;
+    }
+
+    .yt-chat-header h2 {
+      font-family: var(--font-body);
+      font-size: 1.5rem;
+    }
+
+    .yt-chat-header p {
+      color: grey;
+      margin-bottom: 0.75rem;
+    }
+
+    .yt-chat-header hr {
+      border-color: var(--pc-medium-grey);
+      margin: 0;
+    }
+
+    .yt-chat-messages {
+      padding: 1rem;
+      overflow-y: scroll;
+      flex-grow: 1;
+    }
+
+    .yt-chat-message {
+      margin-bottom: 0.75rem;
+    }
+
+    .yt-chat-name {
+      color: var(--pc-green);
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+
+    .yt-chat-text {
+      color: #fff;
+    }
+
+    /* --- Submission Box Styles --- */
+    #card-section .form-label {
+      color: var(--pc-white);
+    }
+
+    #birthdayForm .form-control {
+      background-color: #0f0f0f;
+      color: var(--pc-white);
+      border: 1px solid var(--pc-medium-grey);
+    }
+
+    #birthdayForm .form-control:focus {
+      background-color: #0f0f0f;
+      color: var(--pc-white);
+      border-color: var(--pc-medium-grey);
+      box-shadow: none;
+    }
+
+    #submitButton {
+      background-color: var(--pc-green);
+      border-color: var(--pc-green);
+      color: var(--pc-black);
+      font-weight: bold;
+    }
+
+    #submitButton:hover {
+      background-color: #72a82d;
+      border-color: #72a82d;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-custom px-3">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">
+      <img src="img/logo.png" alt="Potentially Criminal Logo" height="30">
+    </a>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link active" href="birthday.html">Is It His Birthday?</a></li>
+        <li class="nav-item"><a class="nav-link" href="clyde.html">Clyde</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="channelsDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">Channels</a>
+          <ul class="dropdown-menu" aria-labelledby="channelsDropdown">
+            <li><a class="dropdown-item" href="https://youtube.com/@potentiallycriminal" target="_blank">Potentially
+                Criminal (YouTube)</a></li>
+            <li><a class="dropdown-item" href="https://www.youtube.com/@SeansModelBench" target="_blank">Sean's Model
+                Bench (YouTube)</a></li>
+            <li><a class="dropdown-item" href="https://potentiallycriminal.locals.com" target="_blank">Locals</a></li>
+            <li><a class="dropdown-item" href="https://x.com/lawtubesean" target="_blank">X (Twitter)</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="https://potentiallycriminal.creator-spring.com/"
+            target="_blank">Merch</a></li>
+        <li class="nav-item"><a class="nav-link" href="http://www.seanpmartinlaw.com/" target="_blank">Law Firm</a></li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="legalDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Legal Disclosure
+          </a>
+          <ul class="dropdown-menu wide-dropdown" aria-labelledby="legalDropdown">
+            <li class="dropdown-item text-wrap">
+              Nothing provided by Sean P. Martin, Esq., Martin Media LLC, or Martin Law Office LLC, expressly or
+              implied, shall be deemed legal advice and shall not be construed as the creation of an attorney-client
+              relationship in any way. The viewer has responsibility of obtaining legal advise from a competent and
+              licensed attorney, and should do so.
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li class="dropdown-item text-wrap">
+              All references or clips used are for fair use, commentary, criticism, and education. See Hosseinzadeh v.
+              Klein, 276 F.Supp.3d 34 (S.D.N.Y. 2017); Equals Three, LLC v. Jukin Media, Inc., 139 F. Supp. 3d 1094
+              (C.D. Cal. 2015); Hughes v. Benjamin, 437 F. Supp. 3d 382 (S.D.N.Y. 2020).
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="birthday-wrapper">
+    <div id="countdown"></div>
+    <div id="message" style="display:none;">🎉 HAPPY BIRTHDAY SEAN! 🎉</div>
+  </main>
+
+  <section id="card-section" class="bg-black py-5">
+    <div class="container-lg">
+      <div class="row align-items-start g-4">
+
+        <div class="col-lg-6 d-flex">
+          <div id="birthday-chat-log" class="yt-chat-container w-100">
+            <div class="yt-chat-header">
+              <h2 class="text-white">Birthday Chat</h2>
+              <p>Live Messages</p>
+              <hr />
+            </div>
+            <div class="yt-chat-messages">
+              <div class="yt-chat-message"><span class="yt-chat-name">Clyde 👑</span><span class="yt-chat-text">Happy
+                  Birthday fat man daddy! Where's mom?</span></div>
+              <div class="yt-chat-message"><span class="yt-chat-name">Matty B 🥪</span><span class="yt-chat-text">Happy
+                  Birthday Sammich Man! Now you're old like us!</span></div>
+              <div class="yt-chat-message"><span class="yt-chat-name">Erika Thorpe 🥪</span><span
+                  class="yt-chat-text">Happy 60th Birthday Bloggah!! This community is lucky to have you :) I almost
+                  forgot... Clyde is Kiiiiiinnnng!!! </span></div>
+              <div class="yt-chat-message"><span class="yt-chat-name">EDWRaptor 🥪</span><span
+                  class="yt-chat-text">Happy Birthday blogger!</span></div>
+              <div class="yt-chat-message"><span class="yt-chat-name">kay_el_eff 🥪</span><span
+                  class="yt-chat-text">Happy Floofin' Birthday!!! 🥎🥎🥎🥎🥎🥎🥎🥎🥎🥎🥎🥎 </span></div>
+              <div class="yt-chat-message"><span class="yt-chat-name">Katie 🥪</span><span class="yt-chat-text">It is
+                  your birthday. </span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 d-flex">
+          <div class="yt-chat-container w-100">
+            <div class="yt-chat-header">
+              <h2 class="text-white">Leave a Birthday Message</h2>
+              <p>Submit below</p>
+              <hr />
+            </div>
+            <form id="birthdayForm" name="submit-to-google-sheet" class="p-4 pt-3">
+              <div class="mb-3">
+                <label for="name" class="form-label">Your Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between">
+                  <label for="message-input" class="form-label">Your Message</label>
+                  <div id="char-counter" class="form-text text-white-50">0 / 100</div>
+                </div>
+                <textarea class="form-control" id="message-input" name="message" rows="4" required
+                  maxlength="100"></textarea>
+              </div>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-secondary" id="cancelButton">Cancel</button>
+                <button type="submit" class="btn btn-success" id="submitButton">Submit Message</button>
+              </div>
+            </form>
+            <div id="form-response" class="p-3"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <footer class="footer-custom">
+    <div class="container-lg text-center text-md-start">
+      <div class="row mt-3">
+        <div class="col-md-3 col-lg-3 mx-auto mb-4">
+          <a href="index.html"><img style="width: 180px; height: 18px;" src="img/logo.png"
+              alt="Potentially Criminal Logo" class="footer-logo"></a>
+          <p class="text-white-50 mt-3"> PO BOX 716 <br> Willoughby, OH 44096 </p>
+          <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p>
+        </div>
+        <div class="col-md-6 col-lg-5 mx-auto mb-4">
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="text-uppercase fw-bold mb-4">Site Links</h6>
+              <p><a href="index.html" class="footer-link">Home</a></p>
+              <p><a href="about.html" class="footer-link">About</a></p>
+              <p><a href="https://potentiallycriminal.creator-spring.com/" class="footer-link" target="_blank">Merch</a>
+              </p>
+              <p><a href="http://www.seanpmartinlaw.com" class="footer-link" target="_blank">Law Firm</a></p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-uppercase fw-bold mb-4">Channels</h6>
+              <p><a href="https://youtube.com/@potentiallycriminal" class="footer-link" target="_blank">Potentially
+                  Criminal</a></p>
+              <p><a href="https://www.youtube.com/@SeansModelBench" class="footer-link" target="_blank">Sean's Model
+                  Bench</a></p>
+              <p><a href="https://potentiallycriminal.locals.com" class="footer-link" target="_blank">Locals</a></p>
+              <p><a href="https://x.com/lawtubesean" class="footer-link" target="_blank">X (Twitter)</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-lg-3 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Join the Green Army</h6>
+          <p class="text-white-50">DO YOUR PART!</p>
+          <a href="https://www.youtube.com/@PotentiallyCriminal/membership" target="_blank"
+            class="btn btn-subscribe mt-2"> Pay Dues </a>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p class="text-white-50 small"> © <span id="copyright-year"></span> Potentially Criminal. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // --- Countdown Logic ---
+    const countdownEl = document.getElementById("countdown");
+    const happyBirthdayMessageEl = document.getElementById("message");
+    if (countdownEl && happyBirthdayMessageEl) {
+      let timer; const birthdayMonth = 7; const birthdayDay = 10;
+      const updateCountdown = () => {
+        const now = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
+        let targetYear = now.getFullYear();
+        const hasBirthdayPassed = now.getMonth() > birthdayMonth || (now.getMonth() === birthdayMonth && now.getDate() > birthdayDay);
+        if (hasBirthdayPassed) targetYear++;
+        const isBirthdayToday = now.getMonth() === birthdayMonth && now.getDate() === birthdayDay;
+        if (isBirthdayToday) {
+          countdownEl.style.display = "none";
+          happyBirthdayMessageEl.style.display = "block";
+          if (!document.querySelector('.confetti')) launchConfetti();
+          clearInterval(timer);
+        } else {
+          const birthday = new Date(targetYear, birthdayMonth, birthdayDay);
+          const diff = birthday - now;
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+          countdownEl.innerHTML = `Sean's Birthday is in<br>${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+      };
+      const launchConfetti = () => {
+        const wrapper = document.querySelector('.birthday-wrapper'); if (!wrapper) return;
+        for (let i = 0; i < 200; i++) {
+          const confetti = document.createElement("div");
+          confetti.classList.add("confetti");
+          confetti.style.left = Math.random() * 100 + "vw";
+          confetti.style.animationDelay = Math.random() * 3 + "s";
+          confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+          wrapper.appendChild(confetti);
+        }
+      };
+      timer = setInterval(updateCountdown, 1000);
+      updateCountdown();
+    }
+
+    // --- Character Counter Logic ---
+    const messageInput = document.getElementById('message-input');
+    const charCounter = document.getElementById('char-counter');
+    const submitButton = document.getElementById('submitButton');
+    // MODIFICATION 3: Changed JS variable to 100
+    const maxLength = 100;
+
+    // Set initial counter text on page load
+    charCounter.textContent = `${messageInput.value.length} / ${maxLength}`;
+
+    messageInput.addEventListener('input', () => {
+      const currentLength = messageInput.value.length;
+      charCounter.textContent = `${currentLength} / ${maxLength}`;
+
+      if (currentLength > maxLength) {
+        charCounter.classList.add('text-danger');
+        charCounter.classList.remove('text-white-50');
+        submitButton.disabled = true; // Disable submit button if over limit
+      } else {
+        charCounter.classList.remove('text-danger');
+        charCounter.classList.add('text-white-50');
+        submitButton.disabled = false; // Enable submit button if within limit
+      }
+    });
+
+    // --- Form Submission Logic ---
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwjfE1qCVMakGdEH6u_hwNtpnCCmgzEuUqweYuUrjduRRGI0xjdydvzS5Epxq8M3vZbIw/exec'; // Make sure this is your latest URL!
+    const form = document.getElementById('birthdayForm');
+    const cancelButton = document.getElementById('cancelButton');
+    const formResponse = document.getElementById('form-response');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      submitButton.disabled = true;
+      submitButton.textContent = 'Submitting...';
+      fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+        .then(response => {
+          formResponse.innerHTML = '<div class="alert alert-success" role="alert">Thank you! Your message has been submitted for review.</div>';
+          form.reset();
+          charCounter.textContent = `0 / ${maxLength}`;
+          charCounter.classList.remove('text-danger');
+          charCounter.classList.add('text-white-50');
+        })
+        .catch(error => {
+          formResponse.innerHTML = '<div class="alert alert-danger" role="alert">An error occurred. Please try again later.</div>';
+          console.error('Error!', error.message);
+        })
+        .finally(() => {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Submit Message';
+        });
+    });
+    cancelButton.addEventListener('click', () => {
+      form.reset();
+      formResponse.innerHTML = '';
+      charCounter.textContent = `0 / ${maxLength}`;
+      charCounter.classList.remove('text-danger');
+      charCounter.classList.add('text-white-50');
+      submitButton.disabled = false; // Re-enable submit on cancel
+    });
+
+    document.getElementById('copyright-year').textContent = new Date().getFullYear();
+  </script>
+</body>
+
+</html>

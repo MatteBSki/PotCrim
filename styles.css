@@ -1,0 +1,1193 @@
+/*
+==============================================
+1. Global Overrides
+==============================================
+*/
+html {
+  overflow-y: auto !important;
+}
+
+.min-height-section {
+  min-height: 80vh;
+}
+
+/*
+==============================================
+2. Global Styles & Variables
+==============================================*/
+:root {
+  --pc-black: #000000;
+  --pc-white: #ffffff;
+  --pc-lightest-grey: #E8E8E8;
+  --pc-light-grey: #c7c7c7;
+  --pc-grey: #7e7e7e;
+  --pc-medium-grey: #575757;
+  --pc-dark-grey: #2e2e2e;
+  --pc-green: #86C232;
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Roboto', sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--pc-black);
+  background-color: #222222;
+}
+
+/* Default all headings to use Roboto */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-body);
+  font-weight: 700;
+}
+
+/* Utility class for Playfair headings */
+.playfair {
+  font-family: var(--font-heading) !important;
+}
+
+/* Ensure stats section headings use Roboto */
+#stats h1,
+#stats h2,
+#stats h3,
+#stats h4,
+#stats h5,
+#stats h6 {
+  font-family: var(--font-body);
+}
+
+/*
+==============================================
+3. Custom Navbar Styling
+==============================================
+*/
+.navbar-custom {
+  background-color: #000000;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+.navbar-custom .nav-link {
+  color: var(--pc-white);
+  padding-bottom: 5px;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  font-family: var(--font-body);
+}
+
+.navbar-custom .navbar-nav {
+  gap: 3rem;
+}
+
+.navbar-custom .nav-link:hover {
+  color: var(--pc-light-grey);
+  border-bottom-color: var(--pc-green);
+}
+
+.navbar-custom .nav-link.active {
+  color: var(--pc-green);
+  border-bottom-color: var(--pc-green);
+}
+
+.navbar-custom .dropdown-menu {
+  background-color: #343a40;
+}
+
+.navbar-custom .dropdown-item {
+  color: var(--pc-white);
+}
+
+.navbar-custom .dropdown-item:hover {
+  background-color: #495057;
+  color: var(--pc-white);
+}
+
+.navbar-custom .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.75)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+/* For Desktop screens */
+.navbar-custom .dropdown-menu.wide-dropdown {
+  max-width: 600px;
+  min-width: 400px;
+  width: max-content;
+  white-space: normal;
+  right: 0;
+  left: auto;
+}
+
+/* For Mobile screens (anything below 992px) */
+@media (max-width: 650px) {
+  .navbar-custom .dropdown-menu.wide-dropdown {
+    width: 95vw; /* Set width to 95% of the viewport width */
+    min-width: 0;  /* Remove the minimum pixel width */
+    left: 50%;     /* Position the dropdown in the middle of the screen */
+    right: auto;   /* Unset the right alignment */
+  }
+}
+
+/*
+==============================================
+4. Mobile Navbar Layout
+==============================================
+*/
+@media (max-width: 991.98px) {
+  .navbar {
+    display: grid;
+    grid-template-columns: 130px 1fr 50px;
+    align-items: center;
+  }
+
+  .navbar-toggler {
+    grid-column: 1 / 2;
+    justify-self: start;
+  }
+
+  .navbar-brand {
+    grid-column: 2 / 3;
+    justify-self: center;
+    margin-right: 0;
+  }
+
+  .navbar-collapse {
+    grid-column: 1 / 4;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #000000;
+    z-index: 998;
+  }
+
+  .navbar-collapse:not(.show) {
+    display: none;
+  }
+
+  .navbar-custom .navbar-nav {
+    text-align: center;
+  }
+}
+
+@media (max-width: 500px) {
+  .navbar-brand img {
+    height: 22px;
+  }
+}
+
+/*
+==============================================
+5. Hero Section
+==============================================
+*/
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  background-image: url('img/sean-hero.png');
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: cover;
+  display: flex;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+  align-items: flex-start;
+}
+
+@media (max-width: 1200px) {
+  .hero-section {
+    background-position: 90% center;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero-section {
+    background-position: 75% center;
+  }
+}
+
+@media (max-width: 850px) {
+  .hero-section {
+    height: 100svh;
+    background-position: 66% center;
+  }
+}
+
+.hero-content {
+  color: var(--pc-white);
+  padding: 2rem;
+  margin-left: 5%;
+  max-width: 50%;
+  z-index: 1;
+  padding-top: 25vh;
+}
+
+.hero-content h1 {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+}
+
+.hero-content p {
+  font-style: italic;
+  margin-top: 0.5rem;
+  font-size: 1.25rem;
+}
+
+@media (max-width: 850px) {
+  .hero-content {
+    padding-top: 10vh;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-content {
+    max-width: 300px;
+    padding: 1rem;
+    padding-top: 20vh;
+  }
+
+  .hero-content h1 {
+    font-size: 1.75rem;
+  }
+
+  .hero-content p {
+    font-size: .75rem;
+  }
+}
+
+/*
+==============================================
+6. Hero Down Button
+==============================================
+*/
+
+.hero-down-button svg {
+  width: clamp(50px, 5vw, 80px);
+  height: clamp(50px, 5vw, 80px);
+  fill: white;
+  mix-blend-mode: difference;
+  transition: fill 0.3s ease;
+}
+
+.hero-down-button {
+  position: absolute;
+  bottom: 5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  animation: bounce 2s;
+  isolation: isolate;
+}
+
+/* Animation for the bounce effect */
+@keyframes bounce {
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  40% {
+
+    transform: translateX(-50%) translateY(-40%);
+  }
+
+  60% {
+    transform: translateX(-50%) translateY(-20%);
+  }
+}
+
+/*
+==============================================
+7. General Page Sections
+==============================================
+*/
+.styled-section {
+  padding: 4rem 2rem;
+  /* Adds internal padding */
+  border-radius: 20px;
+  /* Applies rounded corners */
+  border: 1px solid var(--pc-black);
+  /* Adds a thin outline */
+  margin: 0 2rem 2rem 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+}
+
+section .lead {
+  font-size: 1.6rem;
+}
+
+#about-page .lead {
+  font-size: 1.1rem;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.bg-custom-white {
+  background-color: var(--pc-white);
+  color: var(--pc-black);
+}
+
+.bg-custom-dark-grey {
+  background-color: var(--pc-dark-grey);
+  color: var(--pc-white);
+}
+
+.bg-custom-dark .text-muted {
+  color: #adb5bd !important;
+}
+
+.bg-custom-lightest-grey {
+  background-color: var(--pc-lightest-grey);
+}
+
+.bg-custom-medium-grey {
+  background-color: var(--pc-medium-grey);
+}
+
+/*
+==============================================
+8. Unified Square Tiles (Bloggers & Interests)
+==============================================
+*/
+
+.square-tile {
+  position: relative;
+  min-height: 280px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  color: var(--pc-white);
+  text-decoration: none;
+}
+
+
+
+.square-tile:hover {
+  transform: translateY(-9px);
+}
+
+.tile-overlay {
+  width: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+  padding: 1.5rem 1rem 1rem 1rem;
+  text-align: center;
+  transition: background 0.4s ease-in-out;
+}
+
+.tile-overlay h4 {
+  margin: 0;
+  color: var(--pc-white);
+  font-family: var(--font-body);
+  /* Roboto */
+}
+
+.tile-details {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s ease-in-out;
+}
+
+.tile-details p {
+  color: var(--pc-lightest-grey);
+  font-size: 1.1rem;
+}
+
+.square-tile:hover .tile-details,
+.info-tile-link:hover .tile-details {
+  opacity: 1;
+  max-height: 150px;
+  margin-top: 0.5rem;
+}
+
+.square-tile:hover .tile-overlay,
+.info-tile-link:hover .tile-overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
+}
+
+.info-tile-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.info-tile-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+/*
+==============================================
+9. Testimonial Slider
+==============================================
+*/
+.testimonial-swiper {
+  width: 100%;
+  height: 85vh;
+  position: relative;
+}
+
+.testimonial-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem;
+  background: var(--pc-lightest-grey);
+  border-radius: 30px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.8);
+  margin-bottom: 2rem;
+  overflow-y: auto;
+}
+
+#testimonials .lead {
+  color: var(--pc-black);
+}
+
+.testimonial-text {
+  font-style: italic;
+  font-size: clamp(1rem, 0.8rem + 0.5vw, 1.5rem);
+}
+
+.testimonial-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.testimonial-card .testimonial-name {
+  font-family: var(--font-heading);
+  font-size: clamp(1.2rem, 1rem + 0.5vw, 1.5rem);
+}
+
+.testimonial-swiper .swiper-slide {
+  align-items: stretch;
+}
+
+/* swiper button colors  */
+.clyde-swiper .swiper-button-next,
+.clyde-swiper .swiper-button-prev {
+  color: var(--pc-darkest-grey);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+/* Always anchor next/prev to opposite sides */
+.clyde-swiper .swiper-button-next {
+  right: 2vw;
+  left: auto;
+}
+
+.clyde-swiper .swiper-button-prev {
+  left: 2vw;
+  right: auto;
+}
+
+/* On mobile, bring them in but keep them on opposite sides */
+@media (max-width: 600px) {
+  .clyde-swiper .swiper-button-next {
+    right: 8px;
+    left: auto;
+  }
+
+  .clyde-swiper .swiper-button-prev {
+    left: 8px;
+    right: auto;
+  }
+}
+
+.testimonial-swiper .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background-color: var(--pc-dark-grey);
+  opacity: 0.6;
+}
+
+.testimonial-swiper .swiper-pagination-bullet-active {
+  background-color: var(--pc-green);
+  opacity: 1;
+}
+
+.testimonial-swiper.autoplay-paused {
+  cursor: pointer;
+}
+
+.testimonial-swiper.autoplay-paused::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center 60%;
+  background-size: 35%;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+}
+
+/*
+==============================================
+10. Footer
+==============================================
+*/
+.footer-custom {
+  background-color: var(--pc-black);
+  color: var(--pc-white);
+  padding: 3rem 2rem;
+}
+
+.footer-logo {
+  max-width: 180px;
+  margin-bottom: .25rem;
+}
+
+.footer-link {
+  color: #adb5bd;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.footer-link:hover {
+  color: var(--pc-white);
+  text-decoration: underline;
+}
+
+.btn-subscribe {
+  background-color: var(--pc-green);
+  color: var(--pc-white);
+  font-weight: bold;
+  padding: 10px 30px;
+  border-radius: 50px;
+  transition: background-color 0.2s ease-in-out;
+  border: none;
+}
+
+.btn-subscribe:hover {
+  background-color: #248c34;
+  color: var(--pc-white);
+}
+
+.footer-custom p {
+  margin-bottom: 0.5rem;
+}
+
+/*
+==============================================
+11. Floating Button & Notification
+==============================================
+*/
+.floating-button-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+#shareButton {
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
+  padding: clamp(12px, 2.5vw, 18px) clamp(20px, 4vw, 30px);
+}
+
+#shareNotification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: red;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  z-index: 9999;
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s;
+  font-family: 'Helvetica', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#shareNotification.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+/*
+==============================================
+12. Schedule Section
+==============================================
+*/
+.schedule-card {
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 2rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.schedule-day {
+  color: var(--pc-green);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+}
+
+.schedule-event {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.schedule-time {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--pc-white);
+}
+
+.schedule-divider {
+  margin: 1rem auto;
+  width: 50%;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.schedule-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+}
+
+.schedule-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.schedule-link:hover .schedule-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-5px);
+}
+
+.schedule-time .snarky-comment {
+  color: var(--pc-lightest-grey);
+}
+
+/*
+==============================================
+13. Schedule Section Links
+==============================================
+*/
+.schedule-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+}
+
+.schedule-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.schedule-link:hover .schedule-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-5px);
+}
+
+/*
+==============================================
+14. Responsive Topic Tiles
+==============================================
+*/
+@media (max-width: 820px) {
+  .tile-details {
+    opacity: 1;
+    max-height: 150px;
+    margin-top: 0.5rem;
+  }
+
+  .tile-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
+  }
+
+  .topic-tile:hover,
+  .topic-tile.is-active {
+    transform: none;
+  }
+}
+
+/*
+==============================================
+15. Dual Stats Section
+==============================================
+*/
+.stat-section-heading {
+
+  font-size: 3rem;
+  color: var(--pc-black);
+}
+
+.stat-circle {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: var(--pc-black);
+  padding: 1rem;
+}
+
+/* Typography for elements within both stat sections */
+section[id*="-stats"] .stat-percentage {
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-family: var(--font-body);
+}
+
+section[id*="-stats"] .stat-label {
+  font-size: 1.2rem;
+  font-family: var(--font-body);
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
+
+section[id*="-stats"] .lead {
+  font-size: 1.5rem;
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section[id*="-stats"] .stat-number {
+  font-family: var(--font-body);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--pc-black);
+  margin-bottom: 0.25rem;
+}
+
+section[id*="-stats"] .stat-number-label {
+  font-family: var(--font-body);
+  font-size: 1.5rem;
+  color: var(--pc-dark-grey);
+}
+
+/* Stat Circle Backgrounds */
+.stat-circle-gray {
+  background: conic-gradient(from 90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #ee82ee, #ff0000);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9);
+}
+
+.stat-circle-green {
+  background-color: var(--pc-green);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, .9);
+}
+
+/* --- Styles for Bar Graph Section --- */
+.bar-graph-container {
+  margin-top: 2.5rem;
+  padding: 0 1rem;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.bar-label {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--pc-black);
+  flex-basis: 70px;
+  /* Aligns the labels */
+  text-align: right;
+}
+
+.bar-background {
+  flex-grow: 1;
+  height: 25px;
+  background-color: var(--pc-darkest-grey);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  width: 0;
+  /* All bars start at 0 width */
+  border-radius: 5px;
+}
+
+.bar-fill-gradient {
+  background: linear-gradient(90deg,
+      #ff0000,
+      #ff7f00,
+      #ffff00,
+      #00ff00,
+      #0000ff,
+      #4b0082,
+      #ee82ee);
+}
+
+.bar-fill-gray {
+  background-color: #0000ff;
+  width: 100%;
+  /* BASED bar starts full */
+}
+
+.bar-percentage {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--pc-black);
+  flex-basis: 60px;
+  /* Prevents layout jump */
+  text-align: left;
+}
+
+/* --- CSS Animation Logic for Bars --- */
+@keyframes fill-bar {
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes empty-bar {
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: 4%;
+  }
+}
+
+/* When the .is-visible class is added by JS, run the animations */
+.is-visible #late-bar-fill {
+  animation: fill-bar 4s forwards;
+}
+
+.is-visible #gray-bar-fill {
+  animation: fill-bar 4s forwards;
+}
+
+.is-visible #based-bar-fill {
+  animation: empty-bar 4s forwards;
+}
+
+
+/* Correctly target the circle div within the #success-stats section */
+#success-stats .stat-circle {
+  background: var(--pc-green);
+}
+
+/* Change the 'Read' bar to solid green */
+#read-bar-fill {
+  background: var(--pc-green);
+}
+
+/* Change the 'Ignored' bar to dark grey */
+#ignored-bar-fill {
+  background: var(--pc-dark-grey);
+}
+
+/*
+==============================================
+16. Birthday Page Styles
+==============================================
+*/
+.birthday-wrapper {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  color: #21A859;
+  padding: 40px 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+#countdown {
+  font-size: 4em;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+#message {
+  font-size: 3em;
+  display: none;
+  color: #fff;
+  text-shadow: 0 0 10px #21A859;
+  text-align: center;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #21A859;
+  animation: fall 3s linear infinite;
+  top: -20px;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0vh) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(120vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  #countdown {
+    font-size: 1.2em;
+  }
+
+  #message {
+    font-size: 1.8em;
+  }
+}
+
+/*
+==============================================
+17. Custom Link Styles
+==============================================*/
+#hidden-link {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+  transition: text-decoration 0.3s ease;
+}
+
+#hidden-link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/*
+Ensure Blogger Section Hidden Links Don't Visually Appear as Links
+*/
+.blogger-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: default;
+  pointer-events: none;
+}
+
+.blogger-link:hover {
+  text-decoration: none;
+  color: inherit;
+  cursor: default;
+}
+
+/*
+==============================================
+18. YouTube-Style Chat Box
+==============================================
+*/
+.yt-chat-container {
+  background-color: #0f0f0f;
+  border: 2px solid var(--pc-medium-grey);
+  border-radius: 12px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.yt-chat-header {
+  padding: 1rem 1rem 0.75rem 1rem;
+  flex-shrink: 0;
+  text-align: left;
+  /* Aligns header text to the left */
+}
+
+.yt-chat-header p {
+  color: var(--pc-light-grey);
+  /* Lighter grey for visibility */
+  margin-bottom: 0.75rem;
+}
+
+.yt-chat-header hr {
+  border-color: var(--pc-grey);
+  /* Lighter, more visible separator */
+  margin: 0;
+}
+
+.yt-chat-messages {
+  padding: 1rem;
+  overflow-y: scroll;
+  flex-grow: 1;
+}
+
+/* For Birthday Page (No Avatar) */
+.yt-chat-message {
+  margin-bottom: 0.75rem;
+}
+
+/* STYLES for Index Page Testimonials */
+.testimonial-chat-message {
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.testimonial-chat-avatar {
+  width: clamp(60px, 12vw, 100px);
+  height: clamp(60px, 12vw, 100px);
+  border-radius: 50%;
+  margin-right: 1.5rem;
+  flex-shrink: 0;
+}
+
+.testimonial-chat-content {
+  text-align: left;
+}
+
+.testimonial-chat-name {
+  color: var(--pc-green);
+  font-weight: bold;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  margin-right: 0.5rem;
+}
+
+.testimonial-chat-text {
+  color: #fff;
+  word-break: break-word;
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+}
+
+/*
+==============================================
+19. YouTube Style Schedule Grid
+==============================================
+*/
+.yt-card {
+  text-decoration: none;
+  color: #fff;
+  display: block;
+}
+
+.yt-card:hover {
+  color: #fff;
+}
+
+.yt-card img {
+  transition: transform 0.2s ease-in-out;
+}
+
+.yt-card:hover img {
+  transform: scale(1.03);
+}
+
+.channel-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  margin-right: 12px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.video-info {
+  flex-grow: 1;
+}
+
+.video-title {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+  /* Limits the title to two lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.video-meta {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.video-meta span {
+  display: block;
+  line-height: 1.3;
+}
+
+.channel-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.channel-avatar {
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
