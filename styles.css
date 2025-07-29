@@ -97,7 +97,6 @@ h6 {
 .navbar-custom .dropdown-menu {
   background-color: #343a40;
 }
-
 .navbar-custom .dropdown-item {
   color: var(--pc-white);
 }
@@ -319,6 +318,12 @@ h6 {
   margin: 0 2rem 2rem 2rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
 }
+
+@media (max-width: 767.98px) {
+  .styled-section {
+    margin: 0 0 2rem 0;
+  }
+} 
 
 section .lead {
   font-size: 1.6rem;
