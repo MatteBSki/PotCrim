@@ -770,21 +770,18 @@
   </div>
   <div id="shareNotification">Sean Received The Message<br>He Still Wont Read It</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
   <script src="countup.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Initialize AOS for animations
       AOS.init({
         duration: 2000,
         once: false,
       });
 
-      // Share button notification logic
       const shareButton = document.getElementById('shareButton');
       const shareNotification = document.getElementById('shareNotification');
       shareButton.addEventListener('click', function () {
@@ -794,87 +791,67 @@
         }, 4000);
       });
 
-      // Update copyright year dynamically
       document.getElementById('copyright-year').textContent = new Date().getFullYear();
 
-      // Target the stats sections
       const lateStatsSection = document.getElementById('late-stats');
       const successStatsSection = document.getElementById('success-stats');
 
-      /**
-       * Triggers the number and bar animations for a given section.
-       * @param {string} sectionId - The ID of the section to animate.
-       */
       function triggerCountUp(sectionId) {
-        // Baseline Rate: 100 percentage points animated over 4 seconds.
-        // All other animations will follow this speed.
-        const baselineRate = 100 / 4; // 25 points per second
+        const fixedDuration = 4;
 
-        // --- Logic for the 'Late & Gay' Section ---
         if (sectionId === 'late-stats') {
           const latePct = 100;
           const gayPct = 100;
           const basedPct = 0;
 
-          // Calculate dynamic durations to ensure consistent speed
-          const lateDuration = Math.abs(latePct - 0) / baselineRate; // 4.0s
-          const gayDuration = Math.abs(gayPct - 0) / baselineRate; // 4.0s
-          const basedDuration = Math.abs(basedPct - 100) / baselineRate; // 3.8s
+          new countUp.CountUp('circle-late-rate', 100, { duration: fixedDuration, suffix: '%' }).start();
+          new countUp.CountUp('scheduled-shows', 1010, { duration: fixedDuration }).start();
+          new countUp.CountUp('late-shows', 1010, { duration: fixedDuration }).start();
 
-          // Animate the main circle and stat numbers (these can use a fixed duration)
-          new countUp.CountUp('circle-late-rate', 100, { duration: 4, suffix: '%' }).start();
-          new countUp.CountUp('scheduled-shows', 1010, { duration: 4 }).start();
-          new countUp.CountUp('late-shows', 1010, { duration: 4 }).start();
+          new countUp.CountUp('late-bar-percentage', latePct, { duration: fixedDuration, suffix: '%' }).start();
+          // FIX: Reinstated the CountUp for the GAY bar percentage
+          new countUp.CountUp('gray-bar-percentage', gayPct, { duration: fixedDuration, suffix: '%' }).start();
+          new countUp.CountUp('based-bar-percentage', basedPct, {
+            startVal: 100,
+            duration: fixedDuration,
+            suffix: '%'
+          }).start();
 
-          // Animate the bar graph percentages using dynamic durations
-          new countUp.CountUp('late-bar-percentage', latePct, { duration: lateDuration, suffix: '%' }).start();
-          new countUp.CountUp('gray-bar-percentage', gayPct, { duration: gayDuration, suffix: '%' }).start();
-          new countUp.CountUp('based-bar-percentage', basedPct, { duration: basedDuration, suffix: '%' }).start();
+          document.getElementById('late-bar-fill').style.transitionDuration = `${fixedDuration}s`;
+          // FIX: Reinstated the transition for the GAY bar fill
+          document.getElementById('gray-bar-fill').style.transitionDuration = `${fixedDuration}s`;
+          document.getElementById('based-bar-fill').style.transitionDuration = `${fixedDuration}s`;
 
-          // Also apply the dynamic duration to the CSS transition for the bars
-          document.getElementById('late-bar-fill').style.transitionDuration = `${lateDuration}s`;
-          document.getElementById('gray-bar-fill').style.transitionDuration = `${gayDuration}s`;
-          document.getElementById('based-bar-fill').style.transitionDuration = `${basedDuration}s`;
-
-          // Trigger the bar width animation
           document.getElementById('late-bar-fill').style.width = latePct + '%';
+          // FIX: Reinstated the width animation for the GAY bar fill
           document.getElementById('gray-bar-fill').style.width = gayPct + '%';
           document.getElementById('based-bar-fill').style.width = basedPct + '%';
 
-          // --- Logic for the 'Success Rate' Section ---
         } else if (sectionId === 'success-stats') {
           const readPct = 88;
           const ignoredPct = 12;
 
-          // Calculate dynamic durations
-          const readDuration = Math.abs(readPct - 0) / baselineRate; // 3.52s
-          const ignoredDuration = Math.abs(ignoredPct - 100) / baselineRate; // 3.52s
+          new countUp.CountUp('circle-success-rate', readPct, { duration: fixedDuration, suffix: '%' }).start();
+          new countUp.CountUp('total-superchats', 42069, { duration: fixedDuration }).start();
+          new countUp.CountUp('superchats-read', 37020, { duration: fixedDuration }).start();
 
-          // Animate the main circle and stat numbers (fixed duration)
-          new countUp.CountUp('circle-success-rate', readPct, { duration: 4, suffix: '%' }).start();
-          new countUp.CountUp('total-superchats', 42069, { duration: 4 }).start();
-          new countUp.CountUp('superchats-read', 37020, { duration: 4 }).start();
+          new countUp.CountUp('read-bar-percentage', readPct, { duration: fixedDuration, suffix: '%' }).start();
+          new countUp.CountUp('ignored-bar-percentage', ignoredPct, {
+            startVal: 100,
+            duration: fixedDuration,
+            suffix: '%'
+          }).start();
 
-          // Animate the bar graph percentages using dynamic durations
-          new countUp.CountUp('read-bar-percentage', readPct, { duration: readDuration, suffix: '%' }).start();
-          new countUp.CountUp('ignored-bar-percentage', ignoredPct, { duration: ignoredDuration, suffix: '%' }).start();
-
-          // Apply dynamic duration to the CSS transition for the bars
-          document.getElementById('read-bar-fill').style.transitionDuration = `${readDuration}s`;
-          document.getElementById('ignored-bar-fill').style.transitionDuration = `${ignoredDuration}s`;
-
-          // Trigger the bar width animation
+          document.getElementById('read-bar-fill').style.transitionDuration = `${fixedDuration}s`;
+          document.getElementById('ignored-bar-fill').style.transitionDuration = `${fixedDuration}s`;
           document.getElementById('read-bar-fill').style.width = readPct + '%';
           document.getElementById('ignored-bar-fill').style.width = ignoredPct + '%';
         }
       }
 
-      // --- Intersection Observer to Trigger Animations on Scroll ---
       const statObserver = new IntersectionObserver(function (entries, observer) {
         entries.forEach(function (entry) {
           if (!entry.isIntersecting) return;
-
-          // Set initial states for bars that animate downwards (from 100%)
           if (entry.target.id === 'late-stats') {
             document.getElementById('based-bar-fill').style.width = '100%';
             document.getElementById('based-bar-percentage').innerText = '100%';
@@ -882,19 +859,15 @@
             document.getElementById('ignored-bar-fill').style.width = '100%';
             document.getElementById('ignored-bar-percentage').innerText = '100%';
           }
-
-          // Use a tiny delay to ensure the browser paints the initial 100% state before animating.
           setTimeout(() => {
             triggerCountUp(entry.target.id);
-            observer.unobserve(entry.target); // Stop observing after animation triggers
+            observer.unobserve(entry.target);
           }, 10);
-
         });
       }, {
-        threshold: 0.5 // Trigger when 50% of the section is visible
+        threshold: 0.5
       });
 
-      // Start observing the stat sections
       if (lateStatsSection) statObserver.observe(lateStatsSection);
       if (successStatsSection) statObserver.observe(successStatsSection);
     });

@@ -772,11 +772,10 @@ section .lead {
 
 /*
 ==============================================
-15. Dual Stats Section
+15. Dual Stats Section (Corrected & Final)
 ==============================================
 */
 .stat-section-heading {
-
   font-size: 3rem;
   color: var(--pc-black);
 }
@@ -811,61 +810,6 @@ section .lead {
   font-weight: 800;
 }
 
-@media (max-width: 767px) {
-  .stat-circle {
-    width: 180px;
-    height: 180px;
-  }
-
-  .stat-circle .stat-percentage {
-    font-size: 2.2rem;
-  }
-
-  .stat-number {
-    font-size: 2.2rem;
-  }
-
-  .stat-number-label {
-    font-size: 1rem;
-  }
-
-  .bar-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .bar-percentage {
-    text-align: right;
-    width: 100%;
-  }
-}
-
-
-
-
-/* Typography for elements within both stat sections */
-section[id*="-stats"] .stat-percentage {
-  font-size: 4.5rem;
-  font-weight: 700;
-  line-height: 1.1;
-  font-family: var(--font-body);
-}
-
-section[id*="-stats"] .stat-label {
-  font-size: 1.2rem;
-  font-family: var(--font-body);
-  text-transform: none;
-  letter-spacing: 0.5px;
-}
-
-section[id*="-stats"] .lead {
-  font-size: 1.5rem;
-  max-width: 450px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 section[id*="-stats"] .stat-number {
   font-family: var(--font-body);
   font-size: 3rem;
@@ -880,18 +824,16 @@ section[id*="-stats"] .stat-number-label {
   color: var(--pc-dark-grey);
 }
 
-/* Stat Circle Backgrounds */
 .stat-circle-gray {
   background: conic-gradient(from 90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #ee82ee, #ff0000);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9);
 }
 
-.stat-circle-green {
-  background-color: var(--pc-green);
+#success-stats .stat-circle {
+  background: var(--pc-green);
   box-shadow: 0 5px 20px rgba(0, 0, 0, .9);
 }
 
-/* --- Styles for Bar Graph Section --- */
 .bar-graph-container {
   margin-top: 2.5rem;
   padding: 0 1rem;
@@ -905,44 +847,47 @@ section[id*="-stats"] .stat-number-label {
 }
 
 .bar-label {
+  min-width: 6rem;      /* Creates a consistent minimum width for all labels */
+  text-align: right;    /* Aligns the text within that space */
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--pc-black);
-  flex-basis: 70px;
-  /* Aligns the labels */
-  text-align: right;
 }
 
 .bar-background {
-  flex-grow: 1;
+  flex-grow: 1;         /* Allows the bar to fill all remaining space */
   height: 25px;
-  background-color: var(--pc-darkest-grey);
+  background-color: var(--pc-white);
   border-radius: 5px;
   overflow: hidden;
+}
+
+.bar-percentage {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--pc-black);
 }
 
 .bar-fill {
   height: 100%;
   width: 0;
-  /* All bars start at 0 width */
   border-radius: 5px;
 }
 
 .bar-fill-gradient {
-  background: linear-gradient(90deg,
-      #ff0000,
-      #ff7f00,
-      #ffff00,
-      #00ff00,
-      #0000ff,
-      #4b0082,
-      #ee82ee);
+  background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #ee82ee);
+}
+
+#read-bar-fill {
+  background: var(--pc-green);
+}
+
+#ignored-bar-fill {
+  background: var(--pc-dark-grey);
 }
 
 .bar-fill-gray {
-  background-color: #0000ff;
-  width: 100%;
-  /* BASED bar starts full */
+  background-color: #0000ff; /* Blue */
 }
 
 .bar-percentage {
@@ -950,60 +895,29 @@ section[id*="-stats"] .stat-number-label {
   font-size: 1.1rem;
   color: var(--pc-black);
   flex-basis: 60px;
-  /* Prevents layout jump */
   text-align: left;
 }
 
-/* --- CSS Animation Logic for Bars --- */
-@keyframes fill-bar {
-  from {
-    width: 0%;
+@media (max-width: 767px) {
+  .stat-circle {
+    width: 180px;
+    height: 180px;
   }
-
-  to {
+  .stat-circle .stat-percentage,
+  section[id*="-stats"] .stat-number {
+    font-size: 2.2rem;
+  }
+  section[id*="-stats"] .stat-number-label {
+    font-size: 1rem;
+  }
+  .bar-background {
     width: 100%;
   }
-}
-
-@keyframes empty-bar {
-  from {
-    width: 100%;
-  }
-
-  to {
-    width: 4%;
+  .bar-percentage {
+    text-align: left; /* Keep alignment consistent */
+    width: auto;
   }
 }
-
-/* When the .is-visible class is added by JS, run the animations */
-.is-visible #late-bar-fill {
-  animation: fill-bar 4s forwards;
-}
-
-.is-visible #gray-bar-fill {
-  animation: fill-bar 4s forwards;
-}
-
-.is-visible #based-bar-fill {
-  animation: empty-bar 4s forwards;
-}
-
-
-/* Correctly target the circle div within the #success-stats section */
-#success-stats .stat-circle {
-  background: var(--pc-green);
-}
-
-/* Change the 'Read' bar to solid green */
-#read-bar-fill {
-  background: var(--pc-green);
-}
-
-/* Change the 'Ignored' bar to dark grey */
-#ignored-bar-fill {
-  background: var(--pc-dark-grey);
-}
-
 /*
 ==============================================
 16. Birthday Page Styles
@@ -1175,7 +1089,6 @@ Ensure Blogger Section Hidden Links Don't Visually Appear as Links
   word-break: break-word;
   font-size: clamp(1rem, 1.8vw, 1.3rem);
 }
-
 
 
 /*
