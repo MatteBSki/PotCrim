@@ -60,6 +60,11 @@ h6 {
   font-family: var(--font-body);
 }
 
+#sean .lead {
+  text-align: justify;
+  hyphens: auto;
+}
+
 /*
 ==============================================
 3. Custom Navbar Styling
