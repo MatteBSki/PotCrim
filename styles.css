@@ -77,6 +77,12 @@ h6 {
   z-index: 1030;
 }
 
+.logo-responsive {
+  height: 4vh;       /* Adjust as needed — 4vh = 4% of viewport height */
+  width: auto;       /* Maintain aspect ratio */
+  display: block;
+}
+
 .navbar-custom .nav-link {
   color: var(--pc-white);
   padding-bottom: 5px;
@@ -86,7 +92,7 @@ h6 {
 }
 
 .navbar-custom .navbar-nav {
-  gap: 3rem;
+  gap: 1.5rem;
   /* This is for the desktop view */
 }
 
@@ -195,6 +201,7 @@ h6 {
     height: 22px;
   }
 }
+
 
 /*
 ==============================================
@@ -343,10 +350,17 @@ h6 {
   }
 }
 
+/* Base size for desktop */
 section .lead {
   font-size: 1.6rem;
 }
 
+/* Smaller size for mobile */
+@media (max-width: 767.98px) {
+  section .lead {
+    font-size: 1.1rem;
+  }
+}
 #about-page .lead {
   font-size: 1.1rem;
   text-align: justify;
@@ -390,7 +404,7 @@ section .lead {
   background-position: center;
   display: flex;
   align-items: flex-end;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
   transition: transform 0.3s ease;
   color: var(--pc-white);
   text-decoration: none;
@@ -585,9 +599,29 @@ section .lead {
   padding: 3rem 2rem;
 }
 
-.footer-logo {
+/* .footer-logo {
   max-width: 180px;
   margin-bottom: .25rem;
+} */
+
+.footer-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 12vw;
+  margin-bottom: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .footer-logo {
+    max-width: 100vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-logo {
+    max-width: 70vw;
+  }
 }
 
 .footer-link {
@@ -857,7 +891,7 @@ section[id*="-stats"] .stat-number-label {
 }
 
 .bar-label {
-  min-width: 6rem;
+  min-width: 4.5rem;
   /* Creates a consistent minimum width for all labels */
   text-align: right;
   /* Aligns the text within that space */
@@ -1189,4 +1223,10 @@ Ensure Blogger Section Hidden Links Don't Visually Appear as Links
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 767.98px) {
+  .styled-section {
+    padding: 2rem 1rem;
+  }
 }

@@ -28,9 +28,10 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="index.html">
-      <img src="img/logo.png" alt="Potentially Criminal Logo" height="30">
+      <img src="img/logo.svg" alt="Potentially Criminal Logo" class="logo-responsive">
     </a>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
@@ -77,6 +78,9 @@
       </ul>
     </div>
   </nav>
+
+
+
 
   <header class="hero-section">
     <div class="hero-content">
@@ -251,62 +255,63 @@
   </section>
 
 
- <section id="late-stats" class="styled-section min-height-section" style="background-color: var(--pc-white);">
-  <div class="container py-5">
-    <div class="row align-items-center gy-5">
-      <!-- LEFT COLUMN -->
-      <div class="col-lg-6 text-center">
-        <div class="stat-circle stat-circle-gray position-relative mx-auto mb-4">
-          <div class="stat-circle-inner">
-            <span class="stat-label">LATE & GAY</span>
-            <span class="stat-percentage" id="circle-late-rate">0%</span>
+  <section id="late-stats" class="styled-section min-height-section" style="background-color: var(--pc-white);">
+    <div class="container py-5">
+      <div class="row align-items-center gy-5">
+        <!-- LEFT COLUMN -->
+        <div class="col-lg-6 text-center">
+          <div class="stat-circle stat-circle-gray position-relative mx-auto mb-4">
+            <div class="stat-circle-inner">
+              <span class="stat-label">LATE & GAY</span>
+              <span class="stat-percentage" id="circle-late-rate">0%</span>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center gap-5 mt-3">
+            <div>
+              <p class="stat-number" id="scheduled-shows">0</p>
+              <p class="stat-number-label">Scheduled Shows</p>
+            </div>
+            <div>
+              <p class="stat-number" id="late-shows">0</p>
+              <p class="stat-number-label">Late Shows</p>
+            </div>
           </div>
         </div>
-        <div class="d-flex justify-content-center gap-5 mt-3">
-          <div>
-            <p class="stat-number" id="scheduled-shows">0</p>
-            <p class="stat-number-label">Scheduled Shows</p>
-          </div>
-          <div>
-            <p class="stat-number" id="late-shows">0</p>
-            <p class="stat-number-label">Late Shows</p>
-          </div>
-        </div>
-      </div>
 
-      <!-- RIGHT COLUMN -->
-      <div class="col-lg-6">
-        <h2 class="stat-section-heading mb-4 text-center">Late & Gay</h2>
-        <p class="lead text-muted text-center mb-4">Sean suffers from a medical condition called time blindness, 
-          making it physically impossible for him to start on time. The only thing predictable about Sean as that he'll be
-        late and gay</p>
-        <div class="bar-graph-container">
-          <div class="bar-row">
-            <span class="bar-label">LATE</span>
-            <div class="bar-background">
-              <div class="bar-fill bar-fill-gradient" id="late-bar-fill"></div>
+        <!-- RIGHT COLUMN -->
+        <div class="col-lg-6">
+          <h2 class="stat-section-heading mb-4 text-center">Late & Gay</h2>
+          <p class="lead text-muted mb-4" style="text-align: justify; hyphens: auto;"> Sean suffers from a debilitating
+            condition known as time
+            blindness. Will he go live? Will audio function? Will he share the screen?
+            The only certainty is that he’ll be late, and somehow, gayer than ever.</p>
+          <div class="bar-graph-container">
+            <div class="bar-row">
+              <span class="bar-label">LATE</span>
+              <div class="bar-background">
+                <div class="bar-fill bar-fill-gradient" id="late-bar-fill"></div>
+              </div>
+              <span class="bar-percentage" id="late-bar-percentage">0%</span>
             </div>
-            <span class="bar-percentage" id="late-bar-percentage">0%</span>
-          </div>
-          <div class="bar-row">
-            <span class="bar-label">GAY</span>
-            <div class="bar-background">
-              <div class="bar-fill bar-fill-gradient" id="gray-bar-fill"></div>
+            <div class="bar-row">
+              <span class="bar-label">GAY</span>
+              <div class="bar-background">
+                <div class="bar-fill bar-fill-gradient" id="gray-bar-fill"></div>
+              </div>
+              <span class="bar-percentage" id="gray-bar-percentage">0%</span>
             </div>
-            <span class="bar-percentage" id="gray-bar-percentage">0%</span>
-          </div>
-          <div class="bar-row">
-            <span class="bar-label">BASED</span>
-            <div class="bar-background">
-              <div class="bar-fill bar-fill-gray" id="based-bar-fill"></div>
+            <div class="bar-row">
+              <span class="bar-label">BASED</span>
+              <div class="bar-background">
+                <div class="bar-fill bar-fill-gray" id="based-bar-fill"></div>
+              </div>
+              <span class="bar-percentage" id="based-bar-percentage">100%</span>
             </div>
-            <span class="bar-percentage" id="based-bar-percentage">100%</span>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <section id="success-stats" class="styled-section min-height-section" style="background-color: var(--pc-white);">
     <div id="success-stats-inner" class="stats-inner">
@@ -317,7 +322,8 @@
             <h2 class="stat-section-heading mb-4">Chat Matters</h2>
             <p class="lead text-muted" style="text-align: justify; hyphens: auto;">
               Sean takes immense pride in reading almost every Super Chat, ensuring most messages get their moment in
-              the spotlight.  Unless of course, he’s distracted by yelling at his models, assuming the melanation of the chat, 
+              the spotlight. Unless of course, he’s distracted by yelling at his models, assuming the melanation of the
+              chat,
               or forgetting to share the screen.
             </p>
           </div>
@@ -715,20 +721,19 @@
 
 
   <footer class="footer-custom">
-    <div class="container text-center text-md-start">
+    <div class="container-lg text-center text-md-start">
       <div class="row mt-3">
         <div class="col-md-3 col-lg-3 mx-auto mb-4">
           <a href="index.html">
-            <img style="width: 180px; height: 18px;" src="img/logo.png" alt="Potentially Criminal Logo"
-              class="footer-logo">
+            <img src="img/logo.svg" alt="Potentially Criminal Logo" class="logo-responsive footer-logo">
           </a>
-          <p class="text-white-50 mt-3"> PO BOX 716 <br>
-            Willoughby, OH 44096 </p>
-
-          <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p>
-
+          <p class="text-white-50 mt-3"> PO BOX 716 <br> Willoughby, OH 44096 </p>
+          <!-- <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p> -->
+          <p>
+            <button class="btn btn-subscribe mt-2" onclick="copyEmail()">Copy Email</button>
+          </p>
+          <span id="email-address" class="visually-hidden">potentiallycriminal@gmail.com</span>
         </div>
-
         <div class="col-md-6 col-lg-5 mx-auto mb-4">
           <div class="row">
             <div class="col-md-6">
@@ -754,13 +759,13 @@
           <h6 class="text-uppercase fw-bold mb-4">Join the Green Army</h6>
           <p class="text-white-50">DO YOUR PART!</p>
           <a href="https://www.youtube.com/@PotentiallyCriminal/membership" target="_blank"
-            class="btn btn-subscribe mt-2">Enlist</a>
+            class="btn btn-subscribe mt-2"> Pay Dues </a>
         </div>
       </div>
       <hr class="my-4">
       <div class="text-center">
-        <p class="text-white-50 small"> © <span id="copyright-year">2024</span>
-          Potentially Criminal. All rights reserved. </p>
+        <p class="text-white-50 small"> © <span id="copyright-year"></span> Potentially Criminal. All rights reserved.
+        </p>
       </div>
     </div>
   </footer>
@@ -770,13 +775,15 @@
   </div>
   <div id="shareNotification">Sean Received The Message<br>He Still Wont Read It</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="countup.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+
+
       AOS.init({
         duration: 2000,
         once: false,

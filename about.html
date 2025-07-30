@@ -20,10 +20,11 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="index.html">
-      <img src="img/logo.png" alt="Potentially Criminal Logo" height="30">
-    </a>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+<a class="navbar-brand" href="index.html">
+  <img src="img/logo.svg" alt="Potentially Criminal Logo" class="logo-responsive">
+</a>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
         <li class="nav-item"><a class="nav-link active" href="about.html">About</a></li>
@@ -115,52 +116,55 @@
     </div>
   </section>
 
-<footer class="footer-custom">
-  <div class="container text-center text-md-start">
-    <div class="row mt-3">
-      <div class="col-md-3 col-lg-3 mx-auto mb-4">
-        <a href="index.html">
-          <img style="width: 180px; height: 18px;" src="img/logo.png" alt="Potentially Criminal Logo" class="footer-logo">
-        </a>
-        <p class="text-white-50 mt-3"> PO BOX 716 <br>
-          Willoughby, OH 44096 </p>
-        
-        <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p>
-
-      </div>
-      
-      <div class="col-md-6 col-lg-5 mx-auto mb-4">
-        <div class="row">
-          <div class="col-md-6">
-            <h6 class="text-uppercase fw-bold mb-4">Site Links</h6>
-            <p><a href="index.html" class="footer-link">Home</a></p>
-            <p><a href="about.html" class="footer-link">About</a></p>
-            <p><a href="https://potentiallycriminal.creator-spring.com/" class="footer-link" target="_blank">Merch</a></p>
-            <p><a href="http://www.seanpmartinlaw.com" class="footer-link" target="_blank">Law Firm</a></p>
-          </div>
-          <div class="col-md-6">
-            <h6 class="text-uppercase fw-bold mb-4">Channels</h6>
-            <p><a href="https://youtube.com/@potentiallycriminal" class="footer-link" target="_blank">Potentially Criminal</a></p>
-            <p><a href="https://www.youtube.com/@SeansModelBench" class="footer-link" target="_blank">Sean's Model Bench</a></p>
-            <p><a href="https://potentiallycriminal.locals.com" class="footer-link" target="_blank">Locals</a></p>
-            <p><a href="https://x.com/lawtubesean" class="footer-link" target="_blank">X (Twitter)</a></p>
+ <footer class="footer-custom">
+    <div class="container-lg text-center text-md-start">
+      <div class="row mt-3">
+        <div class="col-md-3 col-lg-3 mx-auto mb-4">
+          <a href="index.html">
+            <img src="img/logo.svg" alt="Potentially Criminal Logo" class="logo-responsive footer-logo">
+          </a>
+          <p class="text-white-50 mt-3"> PO BOX 716 <br> Willoughby, OH 44096 </p>
+          <!-- <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p> -->
+          <p>
+            <button class="btn btn-subscribe mt-2" onclick="copyEmail()">Copy Email</button>
+          </p>
+          <span id="email-address" class="visually-hidden">potentiallycriminal@gmail.com</span>
+        </div>
+        <div class="col-md-6 col-lg-5 mx-auto mb-4">
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="text-uppercase fw-bold mb-4">Site Links</h6>
+              <p><a href="index.html" class="footer-link">Home</a></p>
+              <p><a href="about.html" class="footer-link">About</a></p>
+              <p><a href="https://potentiallycriminal.creator-spring.com/" class="footer-link" target="_blank">Merch</a>
+              </p>
+              <p><a href="http://www.seanpmartinlaw.com" class="footer-link" target="_blank">Law Firm</a></p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-uppercase fw-bold mb-4">Channels</h6>
+              <p><a href="https://youtube.com/@potentiallycriminal" class="footer-link" target="_blank">Potentially
+                  Criminal</a></p>
+              <p><a href="https://www.youtube.com/@SeansModelBench" class="footer-link" target="_blank">Sean's Model
+                  Bench</a></p>
+              <p><a href="https://potentiallycriminal.locals.com" class="footer-link" target="_blank">Locals</a></p>
+              <p><a href="https://x.com/lawtubesean" class="footer-link" target="_blank">X (Twitter)</a></p>
+            </div>
           </div>
         </div>
+        <div class="col-md-3 col-lg-3 mx-auto mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Join the Green Army</h6>
+          <p class="text-white-50">DO YOUR PART!</p>
+          <a href="https://www.youtube.com/@PotentiallyCriminal/membership" target="_blank"
+            class="btn btn-subscribe mt-2"> Pay Dues </a>
+        </div>
       </div>
-      <div class="col-md-3 col-lg-3 mx-auto mb-4">
-        <h6 class="text-uppercase fw-bold mb-4">Join the Green Army</h6>
-        <p class="text-white-50">DO YOUR PART!</p>
-        <a href="https://www.youtube.com/@PotentiallyCriminal/membership" target="_blank" class="btn btn-subscribe mt-2">
-          Pay Dues </a>
+      <hr class="my-4">
+      <div class="text-center">
+        <p class="text-white-50 small"> © <span id="copyright-year"></span> Potentially Criminal. All rights reserved.
+        </p>
       </div>
     </div>
-    <hr class="my-4">
-    <div class="text-center">
-      <p class="text-white-50 small"> © <span id="copyright-year">2024</span>
-        Potentially Criminal. All rights reserved. </p>
-    </div>
-  </div>
-</footer>
+  </footer>
 
   <div class="floating-button-container">
     <button id="shareButton">SHARE SCREEN!</button>

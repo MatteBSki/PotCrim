@@ -112,9 +112,9 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="index.html">
-      <img src="img/logo.png" alt="Potentially Criminal Logo" height="30">
+      <img src="img/logo.svg" alt="Potentially Criminal Logo" class="logo-responsive">
     </a>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
@@ -230,14 +230,19 @@
   </section>
 
 
-  <footer class="footer-custom">
+   <footer class="footer-custom">
     <div class="container-lg text-center text-md-start">
       <div class="row mt-3">
         <div class="col-md-3 col-lg-3 mx-auto mb-4">
-          <a href="index.html"><img style="width: 180px; height: 18px;" src="img/logo.png"
-              alt="Potentially Criminal Logo" class="footer-logo"></a>
+          <a href="index.html">
+            <img src="img/logo.svg" alt="Potentially Criminal Logo" class="logo-responsive footer-logo">
+          </a>
           <p class="text-white-50 mt-3"> PO BOX 716 <br> Willoughby, OH 44096 </p>
-          <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p>
+          <!-- <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p> -->
+          <p>
+            <button class="btn btn-subscribe mt-2" onclick="copyEmail()">Copy Email</button>
+          </p>
+          <span id="email-address" class="visually-hidden">potentiallycriminal@gmail.com</span>
         </div>
         <div class="col-md-6 col-lg-5 mx-auto mb-4">
           <div class="row">

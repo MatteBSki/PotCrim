@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-  <title>Clyde! - Potentially Criminal</title>
+  <title>Clyde the Dog</title>
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -101,17 +101,16 @@
 </head>
 
 <body>
-  <!-- Navigation Bar (from your index.html) -->
-  <nav class="navbar navbar-expand-lg navbar-custom px-3">
+<nav class="navbar navbar-expand-lg navbar-custom px-3">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="index.html">
-      <img src="img/logo.png" alt="Potentially Criminal Logo" height="30"
-        onerror="this.onerror=null;this.src='https://placehold.co/150x30/000000/ffffff?text=Logo';">
+      <img src="img/logo.svg" alt="Potentially Criminal Logo" class="logo-responsive">
     </a>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
@@ -132,6 +131,7 @@
         <li class="nav-item"><a class="nav-link" href="https://potentiallycriminal.creator-spring.com/"
             target="_blank">Merch</a></li>
         <li class="nav-item"><a class="nav-link" href="http://www.seanpmartinlaw.com/" target="_blank">Law Firm</a></li>
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="legalDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
@@ -144,23 +144,26 @@
               relationship in any way. The viewer has responsibility of obtaining legal advise from a competent and
               licensed attorney, and should do so.
             </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li class="dropdown-item text-wrap">
+              All references or clips used are for fair use, commentary, criticism, and education. See Hosseinzadeh v.
+              Klein, 276 F.Supp.3d 34 (S.D.N.Y. 2017); Equals Three, LLC v. Jukin Media, Inc., 139 F. Supp. 3d 1094
+              (C.D. Cal. 2015); Hughes v. Benjamin, 437 F. Supp. 3d 382 (S.D.N.Y. 2020).
+            </li>
           </ul>
         </li>
       </ul>
     </div>
   </nav>
-
-  <!-- Hero Section - Uses the same structure as your homepage for consistency -->
   <header class="hero-section clyde-hero-background">
     <div class="hero-content">
       <h1>Crush the Grays</h1>
       <p>- Robo-Clyde, Mech Warrior</p>
     </div>
   </header>
-
-  <!-- Main Content Area -->
   <main>
-    <!-- About Section -->
     <section id="about" class="bg-custom-white styled-section">
       <div class="container py-5" data-aos="fade-up">
 
@@ -218,20 +221,20 @@
     </section>
 
     <section id="gallery" class="styled-section bg-custom-lightest-grey">
-          <div class="container" data-aos="fade-up">
-            <h2 class="display-5 text-center mb-5">A Day in the Life of Clyde</h2>
-            <hr>
-            <!-- Swiper component for the gallery -->
-            <div class="swiper clyde-swiper">
-                <div class="swiper-wrapper" id="clyde-gallery">
-                    <!-- Images will be injected here by the JavaScript below -->
-                </div>
-                <!-- Swiper UI elements -->
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </div>
+      <div class="container" data-aos="fade-up">
+        <h2 class="display-5 text-center mb-5">A Day in the Life of Clyde</h2>
+        <hr>
+        <!-- Swiper component for the gallery -->
+        <div class="swiper clyde-swiper">
+          <div class="swiper-wrapper" id="clyde-gallery">
+            <!-- Images will be injected here by the JavaScript below -->
+          </div>
+          <!-- Swiper UI elements -->
+          <div class="swiper-pagination"></div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
         </div>
+      </div>
     </section>
 
     <!-- Embedded Video Section -->
@@ -259,22 +262,20 @@
     </section>
   </main>
 
-  <!-- Footer (from your index.html) -->
   <footer class="footer-custom">
-    <div class="container text-center text-md-start">
+    <div class="container-lg text-center text-md-start">
       <div class="row mt-3">
         <div class="col-md-3 col-lg-3 mx-auto mb-4">
           <a href="index.html">
-            <img style="width: 180px; height: 18px;" src="img/logo.png" alt="Potentially Criminal Logo"
-              class="footer-logo">
+            <img src="img/logo.svg" alt="Potentially Criminal Logo" class="logo-responsive footer-logo">
           </a>
-          <p class="text-white-50 mt-3"> PO BOX 716 <br>
-            Willoughby, OH 44096 </p>
-
-          <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p>
-
+          <p class="text-white-50 mt-3"> PO BOX 716 <br> Willoughby, OH 44096 </p>
+          <!-- <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p> -->
+          <p>
+            <button class="btn btn-subscribe mt-2" onclick="copyEmail()">Copy Email</button>
+          </p>
+          <span id="email-address" class="visually-hidden">potentiallycriminal@gmail.com</span>
         </div>
-
         <div class="col-md-6 col-lg-5 mx-auto mb-4">
           <div class="row">
             <div class="col-md-6">
@@ -300,16 +301,17 @@
           <h6 class="text-uppercase fw-bold mb-4">Join the Green Army</h6>
           <p class="text-white-50">DO YOUR PART!</p>
           <a href="https://www.youtube.com/@PotentiallyCriminal/membership" target="_blank"
-            class="btn btn-subscribe mt-2">Enlist</a>
+            class="btn btn-subscribe mt-2"> Pay Dues </a>
         </div>
       </div>
       <hr class="my-4">
       <div class="text-center">
-        <p class="text-white-50 small"> © <span id="copyright-year">2024</span>
-          Potentially Criminal. All rights reserved. </p>
+        <p class="text-white-50 small"> © <span id="copyright-year"></span> Potentially Criminal. All rights reserved.
+        </p>
       </div>
     </div>
   </footer>
+
   <div class="floating-button-container">
     <button id="shareButton">SHARE SCREEN!</button>
   </div>
