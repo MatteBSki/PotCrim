@@ -193,6 +193,10 @@
               <div class="yt-chat-message"><span class="yt-chat-name">Katie 🥪</span><span class="yt-chat-text">It is
                   your birthday. </span></div>
             </div>
+            <div class="yt-chat-message"><span class="yt-chat-name">Hella 🥪</span><span class="yt-chat-text">I’m just
+                here for 2.0
+                But happy birthday bloggah boy
+                Go cuddle a spider</span></div>
           </div>
         </div>
 
@@ -287,32 +291,32 @@
     document.addEventListener('DOMContentLoaded', () => {
       // --- Countdown Logic ---
       const countdownEl = document.getElementById('countdown');
-      const happyEl     = document.getElementById('message');
+      const happyEl = document.getElementById('message');
       if (countdownEl && happyEl) {
         let timer;
         const birthdayMonth = 7;  // July (0-based)
-        const birthdayDay   = 10;
+        const birthdayDay = 10;
 
         function updateCountdown() {
           const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
           let year = now.getFullYear();
           const passed = now.getMonth() > birthdayMonth ||
-                         (now.getMonth() === birthdayMonth && now.getDate() > birthdayDay);
+            (now.getMonth() === birthdayMonth && now.getDate() > birthdayDay);
           if (passed) year++;
 
           const today = now.getMonth() === birthdayMonth && now.getDate() === birthdayDay;
           if (today) {
             countdownEl.style.display = 'none';
-            happyEl.style.display     = 'block';
+            happyEl.style.display = 'block';
             if (!document.querySelector('.confetti')) launchConfetti();
             clearInterval(timer);
           } else {
-            const target   = new Date(year, birthdayMonth, birthdayDay);
-            const diff     = target - now;
-            const days     = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours    = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes  = Math.floor((diff % (1000 * 60 * 60))      / (1000 * 60));
-            const seconds  = Math.floor((diff % (1000 * 60))           / 1000);
+            const target = new Date(year, birthdayMonth, birthdayDay);
+            const diff = target - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
             countdownEl.innerHTML = `Sean's Birthday is in<br>${days}d ${hours}h ${minutes}m ${seconds}s`;
           }
         }
@@ -323,7 +327,7 @@
           for (let i = 0; i < 200; i++) {
             const confetti = document.createElement('div');
             confetti.classList.add('confetti');
-            confetti.style.left           = Math.random() * 100 + 'vw';
+            confetti.style.left = Math.random() * 100 + 'vw';
             confetti.style.animationDelay = Math.random() * 3 + 's';
             confetti.style.backgroundColor = `hsl(${Math.random() * 360},100%,50%)`;
             wrapper.appendChild(confetti);
@@ -336,9 +340,9 @@
 
       // --- Character Counter ---
       const messageInput = document.getElementById('message-input');
-      const charCounter  = document.getElementById('char-counter');
-      const submitBtn    = document.getElementById('submitButton');
-      const maxLength    = 100;
+      const charCounter = document.getElementById('char-counter');
+      const submitBtn = document.getElementById('submitButton');
+      const maxLength = 100;
       charCounter.textContent = `${messageInput.value.length} / ${maxLength}`;
 
       messageInput.addEventListener('input', () => {
@@ -349,10 +353,10 @@
       });
 
       // --- Form Submission ---
-      const form         = document.getElementById('birthdayForm');
-      const cancelBtn    = document.getElementById('cancelButton');
+      const form = document.getElementById('birthdayForm');
+      const cancelBtn = document.getElementById('cancelButton');
       const formResponse = document.getElementById('form-response');
-      const scriptURL    = 'https://script.google.com/macros/s/AKfycbwjfE1qCVMakGdEH6u_hwNtpnCCmgzEuUqweYuUrjduRRGI0xjdydvzS5Epxq8M3vZbIw/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwjfE1qCVMakGdEH6u_hwNtpnCCmgzEuUqweYuUrjduRRGI0xjdydvzS5Epxq8M3vZbIw/exec';
 
       form.addEventListener('submit', e => {
         e.preventDefault();
@@ -383,7 +387,7 @@
       });
 
       // --- Copy Email ---
-      const copyEmailBtn      = document.getElementById('copyEmailBtn');
+      const copyEmailBtn = document.getElementById('copyEmailBtn');
       const shareNotification = document.getElementById('shareNotification');
       if (copyEmailBtn && shareNotification) {
         copyEmailBtn.addEventListener('click', () => {
