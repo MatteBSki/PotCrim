@@ -5,6 +5,7 @@
 */
 html {
   overflow-y: auto !important;
+  overflow-x: hidden !important;
 }
 
 .min-height-section {
