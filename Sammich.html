@@ -22,45 +22,63 @@
       height: 100%;
       object-fit: contain;
     }
-	
+    #orientation-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        color: #fff;
+        z-index: 20000;
+        display: none; /* Hidden by default; JS will show it */
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 1.5rem;
+    }
   </style>
 </head>
 <body>
+  <div id="orientation-overlay">
+    <p>🔄<br>Please rotate your device or widen your browser window to play.</p>
+  </div>
+
   <canvas id="game"></canvas>
 
-<audio id="bgMusic" loop>
-  <source src="music/game_music.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+  <audio id="bgMusic" loop>
+    <source src="music/game_music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
 
-<button id="musicToggle" style="
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 10000;
-  background-color: #86C232;
-  color: #000;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-">
-🔇 Music On
-</button>
+  <button id="musicToggle" style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    background-color: #86C232;
+    color: #000;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+  ">
+  🔇 Music On
+  </button>
 
   <script>
     // --- Game Settings ---
     const GAME_WIDTH = 1600;
     const GAME_HEIGHT = 900;
-    const PRIZE_SCORE_MIN = 3;
+    const PRIZE_SCORE_MIN = 33;
     const PRIZE_URL = 'https://kiwifarms.st/members/potentially-criminal.182080/';
 
-    // NEW: Constants for Clyde's movement
-    const CLYDE_BASE_SPEED = 6; // The starting speed
-    const CLYDE_ACCELERATION = 0.2; // How quickly he speeds up
-    const CLYDE_MAX_SPEED = 12; // The top speed
+    // --- Clyde's Movement ---
+    const CLYDE_BASE_SPEED = 6;
+    const CLYDE_ACCELERATION = 0.2;
+    const CLYDE_MAX_SPEED = 12;
 
     // --- Gameplay Constants ---
     const LANDING_OFFSET_X = 20;
@@ -77,7 +95,7 @@
     const SCREEN_VERTICAL_SHIFT = -60;
     const REGISTER_SCALE = 0.25;
     const REGISTER_X_OFFSET = 150;
-    const REGISTER_Y_OFFSET = 40;  
+    const REGISTER_Y_OFFSET = 40;   
     const PLAY_BUTTON_SCALE = 0.5;
     const SPAWN_INTERVAL_REDUCTION = 300;
 
@@ -97,6 +115,10 @@
     const toppings = [], sandwich = [];
     const toppingTypes = ["lettuce", "cheese", "tomato", "bacon", "bread"];
 
+    // --- Drag State ---
+    let isDragging = false;
+    let dragOffsetX = 0;
+
     const clyde = {
       x: canvas.width / 2 - CHARACTER_WIDTH / 2,
       y: canvas.height - CHARACTER_HEIGHT - CHARACTER_VERTICAL_OFFSET,
@@ -109,23 +131,22 @@
 
     // --- Image Loading ---
     const images = {};
-    // --- Image Loading ---
-	const imageSources = {
-		clyde:      "img/sammich_clyde.png",
-		logo:       "img/game_logo.png",
-		gameOver:   "img/game_over.png",
-		counter:    "img/counter.png",
-		register:   "img/register.png",
-		background: "img/deli.png",
-		clickToPlay:"img/click_play.png",
-		playAgain:  "img/play_again.png",   
-		nextLevel:  "img/next_level.png",
-		bacon:      "img/ham.png",
-		lettuce:    "img/lettuce.png",
-		tomato:     "img/tomato.png",
-		cheese:     "img/cheese.png",
-		bread:      "img/bread.png"
-	};
+    const imageSources = {
+      clyde:      "img/sammich_clyde.png",
+      logo:       "img/game_logo.png",
+      gameOver:   "img/game_over.png",
+      counter:    "img/counter.png",
+      register:   "img/register.png",
+      background: "img/deli.png",
+      clickToPlay:"img/click_play.png",
+      playAgain:  "img/play_again.png",   
+      nextLevel:  "img/next_level.png",
+      bacon:      "img/ham.png",
+      lettuce:    "img/lettuce.png",
+      tomato:     "img/tomato.png",
+      cheese:     "img/cheese.png",
+      bread:      "img/bread.png"
+    };
 
     Object.keys(imageSources).forEach(key => {
         images[key] = new Image();
@@ -152,31 +173,14 @@
                pos.y >= rect.y && pos.y <= rect.y + rect.height;
     }
 
+    // --- Desktop Click Listener ---
     canvas.addEventListener('click', function(event) {
-        if (/Mobi/i.test(navigator.userAgent)) return;
+        if (isDragging) return; // Don't process clicks if a drag is happening
         const mousePos = getMousePos(event);
-
-        if (showStartScreen) {
-            if (isPosInRect(mousePos, playButton)) {
-                gameStarted = true;
-                showStartScreen = false;
-                lastSpawnTime = Date.now();
-            }
-        } else if (gameOver) {
-            if (prizeLink.visible && isPosInRect(mousePos, prizeLink)) {
-                window.open(PRIZE_URL, '_blank');
-            } else if (isPosInRect(mousePos, playButton)) {
-                resetGame();
-            }
-        } else if (showNextLevelScreen) {
-            if (isPosInRect(mousePos, playButton)) {
-                gameStarted = true;
-                showNextLevelScreen = false;
-                lastSpawnTime = Date.now();
-            }
-        }
+        handleGameStart(mousePos);
     });
 
+    // --- Mouse Move Listener for Prize Link ---
     canvas.addEventListener('mousemove', function(event) {
         const mousePos = getMousePos(event);
         if (gameOver && prizeLink.visible && isPosInRect(mousePos, prizeLink)) {
@@ -186,7 +190,72 @@
         }
     });
 
-    // --- Game Logic Functions ---
+// --- Touch Listeners for Dragging and Game Start ---
+    canvas.addEventListener('touchstart', function(event) {
+        event.preventDefault();
+        const touch = event.changedTouches[0];
+        if (!touch) return;
+        const touchPos = getMousePos(touch);
+
+        // First, check if the touch is meant to start the game or click a button.
+        // The handleGameStart function will return true if it successfully started a screen.
+        const UIMode = handleGameStart(touchPos);
+
+        // If a button wasn't pressed and the game is running, start dragging.
+        if (!UIMode && gameStarted) {
+            isDragging = true;
+            // Center Clyde under the finger.
+            clyde.x = touchPos.x - clyde.width / 2;
+        }
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', function(event) {
+        event.preventDefault();
+        if (!isDragging) return;
+
+        const touch = event.changedTouches[0];
+        if (!touch) return;
+        
+        const touchPos = getMousePos(touch);
+        // Update Clyde's position to stay centered under the finger.
+        clyde.x = touchPos.x - clyde.width / 2;
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', function(event) {
+        event.preventDefault();
+        // Stop dragging when the finger is lifted.
+        isDragging = false;
+    });
+
+    // --- Game Logic ---
+    function handleGameStart(pos) {
+        let started = false;
+        if (showStartScreen) {
+            if (isPosInRect(pos, playButton)) {
+                gameStarted = true;
+                showStartScreen = false;
+                lastSpawnTime = Date.now();
+                levelStartTime = Date.now();
+                started = true;
+            }
+        } else if (gameOver) {
+            if (prizeLink.visible && isPosInRect(pos, prizeLink)) {
+                window.open(PRIZE_URL, '_blank');
+            } else if (isPosInRect(pos, playButton)) {
+                resetGame();
+            }
+        } else if (showNextLevelScreen) {
+            if (isPosInRect(pos, playButton)) {
+                gameStarted = true;
+                showNextLevelScreen = false;
+                lastSpawnTime = Date.now();
+                levelStartTime = Date.now();
+                started = true;
+            }
+        }
+        return started;
+    }
+
     function resetGame() {
       score = 0; missed = 0; gameOver = false; level = 1;
       spawnInterval = 2000; toppings.length = 0; sandwich.length = 0;
@@ -195,194 +264,137 @@
     }
 
     function spawnTopping() {
-        const type = toppingTypes[Math.floor(Math.random() * toppingTypes.length)];
-        toppings.push({
-            x: Math.random() * (canvas.width - TOPPING_WIDTH - NO_SPAWN_ZONE_WIDTH),
-            y: -TOPPING_HEIGHT, type: type, speed: 4 + Math.random() * 2
-        });
+        let availableToppings = toppingTypes.slice();
+        const elapsedTime = Date.now() - levelStartTime;
+
+        // BREAD DROP TIMER: Only allow bread after 15 seconds
+        if (elapsedTime < 15000) { 
+            availableToppings = availableToppings.filter(t => t !== 'bread');
+        }
+
+        const type = availableToppings[Math.floor(Math.random() * availableToppings.length)];
+
+        if (type) {
+            toppings.push({
+                x: Math.random() * (canvas.width - TOPPING_WIDTH - NO_SPAWN_ZONE_WIDTH),
+                y: -TOPPING_HEIGHT, type: type, speed: 4 + Math.random() * 2
+            });
+        }
+    }
+
+    // --- ASPECT RATIO ENFORCER ---
+    function checkAspectRatio() {
+        const overlay = document.getElementById('orientation-overlay');
+        const gameElements = [document.getElementById('game'), document.getElementById('musicToggle')];
+        const isPortrait = window.innerHeight > window.innerWidth;
+
+        if (isPortrait) {
+            overlay.style.display = 'flex';
+            gameElements.forEach(el => el.style.display = 'none');
+        } else {
+            overlay.style.display = 'none';
+            gameElements.forEach(el => el.style.display = 'block');
+        }
     }
 
     // --- Drawing Functions ---
-    function drawStartScreen() {
-      if (images.logo && images.logo.complete) {
-        const imgWidth = 500;
-        const imgHeight = images.logo.height * (imgWidth / images.logo.width); 
-        const x = canvas.width / 2 - imgWidth / 2;
-        const y = (canvas.height / 2 - imgHeight / 2 - 50) + SCREEN_VERTICAL_SHIFT;
-        ctx.drawImage(images.logo, x, y, imgWidth, imgHeight);
-      }
-      
-      if (images.clickToPlay && images.clickToPlay.complete) {
-        const btnWidth = 400 * PLAY_BUTTON_SCALE;
-        const btnHeight = images.clickToPlay.height * (btnWidth / images.clickToPlay.width);
-        const btnX = canvas.width / 2 - btnWidth / 2;
-        const btnY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT;
-        ctx.drawImage(images.clickToPlay, btnX, btnY, btnWidth, btnHeight);
-        playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight };
-      }
-    }
-
-	function drawGameOverScreen() {
-	  prizeLink.visible = false;
-
-	  if (images.gameOver && images.gameOver.complete) {
-		const imgWidth  = 500;
-		const imgHeight = images.gameOver.height * (imgWidth / images.gameOver.width);
-		const x         = canvas.width / 2 - imgWidth / 2;
-		const y         = (canvas.height / 2 - imgHeight / 2 - 90) + SCREEN_VERTICAL_SHIFT;
-		ctx.drawImage(images.gameOver, x, y, imgWidth, imgHeight);
-	  }
-
-	  const scoreY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT;
-
-	  if (highScore >= PRIZE_SCORE_MIN) {
-		const prizeFont = "bold 45px 'Comic Sans MS', Arial";
-		ctx.font       = prizeFont;
-		ctx.textAlign  = "center";
-		ctx.strokeStyle = "black";
-		ctx.lineWidth  = 4;
-		ctx.fillStyle  = "#86C232";
-		ctx.strokeText(PRIZE_URL, canvas.width / 2, scoreY);
-		ctx.fillText  (PRIZE_URL, canvas.width / 2, scoreY);
-
-		const textMetrics = ctx.measureText(PRIZE_URL);
-		const textHeight  = 45;
-		prizeLink = {
-		  x:      canvas.width / 2 - textMetrics.width / 2,
-		  y:      scoreY - textHeight,
-		  width:  textMetrics.width,
-		  height: textHeight,
-		  visible:true
-		};
-	  } else {
-		ctx.font        = "bold 70px 'Comic Sans MS', Arial";
-		ctx.textAlign   = "center";
-		ctx.strokeStyle = "black";
-		ctx.lineWidth   = 5;
-		ctx.fillStyle   = "white";
-		ctx.strokeText(highScore, canvas.width / 2, scoreY);
-		ctx.fillText  (highScore, canvas.width / 2, scoreY);
-	  }
-
-	  if (images.playAgain && images.playAgain.complete) {
-		const btnWidth  = 400 * PLAY_BUTTON_SCALE;
-		const btnHeight = images.playAgain.height * (btnWidth / images.playAgain.width);
-		const btnX      = canvas.width / 2 - btnWidth / 2;
-		const btnY      = scoreY + 70;
-		ctx.drawImage(images.playAgain, btnX, btnY, btnWidth, btnHeight);
-		playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight };
-	  }
-	}
-
-    
-    function drawNextLevelScreen() {
-        if (images.nextLevel && images.nextLevel.complete) {
-            const imgWidth = 500;
-            const imgHeight = images.nextLevel.height * (imgWidth / images.nextLevel.width); 
-            const x = canvas.width / 2 - imgWidth / 2;
-            const y = (canvas.height / 2 - imgHeight / 2) + SCREEN_VERTICAL_SHIFT;
-            ctx.drawImage(images.nextLevel, x, y, imgWidth, imgHeight);
-        }
-        if (images.clickToPlay && images.clickToPlay.complete) {
-            const btnWidth = 400 * PLAY_BUTTON_SCALE;
-            const btnHeight = images.clickToPlay.height * (btnWidth / images.clickToPlay.width);
-            const btnX = canvas.width / 2 - btnWidth / 2;
-            const btnY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT;
-            ctx.drawImage(images.clickToPlay, btnX, btnY, btnWidth, btnHeight);
-            playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight };
-        }
-    }
+    function drawStartScreen() { /* ... function code is unchanged ... */ }
+    function drawGameOverScreen() { /* ... function code is unchanged ... */ }
+    function drawNextLevelScreen() { /* ... function code is unchanged ... */ }
 
     // --- Main Game Loop ---
     function update() {
-      requestAnimationFrame(update);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+        requestAnimationFrame(update);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (images.background && images.background.complete) {
-        ctx.drawImage(images.background, 0, 0, canvas.width, canvas.height);
-      } else {
-        ctx.fillStyle = "#c2e0ff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
+        if (images.background && images.background.complete) {
+            ctx.drawImage(images.background, 0, 0, canvas.width, canvas.height);
+        }
 
-      if (showStartScreen) { drawStartScreen(); }
-      else if (showNextLevelScreen) { drawNextLevelScreen(); }
-      else if (gameOver) { drawGameOverScreen(); }
-      else if (gameStarted) {
-        if (keys.ArrowLeft) {
-          clyde.x -= clyde.speed;
-          clyde.speed = Math.min(clyde.speed + clyde.acceleration, clyde.maxSpeed);
-        } else if (keys.ArrowRight) {
-          clyde.x += clyde.speed;
-          clyde.speed = Math.min(clyde.speed + clyde.acceleration, clyde.maxSpeed);
-        } else { clyde.speed = clyde.baseSpeed; }
-
-        clyde.x = Math.max(0, Math.min(canvas.width - clyde.width, clyde.x));
-        clyde.y = canvas.height - clyde.height - CHARACTER_VERTICAL_OFFSET;
-
-        if(images.clyde && images.clyde.complete) ctx.drawImage(images.clyde, clyde.x, clyde.y, clyde.width, clyde.height);
-
-        for (let i = toppings.length - 1; i >= 0; i--) {
-          let t = toppings[i];
-          t.y += t.speed;
-          
-          let breadX = clyde.x + LANDING_OFFSET_X;
-          let breadY = clyde.y + LANDING_OFFSET_Y - (sandwich.length * STACK_SPACING);
-
-          if (t.y + TOPPING_HEIGHT >= breadY && t.y <= breadY + SANDWICH_LAYER_HEIGHT &&
-              t.x < breadX + TOPPING_WIDTH && t.x + TOPPING_WIDTH > breadX) {
-            sandwich.push(t.type);
-            toppings.splice(i, 1);
-            if (t.type === "bread") {
-              sandwichCompleted = true;
-              setTimeout(() => {
-                level++; score += 5;
-                spawnInterval = Math.max(400, spawnInterval - SPAWN_INTERVAL_REDUCTION);
-                toppings.length = 0; sandwich.length = 0; sandwichCompleted = false;
-                gameStarted = false; showNextLevelScreen = true;
-                lastSpawnTime = Date.now();
-              }, 1000);
-            } else { score++; }
-          } else if (t.y > canvas.height) {
-            toppings.splice(i, 1);
-            missed++;
-            if (missed >= MAX_MISSES) {
-              gameOver = true;
-              highScore = Math.max(highScore, score);
+        if (showStartScreen) { drawStartScreen(); }
+        else if (showNextLevelScreen) { drawNextLevelScreen(); }
+        else if (gameOver) { drawGameOverScreen(); }
+        else if (gameStarted) {
+            // Handle keyboard movement (only if not dragging)
+            if (!isDragging) {
+                if (keys.ArrowLeft) {
+                    clyde.x -= clyde.speed;
+                    clyde.speed = Math.min(clyde.speed + clyde.acceleration, clyde.maxSpeed);
+                } else if (keys.ArrowRight) {
+                    clyde.x += clyde.speed;
+                    clyde.speed = Math.min(clyde.speed + clyde.acceleration, clyde.maxSpeed);
+                } else {
+                    clyde.speed = clyde.baseSpeed;
+                }
             }
-          }
-        }
-        
-        toppings.forEach(t => ctx.drawImage(images[t.type], t.x, t.y, TOPPING_WIDTH, TOPPING_HEIGHT));
-        sandwich.forEach((part, i) => {
-            const x = clyde.x + LANDING_OFFSET_X;
-            const y = clyde.y + LANDING_OFFSET_Y - (i * STACK_SPACING);
-            ctx.drawImage(images[part], x, y, TOPPING_WIDTH, SANDWICH_LAYER_HEIGHT);
-        });
-        
-        if (!sandwichCompleted && Date.now() - lastSpawnTime > spawnInterval) {
-          spawnTopping();
-          lastSpawnTime = Date.now();
-        }
+            // Bounds check for Clyde
+            clyde.x = Math.max(0, Math.min(canvas.width - clyde.width, clyde.x));
+            clyde.y = canvas.height - clyde.height - CHARACTER_VERTICAL_OFFSET;
 
-        ctx.font = "30px 'Comic Sans MS', Arial"; ctx.textAlign = "left";
-        ctx.lineWidth = 4; ctx.strokeStyle = "black"; ctx.fillStyle = "white";
-        ctx.strokeText("Score: " + score, 20, 40); ctx.fillText("Score: " + score, 20, 40);
-        ctx.strokeText("Missed: " + missed + " / " + MAX_MISSES, 20, 80); ctx.fillText("Missed: " + missed + " / " + MAX_MISSES, 20, 80);
-        ctx.strokeText("Level: " + level, 20, 120); ctx.fillText("Level: " + level, 20, 120);
-      }
-      
-      if (images.counter && images.counter.complete) {
-          const desiredHeight = canvas.height * 0.10;
-          ctx.drawImage(images.counter, 0, canvas.height - desiredHeight, canvas.width, desiredHeight);
-      }
-      if (images.register && images.register.complete) {
-          const imgHeight = canvas.height * REGISTER_SCALE;
-          const imgWidth = images.register.width * (imgHeight / images.register.height);
-          const x = canvas.width - imgWidth - REGISTER_X_OFFSET;
-          const y = canvas.height - imgHeight - REGISTER_Y_OFFSET;
-          ctx.drawImage(images.register, x, y, imgWidth, imgHeight);
-      }
+            if(images.clyde && images.clyde.complete) ctx.drawImage(images.clyde, clyde.x, clyde.y, clyde.width, clyde.height);
+
+            // Update and draw toppings
+            for (let i = toppings.length - 1; i >= 0; i--) {
+                let t = toppings[i];
+                t.y += t.speed;
+                let breadX = clyde.x + LANDING_OFFSET_X;
+                let breadY = clyde.y + LANDING_OFFSET_Y - (sandwich.length * STACK_SPACING);
+
+                if (t.y + TOPPING_HEIGHT >= breadY && t.y <= breadY + SANDWICH_LAYER_HEIGHT && t.x < breadX + TOPPING_WIDTH && t.x + TOPPING_WIDTH > breadX) {
+                    sandwich.push(t.type);
+                    toppings.splice(i, 1);
+                    if (t.type === "bread") {
+                        sandwichCompleted = true;
+                        setTimeout(() => {
+                            level++; score += 5;
+                            spawnInterval = Math.max(400, spawnInterval - SPAWN_INTERVAL_REDUCTION);
+                            toppings.length = 0; sandwich.length = 0; sandwichCompleted = false;
+                            gameStarted = false; showNextLevelScreen = true;
+                            lastSpawnTime = Date.now();
+                        }, 1000);
+                    } else { score++; }
+                } else if (t.y > canvas.height) {
+                    toppings.splice(i, 1);
+                    missed++;
+                    if (missed >= MAX_MISSES) {
+                        gameOver = true;
+                        highScore = Math.max(highScore, score);
+                    }
+                }
+            }
+            
+            toppings.forEach(t => ctx.drawImage(images[t.type], t.x, t.y, TOPPING_WIDTH, TOPPING_HEIGHT));
+            sandwich.forEach((part, i) => {
+                const x = clyde.x + LANDING_OFFSET_X;
+                const y = clyde.y + LANDING_OFFSET_Y - (i * STACK_SPACING);
+                ctx.drawImage(images[part], x, y, TOPPING_WIDTH, SANDWICH_LAYER_HEIGHT);
+            });
+            
+            if (!sandwichCompleted && Date.now() - lastSpawnTime > spawnInterval) {
+                spawnTopping();
+                lastSpawnTime = Date.now();
+            }
+
+            // Draw UI Text
+            ctx.font = "30px 'Comic Sans MS', Arial"; ctx.textAlign = "left";
+            ctx.lineWidth = 4; ctx.strokeStyle = "black"; ctx.fillStyle = "white";
+            ctx.strokeText("Score: " + score, 20, 40); ctx.fillText("Score: " + score, 20, 40);
+            ctx.strokeText("Missed: " + missed + " / " + MAX_MISSES, 20, 80); ctx.fillText("Missed: " + missed + " / " + MAX_MISSES, 20, 80);
+            ctx.strokeText("Level: " + level, 20, 120); ctx.fillText("Level: " + level, 20, 120);
+        }
+        
+        // Draw Scenery
+        if (images.counter && images.counter.complete) {
+            const desiredHeight = canvas.height * 0.10;
+            ctx.drawImage(images.counter, 0, canvas.height - desiredHeight, canvas.width, desiredHeight);
+        }
+        if (images.register && images.register.complete) {
+            const imgHeight = canvas.height * REGISTER_SCALE;
+            const imgWidth = images.register.width * (imgHeight / images.register.height);
+            const x = canvas.width - imgWidth - REGISTER_X_OFFSET;
+            const y = canvas.height - imgHeight - REGISTER_Y_OFFSET;
+            ctx.drawImage(images.register, x, y, imgWidth, imgHeight);
+        }
     }
     
     // --- Music Toggle & Game Start ---
@@ -392,6 +404,16 @@
       else { bgMusic.pause(); this.textContent = '🔇 Music On'; }
     });
     
+    // Initial and continuing checks for screen orientation
+    window.addEventListener('DOMContentLoaded', checkAspectRatio);
+    window.addEventListener('resize', checkAspectRatio);
+    window.addEventListener('orientationchange', checkAspectRatio);
+    
+    // --- Redefining draw functions to save space, they are unchanged ---
+    function drawStartScreen() { if (images.logo && images.logo.complete) { const imgWidth = 500; const imgHeight = images.logo.height * (imgWidth / images.logo.width); const x = canvas.width / 2 - imgWidth / 2; const y = (canvas.height / 2 - imgHeight / 2 - 50) + SCREEN_VERTICAL_SHIFT; ctx.drawImage(images.logo, x, y, imgWidth, imgHeight); } if (images.clickToPlay && images.clickToPlay.complete) { const btnWidth = 400 * PLAY_BUTTON_SCALE; const btnHeight = images.clickToPlay.height * (btnWidth / images.clickToPlay.width); const btnX = canvas.width / 2 - btnWidth / 2; const btnY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT; ctx.drawImage(images.clickToPlay, btnX, btnY, btnWidth, btnHeight); playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight }; } }
+    function drawGameOverScreen() { prizeLink.visible = false; if (images.gameOver && images.gameOver.complete) { const imgWidth  = 500; const imgHeight = images.gameOver.height * (imgWidth / images.gameOver.width); const x = canvas.width / 2 - imgWidth / 2; const y = (canvas.height / 2 - imgHeight / 2 - 90) + SCREEN_VERTICAL_SHIFT; ctx.drawImage(images.gameOver, x, y, imgWidth, imgHeight); } const scoreY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT; if (highScore >= PRIZE_SCORE_MIN) { const prizeFont = "bold 45px 'Comic Sans MS', Arial"; ctx.font = prizeFont; ctx.textAlign  = "center"; ctx.strokeStyle = "black"; ctx.lineWidth  = 4; ctx.fillStyle  = "#86C232"; ctx.strokeText(PRIZE_URL, canvas.width / 2, scoreY); ctx.fillText(PRIZE_URL, canvas.width / 2, scoreY); const textMetrics = ctx.measureText(PRIZE_URL); const textHeight  = 45; prizeLink = { x: canvas.width / 2 - textMetrics.width / 2, y: scoreY - textHeight, width: textMetrics.width, height: textHeight, visible:true }; } else { ctx.font = "bold 70px 'Comic Sans MS', Arial"; ctx.textAlign = "center"; ctx.strokeStyle = "black"; ctx.lineWidth = 5; ctx.fillStyle = "white"; ctx.strokeText(highScore, canvas.width / 2, scoreY); ctx.fillText(highScore, canvas.width / 2, scoreY); } if (images.playAgain && images.playAgain.complete) { const btnWidth  = 400 * PLAY_BUTTON_SCALE; const btnHeight = images.playAgain.height * (btnWidth / images.playAgain.width); const btnX = canvas.width / 2 - btnWidth / 2; const btnY = scoreY + 70; ctx.drawImage(images.playAgain, btnX, btnY, btnWidth, btnHeight); playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight }; } }
+    function drawNextLevelScreen() { if (images.nextLevel && images.nextLevel.complete) { const imgWidth = 500; const imgHeight = images.nextLevel.height * (imgWidth / images.nextLevel.width); const x = canvas.width / 2 - imgWidth / 2; const y = (canvas.height / 2 - imgHeight / 2) + SCREEN_VERTICAL_SHIFT; ctx.drawImage(images.nextLevel, x, y, imgWidth, imgHeight); } if (images.clickToPlay && images.clickToPlay.complete) { const btnWidth = 400 * PLAY_BUTTON_SCALE; const btnHeight = images.clickToPlay.height * (btnWidth / images.clickToPlay.width); const btnX = canvas.width / 2 - btnWidth / 2; const btnY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT; ctx.drawImage(images.clickToPlay, btnX, btnY, btnWidth, btnHeight); playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight }; } }
+
     window.onload = function() {
       resetGame();
       update();
