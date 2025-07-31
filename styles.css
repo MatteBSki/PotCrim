@@ -358,6 +358,13 @@ h6 {
   }
 }
 
+@media (max-width: 767.98px) {
+  /* zero-out the row’s built-in gutters */
+  #late-stats .row {
+    --bs-gutter-x: 0;
+  }
+}
+
 /* Base size for desktop */
 section .lead {
   font-size: 1.6rem;
