@@ -4,24 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+
   <title>Potentially Criminal</title>
-    <meta name="description" content="Potentially Criminal is a legal-based, internet talkshow covering trials, internet drama, and current events with sarcasm, wit, and Clyde.">
-    <!-- Browser and Bookmark Icon -->
-<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png">
-
-<!-- Apple Devices -->
-<link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-
-<!-- Open Graph for Social + Google -->
-<meta property="og:image" content="https://potentiallycriminal.com/img/scales-social.png">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="400">
-<meta property="og:image:height" content="400">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://potentiallycriminal.com/img/scales-social.png">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -271,62 +255,100 @@
     </div>
   </section>
 
-
+  <!-- STATS SECTION WITH PHOTO BACKGROUNDS, GUTTER GAP & AOS ANIMATIONS -->
   <section id="late-stats" class="styled-section min-height-section" style="background-color: var(--pc-white);">
-    <div class="container py-5">
-      <div class="row align-items-center gy-5">
-        <!-- LEFT COLUMN -->
-        <div class="col-lg-6 text-center">
-          <div class="stat-circle stat-circle-gray position-relative mx-auto mb-4">
-            <div class="stat-circle-inner">
-              <span class="stat-label">LATE & GAY</span>
-              <span class="stat-percentage" id="circle-late-rate">0%</span>
-            </div>
-          </div>
-          <div class="d-flex justify-content-center gap-5 mt-3">
-            <div>
-              <p class="stat-number" id="scheduled-shows">0</p>
-              <p class="stat-number-label">Scheduled Shows</p>
-            </div>
-            <div>
-              <p class="stat-number" id="late-shows">0</p>
-              <p class="stat-number-label">Late Shows</p>
+    <div class="container-fluid px-0 py-2">
+      <div class="row align-items-stretch gy-5">
+        <!-- RIGHT COLUMN: heading & bars with photo background, zoom-in from the right -->
+        <div class="col-lg-6 d-flex justify-content-center" data-aos="zoom-in" data-aos-duration="800"
+          data-aos-delay="200" data-aos-offset="200">
+          <div class="stats-card stats-card--photo w-100">
+            <!-- Photo in HTML for right card -->
+            <img src="img/absPride.png" alt="Subtle gradient background" class="stats-bg-img">
+            <div class="stats-content">
+              <h2 class="stat-section-heading mb-4 text-center">Late &amp; Gay</h2>
+              <p class="lead text-muted mb-4" style="text-align: justify; hyphens: auto;">
+                Sean suffers from a debilitating condition known as time blindness. Will he go live? Will audio
+                function?
+                Will he share the screen? The only certainty is that he’ll be late, and somehow, gayer than ever.
+              </p>
+              <div class="bar-graph-container">
+                <div class="bar-row">
+                  <span class="bar-label">LATE</span>
+                  <div class="bar-background">
+                    <div class="bar-fill bar-fill-gradient" id="late-bar-fill"></div>
+                  </div>
+                  <span class="bar-percentage" id="late-bar-percentage">0%</span>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label">GAY</span>
+                  <div class="bar-background">
+                    <div class="bar-fill bar-fill-gradient" id="gray-bar-fill"></div>
+                  </div>
+                  <span class="bar-percentage" id="gray-bar-percentage">0%</span>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-label">BASED</span>
+                  <div class="bar-background">
+                    <div class="bar-fill bar-fill-gray" id="based-bar-fill"></div>
+                  </div>
+                  <span class="bar-percentage" id="based-bar-percentage">100%</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- RIGHT COLUMN -->
-        <div class="col-lg-6">
-          <h2 class="stat-section-heading mb-4 text-center">Late & Gay</h2>
-          <p class="lead text-muted mb-4" style="text-align: justify; hyphens: auto;"> Sean suffers from a debilitating
-            condition known as time
-            blindness. Will he go live? Will audio function? Will he share the screen?
-            The only certainty is that he’ll be late, and somehow, gayer than ever.</p>
-          <div class="bar-graph-container">
-            <div class="bar-row">
-              <span class="bar-label">LATE</span>
-              <div class="bar-background">
-                <div class="bar-fill bar-fill-gradient" id="late-bar-fill"></div>
+        <!-- LEFT COLUMN: circle & numbers with photo background, zoom-in on scroll -->
+        <div class="col-lg-6 d-flex justify-content-center" data-aos="zoom-in" data-aos-duration="800"
+          data-aos-offset="200">
+          <div class="stats-card stats-card--photo w-100">
+            <!-- Photo in HTML for left card -->
+            <img src="img/absPride.png" alt="Subtle abstract background" class="stats-bg-img">
+            <div class="stats-content">
+              <div class="stat-circle stat-circle-gray position-relative mx-auto mb-4">
+                <div class="stat-circle-inner clock">
+                  <!-- Clock hands -->
+                  <div class="hand hour"></div>
+                  <div class="hand minute"></div>
+                  <!-- Label in the center -->
+                  <div class="clock-label">LATE &amp; GAY</div>
+                </div>
               </div>
-              <span class="bar-percentage" id="late-bar-percentage">0%</span>
-            </div>
-            <div class="bar-row">
-              <span class="bar-label">GAY</span>
-              <div class="bar-background">
-                <div class="bar-fill bar-fill-gradient" id="gray-bar-fill"></div>
+
+              <div class="d-flex justify-content-center gap-5 mt-3">
+                <div class="d-flex flex-column text-center">
+                  <p class="stat-number" id="scheduled-shows">1,010</p>
+                  <p class="stat-number-label">Scheduled Shows</p>
+                </div>
+                <div class="d-flex flex-column text-center">
+                  <p class="stat-number" id="late-shows">1,010</p>
+                  <p class="stat-number-label">Late Shows</p>
+                </div>
               </div>
-              <span class="bar-percentage" id="gray-bar-percentage">0%</span>
-            </div>
-            <div class="bar-row">
-              <span class="bar-label">BASED</span>
-              <div class="bar-background">
-                <div class="bar-fill bar-fill-gray" id="based-bar-fill"></div>
-              </div>
-              <span class="bar-percentage" id="based-bar-percentage">100%</span>
+
             </div>
           </div>
         </div>
       </div>
+
+    </div>
+
+    <!-- VOTE ROW: slide-up on scroll -->
+    <div class="row mt-5 pt-4 border-top" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400"
+      data-aos-offset="100">
+      <div class="col-12">
+        <div class="vote-photo position-relative overflow-hidden rounded p-4">
+          <img src="img/pride.png" alt="Pride flag background" class="vote-bg-img">
+          <div class="vote-content text-center">
+            <h3 class="stat-section-heading mb-2">Vote if Sean is Late &amp; Gay</h3>
+            <p class="lead mb-4" style="color:#000;">Cast your ballot. Sean is totally gay.*</p>
+            <button id="gayButton" class="btn btn-lg btn-gay-pink">SEAN’S GAY</button>
+            <p class="small mt-3" style="color:#000;">*Brokeback Gay</p>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
   </section>
 
@@ -344,24 +366,6 @@
               or forgetting to share the screen.
             </p>
           </div>
-
-          <div class="col-lg-4 text-center">
-            <div class="stat-circle stat-circle-gray mx-auto">
-              <span class="stat-percentage" id="circle-success-rate">0%</span>
-              <span class="stat-label">SUCCESS RATE</span>
-            </div>
-            <div class="d-flex justify-content-center text-center mt-4 gap-5">
-              <div>
-                <p class="stat-number" id="total-superchats">0</p>
-                <p class="stat-number-label">Chats<br>Received</p>
-              </div>
-              <div>
-                <p class="stat-number" id="superchats-read">0</p>
-                <p class="stat-number-label">Chats<br>Read</p>
-              </div>
-            </div>
-          </div>
-
           <div class="col-lg-4">
             <p class="lead text-muted text-center mb-4">The Depressing Truth About Super Chats</p>
             <div class="bar-graph-container">
@@ -382,6 +386,23 @@
             </div>
           </div>
 
+
+          <div class="col-lg-4 text-center">
+            <div class="stat-circle stat-circle-gay mx-auto">
+              <span class="stat-percentage" id="circle-success-rate">0%</span>
+              <span class="stat-label">SUCCESS RATE</span>
+            </div>
+            <div class="d-flex justify-content-center text-center mt-4 gap-5">
+              <div>
+                <p class="stat-number" id="total-superchats">0</p>
+                <p class="stat-number-label">Chats<br>Received</p>
+              </div>
+              <div>
+                <p class="stat-number" id="superchats-read">0</p>
+                <p class="stat-number-label">Chats<br>Read</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -537,6 +558,19 @@
               <p class="testimonial-chat-text">
                 <span class="testimonial-chat-name">elissa clips🥪 </span>
                 SHOW US YOUR FEET!!!
+              </p>
+            </div>
+          </div>
+
+                    <div class="testimonial-chat-message">
+            <img
+              src="https://yt3.googleusercontent.com/XGTs6ruqY3yOJ-AK9Lglz6Wm-PCkp0JO48PaOuBE7C6SUoPKVCEh2S2uZWuu2kjqtGCfEX4nCA=s160-c-k-c0x00ffffff-no-rj"
+              onerror="this.onerror=null;this.src='img/default-avatar.png';" alt="Hella Exited Utterance"
+              class="testimonial-chat-avatar">
+            <div class="testimonial-chat-content">
+              <p class="testimonial-chat-text">
+                <span class="testimonial-chat-name">Hella 🇦🇺 Excited Utterance🥪 </span>
+                He won’t give me a wrench on his lame model channel but otherwise he is tolerable
               </p>
             </div>
           </div>
@@ -745,11 +779,10 @@
             <img src="img/logo.svg" alt="Potentially Criminal Logo" class="logo-responsive footer-logo">
           </a>
           <p class="text-white-50 mt-3"> PO BOX 716 <br> Willoughby, OH 44096 </p>
-          <!-- <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p> -->
+
           <p>
-            <button class="btn btn-subscribe mt-2" onclick="copyEmail()">Copy Email</button>
+            <button id="copyEmailBtn" class="btn btn-subscribe mt-2">Copy Email</button>
           </p>
-          <span id="email-address" class="visually-hidden">potentiallycriminal@gmail.com</span>
         </div>
         <div class="col-md-6 col-lg-5 mx-auto mb-4">
           <div class="row">
@@ -792,6 +825,49 @@
   </div>
   <div id="shareNotification">Sean Received The Message<br>He Still Wont Read It</div>
 
+  <div id="emoji-container"></div>
+
+  <!-- Fullscreen overlay with inline styles -->
+  <div id="fullscreen-message" style="display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(158, 0, 132, 0.8);
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 1;
+            transition: opacity 0.3s ease;">
+    <div class="message-content" style="text-align: center; position: relative; z-index: 10002;">
+      <h1 style="font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+                font-size: clamp(4rem, 10vw, 8rem);
+                color: white;
+                -webkit-text-stroke: 2px pink;
+                text-shadow: 2px 2px 0 pink,
+                             -2px 2px 0 pink,
+                              2px -2px 0 pink,
+                             -2px -2px 0 pink;
+                margin: 0;">
+        HE'S LATE!<br>HE'S GAY!!!
+      </h1>
+      <p style="font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+              font-size: clamp(1.5rem, 4vw, 3rem);
+              color: white;
+              -webkit-text-stroke: 2px pink;
+              text-shadow: 2px 2px 0 pink,
+                           -2px 2px 0 pink,
+                            2px -2px 0 pink,
+                           -2px -2px 0 pink;
+              margin: 0.5em 0 0;">
+        (click to close)
+      </p>
+    </div>
+  </div>
+
+
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -799,101 +875,173 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-
-
       AOS.init({
         duration: 2000,
         once: false,
       });
-
+      console.log('🛠️ Emoji script loaded');
+      // --- Share Button Logic ---
       const shareButton = document.getElementById('shareButton');
       const shareNotification = document.getElementById('shareNotification');
-      shareButton.addEventListener('click', function () {
-        shareNotification.classList.add('show');
-        setTimeout(function () {
-          shareNotification.classList.remove('show');
-        }, 4000);
-      });
+      if (shareButton && shareNotification) {
+        const originalShareText = shareNotification.innerHTML;
+        shareButton.addEventListener('click', function () {
+          shareNotification.innerHTML = originalShareText;
+          shareNotification.classList.add('show');
+          setTimeout(() => {
+            shareNotification.classList.remove('show');
+          }, 4000);
+        });
+      }
 
-      document.getElementById('copyright-year').textContent = new Date().getFullYear();
+      // --- Email Copy Button Logic ---
+      const copyEmailBtn = document.getElementById('copyEmailBtn');
+      if (copyEmailBtn && shareNotification) {
+        const emailToCopy = 'potentiallycriminal@gmail.com';
+        copyEmailBtn.addEventListener('click', function () {
+          navigator.clipboard.writeText(emailToCopy).then(() => {
+            shareNotification.innerHTML = 'Email Copied to Clipboard!';
+            shareNotification.classList.add('show');
+            setTimeout(() => {
+              shareNotification.classList.remove('show');
+            }, 4000);
+          }).catch(err => {
+            console.error('Failed to copy email: ', err);
+            shareNotification.innerHTML = 'Error: Could not copy email.';
+            shareNotification.classList.add('show');
+            setTimeout(() => {
+              shareNotification.classList.remove('show');
+            }, 4000);
+          });
+        });
+      }
 
+      // --- Copyright Year ---
+      const copyrightYear = document.getElementById('copyright-year');
+      if (copyrightYear) {
+        copyrightYear.textContent = new Date().getFullYear();
+      }
+
+      // --- Stats Section Animation Logic ---
       const lateStatsSection = document.getElementById('late-stats');
       const successStatsSection = document.getElementById('success-stats');
 
-      function triggerCountUp(sectionId) {
-        const fixedDuration = 4;
+      if (lateStatsSection || successStatsSection) {
+        const triggerCountUp = (sectionId) => {
+          const fixedDuration = 10;
+          if (sectionId === 'late-stats') {
+            const latePct = 100;
+            const gayPct = 100;
+            const basedPct = 0;
 
-        if (sectionId === 'late-stats') {
-          const latePct = 100;
-          const gayPct = 100;
-          const basedPct = 0;
+            new countUp.CountUp('circle-late-rate', 100, { duration: fixedDuration, suffix: '%' }).start();
+            new countUp.CountUp('scheduled-shows', 1010, { duration: fixedDuration }).start();
+            new countUp.CountUp('late-shows', 1010, { duration: fixedDuration }).start();
+            new countUp.CountUp('late-bar-percentage', latePct, { duration: fixedDuration, suffix: '%' }).start();
+            new countUp.CountUp('gray-bar-percentage', gayPct, { duration: fixedDuration, suffix: '%' }).start();
+            new countUp.CountUp('based-bar-percentage', basedPct, { startVal: 100, duration: fixedDuration, suffix: '%' }).start();
 
-          new countUp.CountUp('circle-late-rate', 100, { duration: fixedDuration, suffix: '%' }).start();
-          new countUp.CountUp('scheduled-shows', 1010, { duration: fixedDuration }).start();
-          new countUp.CountUp('late-shows', 1010, { duration: fixedDuration }).start();
+            document.getElementById('late-bar-fill').style.transitionDuration = `${fixedDuration}s`;
+            document.getElementById('gray-bar-fill').style.transitionDuration = `${fixedDuration}s`;
+            document.getElementById('based-bar-fill').style.transitionDuration = `${fixedDuration}s`;
+            document.getElementById('late-bar-fill').style.width = latePct + '%';
+            document.getElementById('gray-bar-fill').style.width = gayPct + '%';
+            document.getElementById('based-bar-fill').style.width = basedPct + '%';
 
-          new countUp.CountUp('late-bar-percentage', latePct, { duration: fixedDuration, suffix: '%' }).start();
-          // FIX: Reinstated the CountUp for the GAY bar percentage
-          new countUp.CountUp('gray-bar-percentage', gayPct, { duration: fixedDuration, suffix: '%' }).start();
-          new countUp.CountUp('based-bar-percentage', basedPct, {
-            startVal: 100,
-            duration: fixedDuration,
-            suffix: '%'
-          }).start();
+          } else if (sectionId === 'success-stats') {
+            const readPct = 88;
+            const ignoredPct = 12;
 
-          document.getElementById('late-bar-fill').style.transitionDuration = `${fixedDuration}s`;
-          // FIX: Reinstated the transition for the GAY bar fill
-          document.getElementById('gray-bar-fill').style.transitionDuration = `${fixedDuration}s`;
-          document.getElementById('based-bar-fill').style.transitionDuration = `${fixedDuration}s`;
+            new countUp.CountUp('circle-success-rate', readPct, { duration: fixedDuration, suffix: '%' }).start();
+            new countUp.CountUp('total-superchats', 42069, { duration: fixedDuration }).start();
+            new countUp.CountUp('superchats-read', 37020, { duration: fixedDuration }).start();
+            new countUp.CountUp('read-bar-percentage', readPct, { duration: fixedDuration, suffix: '%' }).start();
+            new countUp.CountUp('ignored-bar-percentage', ignoredPct, { startVal: 100, duration: fixedDuration, suffix: '%' }).start();
 
-          document.getElementById('late-bar-fill').style.width = latePct + '%';
-          // FIX: Reinstated the width animation for the GAY bar fill
-          document.getElementById('gray-bar-fill').style.width = gayPct + '%';
-          document.getElementById('based-bar-fill').style.width = basedPct + '%';
+            document.getElementById('read-bar-fill').style.transitionDuration = `${fixedDuration}s`;
+            document.getElementById('ignored-bar-fill').style.transitionDuration = `${fixedDuration}s`;
+            document.getElementById('read-bar-fill').style.width = readPct + '%';
+            document.getElementById('ignored-bar-fill').style.width = ignoredPct + '%';
+          }
+        };
 
-        } else if (sectionId === 'success-stats') {
-          const readPct = 88;
-          const ignoredPct = 12;
+        const statObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            if (entry.target.id === 'late-stats') {
+              document.getElementById('based-bar-fill').style.width = '100%';
+              document.getElementById('based-bar-percentage').innerText = '100%';
+            } else if (entry.target.id === 'success-stats') {
+              document.getElementById('ignored-bar-fill').style.width = '100%';
+              document.getElementById('ignored-bar-percentage').innerText = '100%';
+            }
+            setTimeout(() => {
+              triggerCountUp(entry.target.id);
+              observer.unobserve(entry.target);
+            }, 10);
+          });
+        }, {
+          threshold: .5
 
-          new countUp.CountUp('circle-success-rate', readPct, { duration: fixedDuration, suffix: '%' }).start();
-          new countUp.CountUp('total-superchats', 42069, { duration: fixedDuration }).start();
-          new countUp.CountUp('superchats-read', 37020, { duration: fixedDuration }).start();
+        });
 
-          new countUp.CountUp('read-bar-percentage', readPct, { duration: fixedDuration, suffix: '%' }).start();
-          new countUp.CountUp('ignored-bar-percentage', ignoredPct, {
-            startVal: 100,
-            duration: fixedDuration,
-            suffix: '%'
-          }).start();
-
-          document.getElementById('read-bar-fill').style.transitionDuration = `${fixedDuration}s`;
-          document.getElementById('ignored-bar-fill').style.transitionDuration = `${fixedDuration}s`;
-          document.getElementById('read-bar-fill').style.width = readPct + '%';
-          document.getElementById('ignored-bar-fill').style.width = ignoredPct + '%';
-        }
+        if (lateStatsSection) statObserver.observe(lateStatsSection);
+        if (successStatsSection) statObserver.observe(successStatsSection);
       }
 
-      const statObserver = new IntersectionObserver(function (entries, observer) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          if (entry.target.id === 'late-stats') {
-            document.getElementById('based-bar-fill').style.width = '100%';
-            document.getElementById('based-bar-percentage').innerText = '100%';
-          } else if (entry.target.id === 'success-stats') {
-            document.getElementById('ignored-bar-fill').style.width = '100%';
-            document.getElementById('ignored-bar-percentage').innerText = '100%';
-          }
-          setTimeout(() => {
-            triggerCountUp(entry.target.id);
-            observer.unobserve(entry.target);
-          }, 10);
-        });
-      }, {
-        threshold: 0.5
-      });
+      // --- Emoji Rain Logic ---
+      const gayButton = document.getElementById('gayButton');
+      // const seansGayBtn = document.getElementById('seansGayBtn');
+      const fullscreenMessage = document.getElementById('fullscreen-message');
+      const emojiContainer = document.getElementById('emoji-container');
+      console.log(
+        '🔍 Elements:',
+        'gayButton=', gayButton,
+        'fullscreenMessage=', fullscreenMessage,
+        'emojiContainer=', emojiContainer
+      );
 
-      if (lateStatsSection) statObserver.observe(lateStatsSection);
-      if (successStatsSection) statObserver.observe(successStatsSection);
+      if (fullscreenMessage && emojiContainer) {
+        const emojis = ['🌈', '🦄', '💩', '🏳️‍🌈'];
+        let emojiInterval = null;
+
+        const createEmoji = () => {
+          const emoji = document.createElement('span');
+          emoji.className = 'emoji';
+          emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+          emoji.style.left = `${Math.random() * 100}vw`;
+          emoji.style.animationDuration = `${Math.random() * 3 + 4}s`;
+          emojiContainer.appendChild(emoji);
+          setTimeout(() => emoji.remove(), 7000);
+        };
+
+        const triggerGayEffect = () => {
+          fullscreenMessage.style.display = 'flex';
+          setTimeout(() => fullscreenMessage.classList.add('show'), 10);
+          if (!emojiInterval) {
+            emojiInterval = setInterval(createEmoji, 100);
+          }
+        };
+        if (gayButton) {
+          console.log('🔗 Attaching click listener to gayButton');
+          gayButton.addEventListener('click', () => {
+            console.log('🎯 gayButton click detected');
+            console.log('🚀 Calling triggerGayEffect()…');
+            try {
+              triggerGayEffect();
+              console.log('✅ triggerGayEffect() ran without error');
+            } catch (e) {
+              console.error('❌ triggerGayEffect() threw:', e);
+            }
+          });
+        }
+        fullscreenMessage.addEventListener('click', () => {
+          fullscreenMessage.classList.remove('show');
+          setTimeout(() => fullscreenMessage.style.display = 'none', 300);
+          clearInterval(emojiInterval);
+          emojiInterval = null;
+        });
+      }
     });
   </script>
 </body>

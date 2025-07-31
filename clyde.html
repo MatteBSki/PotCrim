@@ -101,7 +101,7 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-custom px-3">
+  <nav class="navbar navbar-expand-lg navbar-custom px-3">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -236,23 +236,28 @@
         </div>
       </div>
     </section>
-
-    <!-- Embedded Video Section -->
     <section id="video" class="styled-section bg-custom-white">
       <div class="container" data-aos="fade-up">
         <h2 class="display-5 text-center mb-5">Clyde's Adeventures</h2>
         <hr>
         <div class="row">
           <div class="col-lg-10 mx-auto">
-            <!-- HTML5 Video Player -->
-            <!-- 'controls' adds play/pause, volume, etc. -->
-            <!-- 'playsinline' helps with playback on iOS -->
-            <!-- 'autoplay' and 'muted' are often needed for videos to play automatically in modern browsers -->
-            <!-- 'loop' makes the video repeat -->
+
             <div class="ratio ratio-16x9">
               <video controls playsinline>
-                <!-- Provide the path to your video file. You can include multiple formats for better browser compatibility. -->
                 <source src="clydeImg/tothemoon.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div class="ratio ratio-16x9">
+              <video controls playsinline>
+                <source src="clydeImg/laserClyde.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+                        <div class="ratio ratio-16x9">
+              <video controls playsinline>
+                <source src="clydeImg/roboClyde.mp4" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
             </div>
@@ -270,11 +275,10 @@
             <img src="img/logo.svg" alt="Potentially Criminal Logo" class="logo-responsive footer-logo">
           </a>
           <p class="text-white-50 mt-3"> PO BOX 716 <br> Willoughby, OH 44096 </p>
-          <!-- <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p> -->
+
           <p>
-            <button class="btn btn-subscribe mt-2" onclick="copyEmail()">Copy Email</button>
+            <button id="copyEmailBtn" class="btn btn-subscribe mt-2">Copy Email</button>
           </p>
-          <span id="email-address" class="visually-hidden">potentiallycriminal@gmail.com</span>
         </div>
         <div class="col-md-6 col-lg-5 mx-auto mb-4">
           <div class="row">
@@ -311,24 +315,19 @@
       </div>
     </div>
   </footer>
-
   <div class="floating-button-container">
     <button id="shareButton">SHARE SCREEN!</button>
   </div>
   <div id="shareNotification">Sean Received The Message<br>He Still Wont Read It</div>
-  <!-- JavaScript Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
   <script>
-    // This function runs once the entire HTML document is loaded and ready.
     document.addEventListener('DOMContentLoaded', function () {
 
-      // This forces the browser to scroll to the top of the page on reload.
       window.scrollTo(0, 0);
 
-      // --- Share Button Logic ---
       const shareButton = document.getElementById('shareButton');
       const shareNotification = document.getElementById('shareNotification');
       shareButton.addEventListener('click', () => {
@@ -338,54 +337,75 @@
         }, 4000);
       });
 
-
-      // Initialize the Animate on Scroll (AOS) library for fade-in effects.
+      // --- Email Copy Button Logic ---
+      const copyEmailBtn = document.getElementById('copyEmailBtn');
+      if (copyEmailBtn && shareNotification) {
+        const emailToCopy = 'potentiallycriminal@gmail.com';
+        copyEmailBtn.addEventListener('click', function () {
+          navigator.clipboard.writeText(emailToCopy).then(() => {
+            shareNotification.innerHTML = 'Email Copied to Clipboard!';
+            shareNotification.classList.add('show');
+            setTimeout(() => {
+              shareNotification.classList.remove('show');
+            }, 4000);
+          }).catch(err => {
+            console.error('Failed to copy email: ', err);
+            shareNotification.innerHTML = 'Error: Could not copy email.';
+            shareNotification.classList.add('show');
+            setTimeout(() => {
+              shareNotification.classList.remove('show');
+            }, 4000);
+          });
+        });
+      }
       AOS.init({
-        duration: 800, // Animation duration in milliseconds
-        once: true,    // Whether animation should happen only once
+        duration: 800, 
+        once: false,    
       });
 
-      // Automatically update the copyright year in the footer.
       document.getElementById('copyright-year').textContent = new Date().getFullYear();
-
-      // --- Clyde's Photo Gallery Setup ---
-
-      // Get the container where the gallery images will be placed.
       const gallery = document.getElementById('clyde-gallery');
-
-      // An array of image URLs for the gallery.
       const images = [
-        'clydeImg/clyde1.jpg',
-        'clydeImg/clyde2.jpg',
-        'clydeImg/clyde3.jpg',
-        'clydeImg/clyde4.jpg',
-        'clydeImg/clyde5.jpg',
-        'clydeImg/clyde6.jpg',
-        'clydeImg/clyde7.jpg',
-        'clydeImg/clyde8.jpg',
-        'clydeImg/clyde9.jpg',
-        'clydeImg/clyde10.jpg',
-        'clydeImg/clyde11.jpg',
-        'clydeImg/clyde12.jpg',
         'clydeImg/clyde13.jpg',
-        'clydeImg/clyde14.jpg',
-        'clydeImg/clyde15.jpg',
-        'clydeImg/clyde16.jpg',
-        'clydeImg/clyde17.jpg',
-        'clydeImg/clyde18.jpg',
-        'clydeImg/clyde19.jpg',
         'clydeImg/clydePanda.jpg',
-        'clydeImg/clydeSit.png',
-        'clydeImg/clydeKoala.png',
-        'clydeImg/clydeElissa.png',
-        'clydeImg/clydeEepy.png',
-        'clydeImg/clydeDali.png',
+        'clydeImg/clyde6.jpg',
+        'clydeImg/luchaClyde.png',
+        'clydeImg/clyde15.jpg',
+        'clydeImg/clyde8.jpg',
+        'clydeImg/clyde3.jpg',
         'clydeImg/clydeCouch.png',
+        'clydeImg/alienClyde.png',
         'clydeImg/clydeCar.png',
+        'clydeImg/willClyde.png',
+        'clydeImg/clydeDali.png',
+        'clydeImg/clyde17.jpg',
+        'clydeImg/chefClyde.png',
+        'clydeImg/clydeSit.png',
+        'clydeImg/clyde4.jpg',
+        'clydeImg/clydeKoala.png',
+        'clydeImg/clyde9.jpg',
+        'clydeImg/clyde1.jpg',
+        'clydeImg/agClyde.png',
+        'clydeImg/clyde19.jpg',
+        'clydeImg/tactiClyde.png',
+        'clydeImg/clyde11.jpg',
+        'clydeImg/clydeElissa.png',
+        'clydeImg/40kClyde.png',
+        'clydeImg/clyde2.jpg',
+        'clydeImg/clydeEepy.png',
+        'clydeImg/maxClyde.png',
+        'clydeImg/clyde12.jpg',
+        'clydeImg/clyde7.jpg',
+        'clydeImg/clyde18.jpg',
+        'clydeImg/trainClyde.png',
+        'clydeImg/edwClyde.png',
+        'clydeImg/clyde10.jpg',
         'clydeImg/clydeBelly.png',
+        'clydeImg/leatherClyde.png',
+        'clydeImg/clyde16.jpg',
+        'clydeImg/raidenClyde.png'
       ];
 
-      // Loop through the 'images' array and create the HTML for each slide.
       images.forEach(src => {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
@@ -396,17 +416,16 @@
         gallery.appendChild(slide);
       });
 
-      // Initialize the Swiper library for the gallery.
       const swiper = new Swiper('.clyde-swiper', {
-        effect: 'coverflow', // Using coverflow effect can enhance the centered look
+        effect: 'coverflow', 
         grabCursor: true,
-        loop: true, // Enables continuous looping
-        slidesPerView: 1, // How many slides to show at once on small screens
-        spaceBetween: 30, // Space between slides in pixels
-        centeredSlides: true, // Centers the active slide
+        loop: true, 
+        slidesPerView: 1, 
+        spaceBetween: 30, 
+        centeredSlides: true, 
         autoplay: {
-          delay: 3000, // Time between slides in milliseconds
-          disableOnInteraction: false, // Autoplay won't stop if you interact with the slider
+          delay: 3000, 
+          disableOnInteraction: false, 
         },
         coverflowEffect: {
           rotate: 0,
@@ -415,23 +434,18 @@
           modifier: 2.5,
           slideShadows: true,
         },
-        // Pagination dots
         pagination: {
           el: '.swiper-pagination',
           clickable: true,
         },
-        // Navigation arrows
         navigation: {
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev',
         },
-        // Responsive settings: change the number of slides based on screen width
         breakpoints: {
-          // when window width is >= 768px (tablets)
           768: {
             slidesPerView: 2,
           },
-          // when window width is >= 992px (desktops)
           992: {
             slidesPerView: 3,
           }

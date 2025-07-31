@@ -229,8 +229,7 @@
     </div>
   </section>
 
-
-   <footer class="footer-custom">
+  <footer class="footer-custom">
     <div class="container-lg text-center text-md-start">
       <div class="row mt-3">
         <div class="col-md-3 col-lg-3 mx-auto mb-4">
@@ -238,11 +237,10 @@
             <img src="img/logo.svg" alt="Potentially Criminal Logo" class="logo-responsive footer-logo">
           </a>
           <p class="text-white-50 mt-3"> PO BOX 716 <br> Willoughby, OH 44096 </p>
-          <!-- <p><a href="mailto:potentiallycriminal@gmail.com" class="footer-link">potentiallycriminal@gmail.com</a></p> -->
+
           <p>
-            <button class="btn btn-subscribe mt-2" onclick="copyEmail()">Copy Email</button>
+            <button id="copyEmailBtn" class="btn btn-subscribe mt-2">Copy Email</button>
           </p>
-          <span id="email-address" class="visually-hidden">potentiallycriminal@gmail.com</span>
         </div>
         <div class="col-md-6 col-lg-5 mx-auto mb-4">
           <div class="row">
@@ -280,110 +278,132 @@
     </div>
   </footer>
 
+  <!-- Notification container for copy-email -->
+  <div id="shareNotification" class="copy-notification"></div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
-    // --- Countdown Logic ---
-    const countdownEl = document.getElementById("countdown");
-    const happyBirthdayMessageEl = document.getElementById("message");
-    if (countdownEl && happyBirthdayMessageEl) {
-      let timer; const birthdayMonth = 7; const birthdayDay = 10;
-      const updateCountdown = () => {
-        const now = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
-        let targetYear = now.getFullYear();
-        const hasBirthdayPassed = now.getMonth() > birthdayMonth || (now.getMonth() === birthdayMonth && now.getDate() > birthdayDay);
-        if (hasBirthdayPassed) targetYear++;
-        const isBirthdayToday = now.getMonth() === birthdayMonth && now.getDate() === birthdayDay;
-        if (isBirthdayToday) {
-          countdownEl.style.display = "none";
-          happyBirthdayMessageEl.style.display = "block";
-          if (!document.querySelector('.confetti')) launchConfetti();
-          clearInterval(timer);
-        } else {
-          const birthday = new Date(targetYear, birthdayMonth, birthdayDay);
-          const diff = birthday - now;
-          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-          countdownEl.innerHTML = `Sean's Birthday is in<br>${days}d ${hours}h ${minutes}m ${seconds}s`;
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Countdown Logic ---
+      const countdownEl = document.getElementById('countdown');
+      const happyEl     = document.getElementById('message');
+      if (countdownEl && happyEl) {
+        let timer;
+        const birthdayMonth = 7;  // July (0-based)
+        const birthdayDay   = 10;
+
+        function updateCountdown() {
+          const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+          let year = now.getFullYear();
+          const passed = now.getMonth() > birthdayMonth ||
+                         (now.getMonth() === birthdayMonth && now.getDate() > birthdayDay);
+          if (passed) year++;
+
+          const today = now.getMonth() === birthdayMonth && now.getDate() === birthdayDay;
+          if (today) {
+            countdownEl.style.display = 'none';
+            happyEl.style.display     = 'block';
+            if (!document.querySelector('.confetti')) launchConfetti();
+            clearInterval(timer);
+          } else {
+            const target   = new Date(year, birthdayMonth, birthdayDay);
+            const diff     = target - now;
+            const days     = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours    = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes  = Math.floor((diff % (1000 * 60 * 60))      / (1000 * 60));
+            const seconds  = Math.floor((diff % (1000 * 60))           / 1000);
+            countdownEl.innerHTML = `Sean's Birthday is in<br>${days}d ${hours}h ${minutes}m ${seconds}s`;
+          }
         }
-      };
-      const launchConfetti = () => {
-        const wrapper = document.querySelector('.birthday-wrapper'); if (!wrapper) return;
-        for (let i = 0; i < 200; i++) {
-          const confetti = document.createElement("div");
-          confetti.classList.add("confetti");
-          confetti.style.left = Math.random() * 100 + "vw";
-          confetti.style.animationDelay = Math.random() * 3 + "s";
-          confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-          wrapper.appendChild(confetti);
+
+        function launchConfetti() {
+          const wrapper = document.querySelector('.birthday-wrapper');
+          if (!wrapper) return;
+          for (let i = 0; i < 200; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left           = Math.random() * 100 + 'vw';
+            confetti.style.animationDelay = Math.random() * 3 + 's';
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360},100%,50%)`;
+            wrapper.appendChild(confetti);
+          }
         }
-      };
-      timer = setInterval(updateCountdown, 1000);
-      updateCountdown();
-    }
 
-    // --- Character Counter Logic ---
-    const messageInput = document.getElementById('message-input');
-    const charCounter = document.getElementById('char-counter');
-    const submitButton = document.getElementById('submitButton');
-    // MODIFICATION 3: Changed JS variable to 100
-    const maxLength = 100;
-
-    // Set initial counter text on page load
-    charCounter.textContent = `${messageInput.value.length} / ${maxLength}`;
-
-    messageInput.addEventListener('input', () => {
-      const currentLength = messageInput.value.length;
-      charCounter.textContent = `${currentLength} / ${maxLength}`;
-
-      if (currentLength > maxLength) {
-        charCounter.classList.add('text-danger');
-        charCounter.classList.remove('text-white-50');
-        submitButton.disabled = true; // Disable submit button if over limit
-      } else {
-        charCounter.classList.remove('text-danger');
-        charCounter.classList.add('text-white-50');
-        submitButton.disabled = false; // Enable submit button if within limit
+        timer = setInterval(updateCountdown, 1000);
+        updateCountdown();
       }
-    });
 
-    // --- Form Submission Logic ---
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwjfE1qCVMakGdEH6u_hwNtpnCCmgzEuUqweYuUrjduRRGI0xjdydvzS5Epxq8M3vZbIw/exec'; // Make sure this is your latest URL!
-    const form = document.getElementById('birthdayForm');
-    const cancelButton = document.getElementById('cancelButton');
-    const formResponse = document.getElementById('form-response');
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      submitButton.disabled = true;
-      submitButton.textContent = 'Submitting...';
-      fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-        .then(response => {
-          formResponse.innerHTML = '<div class="alert alert-success" role="alert">Thank you! Your message has been submitted for review.</div>';
-          form.reset();
-          charCounter.textContent = `0 / ${maxLength}`;
-          charCounter.classList.remove('text-danger');
-          charCounter.classList.add('text-white-50');
-        })
-        .catch(error => {
-          formResponse.innerHTML = '<div class="alert alert-danger" role="alert">An error occurred. Please try again later.</div>';
-          console.error('Error!', error.message);
-        })
-        .finally(() => {
-          submitButton.disabled = false;
-          submitButton.textContent = 'Submit Message';
+      // --- Character Counter ---
+      const messageInput = document.getElementById('message-input');
+      const charCounter  = document.getElementById('char-counter');
+      const submitBtn    = document.getElementById('submitButton');
+      const maxLength    = 100;
+      charCounter.textContent = `${messageInput.value.length} / ${maxLength}`;
+
+      messageInput.addEventListener('input', () => {
+        const len = messageInput.value.length;
+        charCounter.textContent = `${len} / ${maxLength}`;
+        submitBtn.disabled = len > maxLength;
+        charCounter.classList.toggle('text-danger', len > maxLength);
+      });
+
+      // --- Form Submission ---
+      const form         = document.getElementById('birthdayForm');
+      const cancelBtn    = document.getElementById('cancelButton');
+      const formResponse = document.getElementById('form-response');
+      const scriptURL    = 'https://script.google.com/macros/s/AKfycbwjfE1qCVMakGdEH6u_hwNtpnCCmgzEuUqweYuUrjduRRGI0xjdydvzS5Epxq8M3vZbIw/exec';
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+        fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+          .then(() => {
+            formResponse.innerHTML = '<div class="alert alert-success" role="alert">Thank you! Your message has been submitted for review.</div>';
+            form.reset();
+            charCounter.textContent = `0 / ${maxLength}`;
+            charCounter.classList.remove('text-danger');
+          })
+          .catch(() => {
+            formResponse.innerHTML = '<div class="alert alert-danger" role="alert">An error occurred. Please try again later.</div>';
+          })
+          .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Message';
+          });
+      });
+
+      cancelBtn.addEventListener('click', () => {
+        form.reset();
+        formResponse.innerHTML = '';
+        charCounter.textContent = `0 / ${maxLength}`;
+        charCounter.classList.remove('text-danger');
+        submitBtn.disabled = false;
+      });
+
+      // --- Copy Email ---
+      const copyEmailBtn      = document.getElementById('copyEmailBtn');
+      const shareNotification = document.getElementById('shareNotification');
+      if (copyEmailBtn && shareNotification) {
+        copyEmailBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText('potentiallycriminal@gmail.com')
+            .then(() => {
+              shareNotification.textContent = 'Email Copied to Clipboard!';
+              shareNotification.classList.add('show');
+              setTimeout(() => shareNotification.classList.remove('show'), 4000);
+            })
+            .catch(() => {
+              shareNotification.textContent = 'Error: Could not copy email.';
+              shareNotification.classList.add('show');
+              setTimeout(() => shareNotification.classList.remove('show'), 4000);
+            });
         });
-    });
-    cancelButton.addEventListener('click', () => {
-      form.reset();
-      formResponse.innerHTML = '';
-      charCounter.textContent = `0 / ${maxLength}`;
-      charCounter.classList.remove('text-danger');
-      charCounter.classList.add('text-white-50');
-      submitButton.disabled = false; // Re-enable submit on cancel
-    });
+      }
 
-    document.getElementById('copyright-year').textContent = new Date().getFullYear();
+      // --- Update Copyright Year ---
+      document.getElementById('copyright-year').textContent = new Date().getFullYear();
+    });
   </script>
 </body>
 

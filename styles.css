@@ -346,13 +346,30 @@ h6 {
 
 @media (max-width: 767.98px) {
   .styled-section {
-    margin: 0 0 2rem 0;
+    margin: 0 0 0rem 0;
+  }
+}
+
+/* Mobile: remove side margins on stats section to use full width */
+@media (max-width: 767.98px) {
+  #late-stats.styled-section {
+    margin: 0rem !important;
+    border-radius: 0rem; /* optional: keep slight rounding */
   }
 }
 
 /* Base size for desktop */
 section .lead {
   font-size: 1.6rem;
+}
+
+/* Ensure subheadings in vote block are full white for readability */
+.vote-content .lead {
+  color: #000 !important;
+}
+
+.vote-content .text-white-50 {
+  color: #000 !important;
 }
 
 /* Smaller size for mobile */
@@ -464,6 +481,98 @@ section .lead {
 .info-tile-link:hover {
   text-decoration: none;
   color: inherit;
+}
+
+/* pride tiles */
+.vote-photo {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--pc-white);
+}
+.vote-bg-img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+  z-index: 1;
+}
+.vote-content {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+}
+.text-white-75 {
+  color: rgba(255,255,255,0.75) !important;
+}
+.text-white-50 {
+  color: rgba(255,255,255,0.5) !important;
+}
+
+@media (max-width: 767.98px) {
+  #late-stats .container {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+/* CORE CARD STYLING */
+.stats-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: calc(100% - 2rem); /* leave 1rem gap each side */
+  background-clip: padding-box;
+  padding-left: .5rem !important;
+  padding-right: .5rem !important;
+}
+
+/* VOTE ROW BACKGROUND IMAGE */
+.vote-photo {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--pc-white);
+}
+.vote-bg-img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.4;
+  z-index: 1;
+}
+.vote-content {
+  position: relative;
+  z-index: 2;
+}
+
+.stats-card--photo {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  max-width: calc(100% - 2rem);
+  height: 100%;
+  background-color: var(--pc-white);
+}
+
+/* Background image element */
+.stats-card--photo .stats-bg-img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.4; /* adjust opacity for subtlety */
+  z-index: 1;
+}
+
+/* Wrap actual stats content above the image */
+.stats-card--photo .stats-content {
+  position: relative;
+  z-index: 2;
+  padding: .5rem;
 }
 
 /*
@@ -868,6 +977,69 @@ section[id*="-stats"] .stat-number-label {
   color: var(--pc-dark-grey);
 }
 
+/* Clock responsiveness: maintain a perfect circle */
+.stat-circle-inner.clock {
+  width: clamp(8rem, 20vw, 12rem);
+  aspect-ratio: 1 / 1;
+}
+
+/* Clock face styling */
+.clock {
+  border-radius: 50%;
+  background: conic-gradient(
+    red, orange, yellow, green, blue, violet, magenta, red
+  );
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Common hand styles */
+.clock .hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  background: #000;
+  transform-origin: bottom center;
+  border-radius: 1px;
+}
+
+/* Hour hand: shorter, slower */
+.clock .hand.hour {
+  width: 8px;
+  height: 40%; /* relative to container */
+  animation: spin-hour 60s linear infinite;
+}
+
+/* Minute hand: longer, faster */
+.clock .hand.minute {
+  width: 4px;
+  height: 60%;
+  animation: spin-minute 6s linear infinite;
+}
+
+/* Center label styling */
+.clock .clock-label {
+  position: absolute;
+  text-align: center;
+font-size: clamp(1rem, 2vw, 1.5rem);
+  color: #000;
+  pointer-events: none;
+  font-weight: bold;
+}
+
+/* Keyframes for spinning */
+@keyframes spin-hour {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes spin-minute {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
 .stat-circle-gray {
   background: conic-gradient(from 90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #ee82ee, #ff0000);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9);
@@ -880,7 +1052,7 @@ section[id*="-stats"] .stat-number-label {
 
 .bar-graph-container {
   margin-top: 2.5rem;
-  padding: 0 1rem;
+  padding: 0 .5rem;
 }
 
 .bar-row {
@@ -891,7 +1063,7 @@ section[id*="-stats"] .stat-number-label {
 }
 
 .bar-label {
-  min-width: 4.5rem;
+  min-width: 3.5rem;
   /* Creates a consistent minimum width for all labels */
   text-align: right;
   /* Aligns the text within that space */
@@ -913,6 +1085,9 @@ section[id*="-stats"] .stat-number-label {
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--pc-black);
+    /* flex-basis: 60px; */
+  min-width: 2.5rem;
+  text-align: left;
 }
 
 .bar-fill {
@@ -938,13 +1113,13 @@ section[id*="-stats"] .stat-number-label {
   /* Blue */
 }
 
-.bar-percentage {
+/* .bar-percentage {
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--pc-black);
   flex-basis: 60px;
   text-align: left;
-}
+} */
 
 @media (max-width: 767px) {
   .stat-circle {
@@ -1035,6 +1210,80 @@ section[id*="-stats"] .stat-number-label {
   }
 }
 
+/* --- Big Pink Button Style --- */
+.btn-gay-pink {
+    background-color: #E83E8C; /* A nice, vibrant pink */
+    border-color: #E83E8C;
+    color: #fff;
+    padding: 1rem 2.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-gay-pink:hover {
+    background-color: #d1307b;
+    border-color: #c52d72;
+    color: #fff;
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* FULLSCREEN OVERLAY */
+#fullscreen-message {
+  display: none;               /* start hidden */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+#fullscreen-message.show {
+  opacity: 1;
+  display: flex;               /* trigger flex when “.show” is added */
+}
+
+/* Overlay sits at z-index 10000 */
+#fullscreen-message {
+  z-index: 10000;
+}
+
+/* Emoji container just above the overlay background */
+#emoji-container {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 10001;
+}
+
+/* Emojis themselves at same level as container */
+.emoji {
+  position: absolute;
+  top: -2rem;
+  font-size: 2rem;
+  will-change: transform;
+  animation-name: fall;
+  animation-timing-function: linear;
+  /* inline duration from JS */
+  z-index: 10001;
+}
+
+/* Ensure message text is on top */
+#fullscreen-message .message-content {
+  position: relative;
+  z-index: 10002;
+}
+
+@keyframes fall {
+  to { transform: translateY(105vh); }
+}
 /*
 ==============================================
 17. Custom Link Styles
@@ -1229,4 +1478,9 @@ Ensure Blogger Section Hidden Links Don't Visually Appear as Links
   .styled-section {
     padding: 2rem 1rem;
   }
+}
+
+/* nothing fancy—just ensure the overlay sits exactly on top */
+#overlayPie {  
+  background: transparent;
 }
