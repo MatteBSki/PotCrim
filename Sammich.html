@@ -421,7 +421,6 @@
             ctx.drawImage(images.gameOver, x, y, imgWidth, imgHeight);
         }
         const scoreY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT;
-
         if (totalScore >= PRIZE_SCORE_MIN) {
             const prizeFont = "bold 45px 'Comic Sans MS', Arial";
             ctx.font = prizeFont; ctx.textAlign = "center"; ctx.strokeStyle = "black"; ctx.lineWidth = 4; ctx.fillStyle = "#86C232";
@@ -432,9 +431,9 @@
             prizeLink = { x: canvas.width / 2 - textMetrics.width / 2, y: scoreY - textHeight, width: textMetrics.width, height: textHeight, visible: true };
         } else {
             ctx.font = "bold 70px 'Comic Sans MS', Arial";
-            ctx.textAlign = "center"; ctx.strokeStyle = "black"; ctx.lineWidth = 5; ctx.fillStyle = "#FFD700";
-            ctx.strokeText("Final Score: " + totalScore, canvas.width / 2, scoreY);
-            ctx.fillText("Final Score: " + totalScore, canvas.width / 2, scoreY);
+            ctx.textAlign = "center"; ctx.strokeStyle = "blue"; ctx.lineWidth = 5; ctx.fillStyle = "#FFD700";
+            ctx.strokeText(totalScore, canvas.width / 2, scoreY);
+            ctx.fillText(totalScore, canvas.width / 2, scoreY);
         }
 
         if (images.playAgain && images.playAgain.complete) {
