@@ -1,57 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Clyde's Sandwich Stack</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      overflow: hidden;
-      font-family: sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    canvas {
-      display: block;
-      width: 100%; /* Fill the container's width */
-      height: auto; /* Let height adjust to maintain aspect ratio */
-      max-width: 1600px; /* Prevent stretching on screens > 1600px */
-    }
-    #orientation-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #000;
-      color: #fff;
-      z-index: 20000;
-      display: none; /* Hidden by default; JS will show it */
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      font-size: 1.5rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Clyde's Sandwich Stack</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Canvas style is now minimal, JS will handle sizing and scaling */
+        canvas {
+            display: block;
+        }
+
+        #orientation-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            color: #fff;
+            z-index: 20000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+    </style>
 </head>
+
 <body>
-  <div id="orientation-overlay">
-    <p>🔄<br>Please rotate your device or widen your browser window to play.</p>
-  </div>
+    <div id="orientation-overlay">
+        <p><br>Please rotate your device or widen your browser window to play.</p>
+    </div>
 
-  <canvas id="game"></canvas>
+    <canvas id="game"></canvas>
 
-  <audio id="bgMusic" loop>
-    <source src="music/game_music.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+    <audio id="bgMusic" loop>
+        <source src="music/game_music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
-  <button id="musicToggle" style="
+    <button id="musicToggle" style="
     position: fixed;
     top: 20px;
     right: 20px;
@@ -65,20 +67,37 @@
     font-size: 1rem;
     cursor: pointer;
   ">
-  🔇 Music On
-  </button>
+        ▶️ Music On
+    </button>
+    
+    <button id="fullscreenToggle" style="
+    position: fixed;
+    top: 20px;
+    right: 170px;
+    z-index: 10000;
+    background-color: #86C232;
+    color: #000;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+  ">
+        ⛶ Fullscreen
+    </button>
 
-  <script>
+<script>
     // --- Game Settings ---
     const GAME_WIDTH = 1600;
     const GAME_HEIGHT = 900;
-    const PRIZE_SCORE_MIN = 33;
+    const PRIZE_SCORE_MIN = 5000;
     const PRIZE_URL = 'https://shorturl.at/D1vf5';
 
     // --- Clyde's Movement ---
-    const CLYDE_BASE_SPEED = 6;
-    const CLYDE_ACCELERATION = 0.2;
-    const CLYDE_MAX_SPEED = 12;
+    const CLYDE_BASE_SPEED = 12;
+    const CLYDE_ACCELERATION = 0.8;
+    const CLYDE_MAX_SPEED = 22;
 
     // --- Gameplay Constants ---
     const LANDING_OFFSET_X = 20;
@@ -89,15 +108,29 @@
     const TOPPING_WIDTH = 100;
     const TOPPING_HEIGHT = 100;
     const SANDWICH_LAYER_HEIGHT = 20;
-    const MAX_MISSES = 5;
     const NO_SPAWN_ZONE_WIDTH = 200;
     const CHARACTER_VERTICAL_OFFSET = 50;
     const SCREEN_VERTICAL_SHIFT = -60;
     const REGISTER_SCALE = 0.25;
     const REGISTER_X_OFFSET = 150;
-    const REGISTER_Y_OFFSET = 40;   
+    const REGISTER_Y_OFFSET = 40;
     const PLAY_BUTTON_SCALE = 0.5;
-    const SPAWN_INTERVAL_REDUCTION = 300;
+    const STARTING_LIVES = 5;
+
+    // --- Difficulty Scaling Constants ---
+    const BASE_LEVEL_TIME = 20;
+    const BREAD_SPAWN_DELAY = 10;
+    const BASE_SPAWN_INTERVAL = 1200;
+    const MIN_SPAWN_INTERVAL = 500;
+
+    // --- Power-Up Constants ---
+    const FRENZY_DURATION = 5000;
+    const FRENZY_SPAWN_INTERVAL = 150;
+    const SLOWDOWN_DURATION = 7000;
+    const SLOWDOWN_FACTOR = 0.5;
+    const SPEEDBOOST_DURATION = 10000;
+    const SPEEDBOOST_FACTOR = 1.5;
+    const FRENZY_TOPPING_TYPES = ["mayo"];
 
     // --- Canvas Setup ---
     const canvas = document.getElementById("game");
@@ -106,47 +139,60 @@
     canvas.height = GAME_HEIGHT;
 
     // --- Game State ---
-    let score = 0, missed = 0, gameOver = false, level = 1, spawnInterval = 2000;
-    let lastSpawnTime = 0, sandwichCompleted = false, gameStarted = false;
-    let showStartScreen = true, highScore = 0, levelStartTime = 0;
+    let totalScore = 0, lives = 0, gameOver = false, level = 1, spawnInterval;
+    let lastSpawnTime = 0, gameStarted = false;
+    let showStartScreen = true;
     let playButton = { x: 0, y: 0, width: 0, height: 0 };
     let prizeLink = { x: 0, y: 0, width: 0, height: 0, visible: false };
-    let showNextLevelScreen = false;
     const toppings = [], sandwich = [];
-    const toppingTypes = ["lettuce", "cheese", "tomato", "bacon", "bread"];
+    const baseToppingTypes = ["lettuce", "cheese", "tomato", "bacon"];
+    let toppingSpawnBag = [];
+    let characterBag = [];
+
+    let levelTime = 0;
+    let spawnCounter = 0;
+
+    // --- Power-Up State ---
+    let isFrenzyActive = false;
+    let frenzyEndTime = 0;
+    let originalSpawnInterval = 0;
+    let isSlowdownActive = false;
+    let slowdownEndTime = 0;
+    let isSpeedBoostActive = false;
+    let speedBoostEndTime = 0;
+    let originalClydeSpeeds = {};
 
     // --- Drag State ---
     let isDragging = false;
-    let dragOffsetX = 0;
 
     const clyde = {
-      x: canvas.width / 2 - CHARACTER_WIDTH / 2,
-      y: canvas.height - CHARACTER_HEIGHT - CHARACTER_VERTICAL_OFFSET,
-      width: CHARACTER_WIDTH, height: CHARACTER_HEIGHT,
-      baseSpeed: CLYDE_BASE_SPEED, 
-      speed: CLYDE_BASE_SPEED, 
-      maxSpeed: CLYDE_MAX_SPEED, 
-      acceleration: CLYDE_ACCELERATION
+        x: canvas.width / 2 - CHARACTER_WIDTH / 2,
+        y: canvas.height - CHARACTER_HEIGHT - CHARACTER_VERTICAL_OFFSET,
+        width: CHARACTER_WIDTH, height: CHARACTER_HEIGHT,
+        baseSpeed: CLYDE_BASE_SPEED, speed: CLYDE_BASE_SPEED,
+        maxSpeed: CLYDE_MAX_SPEED, acceleration: CLYDE_ACCELERATION
     };
 
     // --- Image Loading ---
     const images = {};
     const imageSources = {
-      clyde:      "img/sammich_clyde.png",
-      logo:       "img/game_logo.png",
-      gameOver:   "img/game_over.png",
-      counter:    "img/counter.png",
-      register:   "img/register.png",
-      background: "img/deli.png",
-      clickToPlay:"img/click_play.png",
-      playAgain:  "img/play_again.png",   
-      nextLevel:  "img/next_level.png",
-      bacon:      "img/ham.png",
-      lettuce:    "img/lettuce.png",
-      tomato:     "img/tomato.png",
-      cheese:     "img/cheese.png",
-      bread:      "img/bread.png"
+        clyde: "img/sammich_clyde.png",
+        logo: "img/game_logo.png",
+        gameOver: "img/game_over.png",
+        counter: "img/counter.png",
+        register: "img/register.png",
+        background: "img/deli.png",
+        clickToPlay: "img/click_play.png",
+        playAgain: "img/play_again.png",
+        bacon: "img/ham.png",
+        lettuce: "img/lettuce.png",
+        tomato: "img/tomato.png",
+        cheese: "img/cheese.png",
+        bread: "img/bread.png",
+        mayo: "img/mayo.png",
+        special_item: "img/balldo.png"
     };
+    const clydeCharacters = ["img/sammich_luchaClyde.png", "img/sammich_raidenClyde.png", "img/sammich_gaySeanClyde.png", "img/sammich_roboClyde.png", "img/sammich_spiderClyde.png", "img/sammich_astroClyde.png", "img/sammich_clyde.png"];
 
     Object.keys(imageSources).forEach(key => {
         images[key] = new Image();
@@ -156,268 +202,410 @@
     // --- Input Handling ---
     const keys = { ArrowLeft: false, ArrowRight: false };
     document.addEventListener("keydown", (e) => { if (e.key in keys) keys[e.key] = true; });
-    document.addEventListener("keyup", (e) => { if (e.key in keys) { keys[e.key] = false; clyde.speed = clyde.baseSpeed; }});
+    document.addEventListener("keyup", (e) => { if (e.key in keys) { keys[e.key] = false; clyde.speed = clyde.baseSpeed; } });
 
-    function getMousePos(event) {
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-        return {
-            x: (event.clientX - rect.left) * scaleX,
-            y: (event.clientY - rect.top) * scaleY
-        };
-    }
-    
-    function isPosInRect(pos, rect) {
-        return pos.x >= rect.x && pos.x <= rect.x + rect.width &&
-               pos.y >= rect.y && pos.y <= rect.y + rect.height;
-    }
+    function getMousePos(event) { const rect = canvas.getBoundingClientRect(); const scaleX = canvas.width / rect.width; const scaleY = canvas.height / rect.height; return { x: (event.clientX - rect.left) * scaleX, y: (event.clientY - rect.top) * scaleY }; }
+    function isPosInRect(pos, rect) { return pos.x >= rect.x && pos.x <= rect.x + rect.width && pos.y >= rect.y && pos.y <= rect.y + rect.height; }
 
-    // --- Desktop Click Listener ---
-    canvas.addEventListener('click', function(event) {
-        if (isDragging) return; // Don't process clicks if a drag is happening
-        const mousePos = getMousePos(event);
-        handleGameStart(mousePos);
-    });
-
-    // --- Mouse Move Listener for Prize Link ---
-    canvas.addEventListener('mousemove', function(event) {
-        const mousePos = getMousePos(event);
-        if (gameOver && prizeLink.visible && isPosInRect(mousePos, prizeLink)) {
-            canvas.style.cursor = 'pointer';
-        } else {
-            canvas.style.cursor = 'default';
-        }
-    });
-
-// --- Touch Listeners for Dragging and Game Start ---
-    canvas.addEventListener('touchstart', function(event) {
-        event.preventDefault();
-        const touch = event.changedTouches[0];
-        if (!touch) return;
-        const touchPos = getMousePos(touch);
-
-        // First, check if the touch is meant to start the game or click a button.
-        // The handleGameStart function will return true if it successfully started a screen.
-        const UIMode = handleGameStart(touchPos);
-
-        // If a button wasn't pressed and the game is running, start dragging.
-        if (!UIMode && gameStarted) {
-            isDragging = true;
-            // Center Clyde under the finger.
-            clyde.x = touchPos.x - clyde.width / 2;
-        }
-    }, { passive: false });
-
-    canvas.addEventListener('touchmove', function(event) {
-        event.preventDefault();
-        if (!isDragging) return;
-
-        const touch = event.changedTouches[0];
-        if (!touch) return;
-        
-        const touchPos = getMousePos(touch);
-        // Update Clyde's position to stay centered under the finger.
-        clyde.x = touchPos.x - clyde.width / 2;
-    }, { passive: false });
-
-    canvas.addEventListener('touchend', function(event) {
-        event.preventDefault();
-        // Stop dragging when the finger is lifted.
-        isDragging = false;
-    });
+    canvas.addEventListener('click', function (event) { if (isDragging) return; const mousePos = getMousePos(event); handleGameStart(mousePos); });
+    canvas.addEventListener('mousemove', function (event) { const mousePos = getMousePos(event); if (gameOver && prizeLink.visible && isPosInRect(mousePos, prizeLink)) { canvas.style.cursor = 'pointer'; } else { canvas.style.cursor = 'default'; } });
+    canvas.addEventListener('touchstart', function (event) { event.preventDefault(); const touch = event.changedTouches[0]; if (!touch) return; const touchPos = getMousePos(touch); const UIMode = handleGameStart(touchPos); if (!UIMode && gameStarted) { isDragging = true; clyde.x = touchPos.x - clyde.width / 2; } }, { passive: false });
+    canvas.addEventListener('touchmove', function (event) { event.preventDefault(); if (!isDragging) return; const touch = event.changedTouches[0]; if (!touch) return; const touchPos = getMousePos(touch); clyde.x = touchPos.x - clyde.width / 2; }, { passive: false });
+    canvas.addEventListener('touchend', function (event) { event.preventDefault(); isDragging = false; });
 
     // --- Game Logic ---
-    function handleGameStart(pos) {
-        let started = false;
-        if (showStartScreen) {
-            if (isPosInRect(pos, playButton)) {
-                gameStarted = true;
-                showStartScreen = false;
-                lastSpawnTime = Date.now();
-                levelStartTime = Date.now();
-                started = true;
-            }
-        } else if (gameOver) {
-            if (prizeLink.visible && isPosInRect(pos, prizeLink)) {
-                window.open(PRIZE_URL, '_blank');
-            } else if (isPosInRect(pos, playButton)) {
-                resetGame();
-            }
-        } else if (showNextLevelScreen) {
-            if (isPosInRect(pos, playButton)) {
-                gameStarted = true;
-                showNextLevelScreen = false;
-                lastSpawnTime = Date.now();
-                levelStartTime = Date.now();
-                started = true;
-            }
+    function refillToppingBag() {
+        toppingSpawnBag = [...baseToppingTypes];
+        for (let i = toppingSpawnBag.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [toppingSpawnBag[i], toppingSpawnBag[j]] = [toppingSpawnBag[j], toppingSpawnBag[i]];
         }
-        return started;
+    }
+
+    function refillCharacterBag() {
+        characterBag = [...clydeCharacters];
+        for (let i = characterBag.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [characterBag[i], characterBag[j]] = [characterBag[j], characterBag[i]];
+        }
+    }
+
+    function randomizeClydeCharacter() {
+        if (characterBag.length === 0) {
+            refillCharacterBag();
+        }
+        images.clyde.src = characterBag.pop();
+    }
+
+    function generateLevelData(levelNum) {
+        const difficultyMultiplier = Math.log(levelNum + 1);
+        const interval = Math.max(MIN_SPAWN_INTERVAL, BASE_SPAWN_INTERVAL - (difficultyMultiplier * 150));
+        return { interval };
+    }
+
+    function startNextLevel(wasForced = false) {
+        if (wasForced) {
+            lives--;
+            if (lives <= 0) {
+                gameOver = true;
+                return;
+            }
+        } else {
+            const livesGained = Math.ceil(lives * 0.1);
+            lives += livesGained;
+        }
+
+        level++;
+        const currentLevelData = generateLevelData(level);
+        spawnInterval = currentLevelData.interval;
+        levelTime = BASE_LEVEL_TIME;
+        sandwich.length = 0;
+        spawnCounter = 0;
+    }
+
+    function handleGameStart(pos) {
+        if (showStartScreen && isPosInRect(pos, playButton)) {
+            gameStarted = true;
+            showStartScreen = false;
+
+            level = 1;
+            const level1Data = generateLevelData(1);
+            spawnInterval = level1Data.interval;
+            levelTime = BASE_LEVEL_TIME;
+            spawnCounter = 0;
+            lastSpawnTime = Date.now();
+        } else if (gameOver && isPosInRect(pos, playButton)) {
+            resetGame();
+        }
     }
 
     function resetGame() {
-      score = 0; missed = 0; gameOver = false; level = 1;
-      spawnInterval = 2000; toppings.length = 0; sandwich.length = 0;
-      sandwichCompleted = false; gameStarted = false; showStartScreen = true;
-      prizeLink.visible = false;
+        level = 1;
+        totalScore = 0;
+        lives = STARTING_LIVES;
+        gameOver = false;
+        gameStarted = false;
+        showStartScreen = true;
+        toppings.length = 0;
+        sandwich.length = 0;
+        spawnCounter = 0;
+        isFrenzyActive = false;
+        isSlowdownActive = false;
+        isSpeedBoostActive = false;
+        
+        refillToppingBag();
+        refillCharacterBag();
+        randomizeClydeCharacter();
+    }
+
+    // --- Power-Up Logic ---
+    function startFrenzy() {
+        endSlowdown();
+        endSpeedBoost();
+        if (isFrenzyActive) return;
+        isFrenzyActive = true;
+        frenzyEndTime = Date.now() + FRENZY_DURATION;
+        originalSpawnInterval = spawnInterval;
+        spawnInterval = FRENZY_SPAWN_INTERVAL;
+    }
+
+    function endFrenzy() {
+        if (!isFrenzyActive) return;
+        isFrenzyActive = false;
+        spawnInterval = originalSpawnInterval;
+    }
+
+    function startSlowdown() {
+        endFrenzy();
+        endSpeedBoost();
+        if (isSlowdownActive) return;
+        isSlowdownActive = true;
+        slowdownEndTime = Date.now() + SLOWDOWN_DURATION;
+        originalClydeSpeeds = { base: clyde.baseSpeed, max: clyde.maxSpeed };
+        clyde.baseSpeed *= SLOWDOWN_FACTOR;
+        clyde.maxSpeed *= SLOWDOWN_FACTOR;
+    }
+
+    function endSlowdown() {
+        if (!isSlowdownActive) return;
+        isSlowdownActive = false;
+        clyde.baseSpeed = originalClydeSpeeds.base || CLYDE_BASE_SPEED;
+        clyde.maxSpeed = originalClydeSpeeds.max || CLYDE_MAX_SPEED;
+    }
+
+    function startSpeedBoost() {
+        endFrenzy();
+        endSlowdown();
+        if (isSpeedBoostActive) return;
+        isSpeedBoostActive = true;
+        speedBoostEndTime = Date.now() + SPEEDBOOST_DURATION;
+        originalClydeSpeeds = { base: clyde.baseSpeed, max: clyde.maxSpeed };
+        clyde.baseSpeed *= SPEEDBOOST_FACTOR;
+        clyde.maxSpeed *= SPEEDBOOST_FACTOR;
+    }
+
+    function endSpeedBoost() {
+        if (!isSpeedBoostActive) return;
+        isSpeedBoostActive = false;
+        clyde.baseSpeed = originalClydeSpeeds.base || CLYDE_BASE_SPEED;
+        clyde.maxSpeed = originalClydeSpeeds.max || CLYDE_MAX_SPEED;
     }
 
     function spawnTopping() {
-        let availableToppings = toppingTypes.slice();
-        const elapsedTime = Date.now() - levelStartTime;
+        const spawnX = Math.random() * (canvas.width - TOPPING_WIDTH - NO_SPAWN_ZONE_WIDTH);
+        let type;
 
-        // BREAD DROP TIMER: Only allow bread after 15 seconds
-        if (elapsedTime < 15000) { 
-            availableToppings = availableToppings.filter(t => t !== 'bread');
+        if (isFrenzyActive) {
+            type = FRENZY_TOPPING_TYPES[Math.floor(Math.random() * FRENZY_TOPPING_TYPES.length)];
+        } else {
+            if (levelTime <= BASE_LEVEL_TIME - BREAD_SPAWN_DELAY) {
+                spawnCounter++;
+                if (spawnCounter > 0 && spawnCounter % 7 === 0) {
+                    const rand = Math.random();
+                    if (rand < 0.33) {
+                        type = 'frenzy_item';
+                    } else if (rand < 0.66) {
+                        type = 'slowdown_item';
+                    } else {
+                        type = 'speedboost_item';
+                    }
+                } else if (spawnCounter % 5 === 0) {
+                    type = 'bread';
+                } else {
+                    if (toppingSpawnBag.length === 0) {
+                        refillToppingBag();
+                    }
+                    type = toppingSpawnBag.pop();
+                }
+            } else {
+                if (toppingSpawnBag.length === 0) {
+                    refillToppingBag();
+                }
+                type = toppingSpawnBag.pop();
+            }
         }
 
-        const type = availableToppings[Math.floor(Math.random() * availableToppings.length)];
+        toppings.push({ x: spawnX, y: -TOPPING_HEIGHT, type: type, speed: 4 + Math.random() * 2, isFrenzyTopping: isFrenzyActive });
+        lastSpawnTime = Date.now();
+    }
 
-        if (type) {
-            toppings.push({
-                x: Math.random() * (canvas.width - TOPPING_WIDTH - NO_SPAWN_ZONE_WIDTH),
-                y: -TOPPING_HEIGHT, type: type, speed: 4 + Math.random() * 2
-            });
+    function drawStartScreen() { if (images.logo && images.logo.complete) { const imgWidth = 500; const imgHeight = images.logo.height * (imgWidth / images.logo.width); const x = canvas.width / 2 - imgWidth / 2; const y = (canvas.height / 2 - imgHeight / 2 - 50) + SCREEN_VERTICAL_SHIFT; ctx.drawImage(images.logo, x, y, imgWidth, imgHeight); } if (images.clickToPlay && images.clickToPlay.complete) { const btnWidth = 400 * PLAY_BUTTON_SCALE; const btnHeight = images.clickToPlay.height * (btnWidth / images.clickToPlay.width); const btnX = canvas.width / 2 - btnWidth / 2; const btnY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT; ctx.drawImage(images.clickToPlay, btnX, btnY, btnWidth, btnHeight); playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight }; } }
+
+    function drawGameOverScreen() {
+        prizeLink.visible = false;
+        if (images.gameOver && images.gameOver.complete) {
+            const imgWidth = 500;
+            const imgHeight = images.gameOver.height * (imgWidth / images.gameOver.width);
+            const x = canvas.width / 2 - imgWidth / 2;
+            const y = (canvas.height / 2 - imgHeight / 2 - 90) + SCREEN_VERTICAL_SHIFT;
+            ctx.drawImage(images.gameOver, x, y, imgWidth, imgHeight);
+        }
+        const scoreY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT;
+
+        if (totalScore >= PRIZE_SCORE_MIN) {
+            const prizeFont = "bold 45px 'Comic Sans MS', Arial";
+            ctx.font = prizeFont; ctx.textAlign = "center"; ctx.strokeStyle = "black"; ctx.lineWidth = 4; ctx.fillStyle = "#86C232";
+            ctx.strokeText(PRIZE_URL, canvas.width / 2, scoreY);
+            ctx.fillText(PRIZE_URL, canvas.width / 2, scoreY);
+            const textMetrics = ctx.measureText(PRIZE_URL);
+            const textHeight = 45;
+            prizeLink = { x: canvas.width / 2 - textMetrics.width / 2, y: scoreY - textHeight, width: textMetrics.width, height: textHeight, visible: true };
+        } else {
+            ctx.font = "bold 70px 'Comic Sans MS', Arial";
+            ctx.textAlign = "center"; ctx.strokeStyle = "black"; ctx.lineWidth = 5; ctx.fillStyle = "#FFD700";
+            ctx.strokeText("Final Score: " + totalScore, canvas.width / 2, scoreY);
+            ctx.fillText("Final Score: " + totalScore, canvas.width / 2, scoreY);
+        }
+
+        if (images.playAgain && images.playAgain.complete) {
+            const btnWidth = 400 * PLAY_BUTTON_SCALE;
+            const btnHeight = images.playAgain.height * (btnWidth / images.playAgain.width);
+            const btnX = canvas.width / 2 - btnWidth / 2;
+            const btnY = scoreY + 70;
+            ctx.drawImage(images.playAgain, btnX, btnY, btnWidth, btnHeight);
+            playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight };
         }
     }
 
-    // --- ASPECT RATIO ENFORCER ---
-    function checkAspectRatio() {
+    // (NEW) This single function handles all screen scaling and orientation logic
+    function resizeGame() {
         const overlay = document.getElementById('orientation-overlay');
-        const gameElements = [document.getElementById('game'), document.getElementById('musicToggle')];
         const isPortrait = window.innerHeight > window.innerWidth;
-
+        
+        // Show overlay if in portrait mode
         if (isPortrait) {
             overlay.style.display = 'flex';
-            gameElements.forEach(el => el.style.display = 'none');
         } else {
             overlay.style.display = 'none';
-            gameElements.forEach(el => el.style.display = 'block');
+
+            // Calculate the best fit for a 16:9 game in the current window
+            const aspectRatio = GAME_WIDTH / GAME_HEIGHT;
+            let newWidth = window.innerWidth;
+            let newHeight = window.innerHeight;
+            const windowAspectRatio = newWidth / newHeight;
+
+            if (windowAspectRatio > aspectRatio) {
+                // Window is wider than the game, so height is the limiter
+                newWidth = newHeight * aspectRatio;
+            } else {
+                // Window is taller than the game, so width is the limiter
+                newHeight = newWidth / aspectRatio;
+            }
+
+            // Set the canvas display size
+            canvas.style.width = `${newWidth}px`;
+            canvas.style.height = `${newHeight}px`;
         }
     }
 
-    // --- Drawing Functions ---
-    function drawStartScreen() { /* ... function code is unchanged ... */ }
-    function drawGameOverScreen() { /* ... function code is unchanged ... */ }
-    function drawNextLevelScreen() { /* ... function code is unchanged ... */ }
 
     // --- Main Game Loop ---
     function update() {
         requestAnimationFrame(update);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        if (images.background && images.background.complete) {
-            ctx.drawImage(images.background, 0, 0, canvas.width, canvas.height);
-        }
+        if (images.background && images.background.complete) { ctx.drawImage(images.background, 0, 0, canvas.width, canvas.height); }
 
         if (showStartScreen) { drawStartScreen(); }
-        else if (showNextLevelScreen) { drawNextLevelScreen(); }
         else if (gameOver) { drawGameOverScreen(); }
         else if (gameStarted) {
-            // Handle keyboard movement (only if not dragging)
-            if (!isDragging) {
-                if (keys.ArrowLeft) {
-                    clyde.x -= clyde.speed;
-                    clyde.speed = Math.min(clyde.speed + clyde.acceleration, clyde.maxSpeed);
-                } else if (keys.ArrowRight) {
-                    clyde.x += clyde.speed;
-                    clyde.speed = Math.min(clyde.speed + clyde.acceleration, clyde.maxSpeed);
-                } else {
-                    clyde.speed = clyde.baseSpeed;
-                }
+
+            if (isFrenzyActive && Date.now() > frenzyEndTime) {
+                endFrenzy();
             }
-            // Bounds check for Clyde
+            if (isSlowdownActive && Date.now() > slowdownEndTime) {
+                endSlowdown();
+            }
+            if (isSpeedBoostActive && Date.now() > speedBoostEndTime) {
+                endSpeedBoost();
+            }
+
+            levelTime -= 1 / 60;
+            if (levelTime <= 0) {
+                startNextLevel(true);
+            }
+
+            if (Date.now() - lastSpawnTime > spawnInterval) {
+                spawnTopping();
+            }
+
+            if (!isDragging) { if (keys.ArrowLeft) { clyde.x -= clyde.speed; clyde.speed = Math.min(clyde.speed + clyde.acceleration, clyde.maxSpeed); } else if (keys.ArrowRight) { clyde.x += clyde.speed; clyde.speed = Math.min(clyde.speed + clyde.acceleration, clyde.maxSpeed); } else { clyde.speed = clyde.baseSpeed; } }
             clyde.x = Math.max(0, Math.min(canvas.width - clyde.width, clyde.x));
-            clyde.y = canvas.height - clyde.height - CHARACTER_VERTICAL_OFFSET;
+            clyde.y = canvas.height - CHARACTER_HEIGHT - CHARACTER_VERTICAL_OFFSET;
+            if (images.clyde && images.clyde.complete) ctx.drawImage(images.clyde, clyde.x, clyde.y, clyde.width, clyde.height);
 
-            if(images.clyde && images.clyde.complete) ctx.drawImage(images.clyde, clyde.x, clyde.y, clyde.width, clyde.height);
-
-            // Update and draw toppings
             for (let i = toppings.length - 1; i >= 0; i--) {
                 let t = toppings[i];
                 t.y += t.speed;
-                let breadX = clyde.x + LANDING_OFFSET_X;
                 let breadY = clyde.y + LANDING_OFFSET_Y - (sandwich.length * STACK_SPACING);
+                let breadX = clyde.x + LANDING_OFFSET_X;
 
                 if (t.y + TOPPING_HEIGHT >= breadY && t.y <= breadY + SANDWICH_LAYER_HEIGHT && t.x < breadX + TOPPING_WIDTH && t.x + TOPPING_WIDTH > breadX) {
-                    sandwich.push(t.type);
                     toppings.splice(i, 1);
-                    if (t.type === "bread") {
-                        sandwichCompleted = true;
-                        setTimeout(() => {
-                            level++; score += 5;
-                            spawnInterval = Math.max(400, spawnInterval - SPAWN_INTERVAL_REDUCTION);
-                            toppings.length = 0; sandwich.length = 0; sandwichCompleted = false;
-                            gameStarted = false; showNextLevelScreen = true;
-                            lastSpawnTime = Date.now();
-                        }, 1000);
-                    } else { score++; }
+                    if (t.type === 'frenzy_item') {
+                        startFrenzy();
+                    } else if (t.type === 'slowdown_item') {
+                        startSlowdown();
+                    } else if (t.type === 'speedboost_item') {
+                        startSpeedBoost();
+                    } else if (t.type === 'bread') {
+                        startNextLevel(false);
+                    } else {
+                        sandwich.push(t.type);
+                        totalScore++;
+                    }
                 } else if (t.y > canvas.height) {
                     toppings.splice(i, 1);
-                    missed++;
-                    if (missed >= MAX_MISSES) {
-                        gameOver = true;
-                        highScore = Math.max(highScore, score);
+                    if (!t.isFrenzyTopping) {
+                        lives--;
+                        if (lives <= 0) {
+                            gameOver = true;
+                        }
                     }
                 }
             }
-            
-            toppings.forEach(t => ctx.drawImage(images[t.type], t.x, t.y, TOPPING_WIDTH, TOPPING_HEIGHT));
-            sandwich.forEach((part, i) => {
-                const x = clyde.x + LANDING_OFFSET_X;
-                const y = clyde.y + LANDING_OFFSET_Y - (i * STACK_SPACING);
-                ctx.drawImage(images[part], x, y, TOPPING_WIDTH, SANDWICH_LAYER_HEIGHT);
-            });
-            
-            if (!sandwichCompleted && Date.now() - lastSpawnTime > spawnInterval) {
-                spawnTopping();
-                lastSpawnTime = Date.now();
-            }
 
-            // Draw UI Text
-            ctx.font = "30px 'Comic Sans MS', Arial"; ctx.textAlign = "left";
+            toppings.forEach(t => {
+                let imageToDraw = images[t.type];
+                if (t.type === 'frenzy_item' || t.type === 'slowdown_item' || t.type === 'speedboost_item') {
+                    imageToDraw = images['special_item'];
+                }
+                if(imageToDraw) {
+                    ctx.drawImage(imageToDraw, t.x, t.y, TOPPING_WIDTH, TOPPING_HEIGHT);
+                }
+            });
+            sandwich.forEach((part, i) => { const x = clyde.x + LANDING_OFFSET_X; const y = clyde.y + LANDING_OFFSET_Y - (i * STACK_SPACING); ctx.drawImage(images[part], x, y, TOPPING_WIDTH, SANDWICH_LAYER_HEIGHT); });
+
+            // --- UI TEXT ---
+            ctx.font = "bold 30px 'Comic Sans MS', Arial";
             ctx.lineWidth = 4; ctx.strokeStyle = "black"; ctx.fillStyle = "white";
-            ctx.strokeText("Score: " + score, 20, 40); ctx.fillText("Score: " + score, 20, 40);
-            ctx.strokeText("Missed: " + missed + " / " + MAX_MISSES, 20, 80); ctx.fillText("Missed: " + missed + " / " + MAX_MISSES, 20, 80);
-            ctx.strokeText("Level: " + level, 20, 120); ctx.fillText("Level: " + level, 20, 120);
+            ctx.textAlign = "left";
+            const yOffset = 70;
+            ctx.strokeText("Level: " + level, 20, yOffset);
+            ctx.fillText("Level: " + level, 20, yOffset);
+            ctx.strokeText("Score: " + totalScore, 20, yOffset * 2);
+            ctx.fillText("Score: " + totalScore, 20, yOffset * 2);
+            ctx.strokeText("Lives: " + lives, 20, yOffset * 3);
+            ctx.fillText("Lives: " + lives, 20, yOffset * 3);
+
+            ctx.textAlign = "center";
+            ctx.font = "bold 48px 'Comic Sans MS', Arial";
+            if (isFrenzyActive) {
+                ctx.fillStyle = "#FFD700";
+                const remainingTime = ((frenzyEndTime - Date.now()) / 1000).toFixed(1);
+                const text = `BALLDO BASH!! ${remainingTime}s`;
+                ctx.strokeText(text, canvas.width / 2, yOffset);
+                ctx.fillText(text, canvas.width / 2, yOffset);
+            } else if (isSlowdownActive) {
+                ctx.fillStyle = "#E74C3C";
+                const remainingTime = ((slowdownEndTime - Date.now()) / 1000).toFixed(1);
+                const text = `LATE AND GAY! ${remainingTime}s`;
+                ctx.strokeText(text, canvas.width / 2, yOffset);
+                ctx.fillText(text, canvas.width / 2, yOffset);
+            } else if (isSpeedBoostActive) {
+                ctx.fillStyle = "#86C232";
+                const remainingTime = ((speedBoostEndTime - Date.now()) / 1000).toFixed(1);
+                const text = `WHITE CLAW!!! ${remainingTime}s`;
+                ctx.strokeText(text, canvas.width / 2, yOffset);
+                ctx.fillText(text, canvas.width / 2, yOffset);
+            }
         }
-        
-        // Draw Scenery
-        if (images.counter && images.counter.complete) {
-            const desiredHeight = canvas.height * 0.10;
-            ctx.drawImage(images.counter, 0, canvas.height - desiredHeight, canvas.width, desiredHeight);
-        }
-        if (images.register && images.register.complete) {
-            const imgHeight = canvas.height * REGISTER_SCALE;
-            const imgWidth = images.register.width * (imgHeight / images.register.height);
-            const x = canvas.width - imgWidth - REGISTER_X_OFFSET;
-            const y = canvas.height - imgHeight - REGISTER_Y_OFFSET;
-            ctx.drawImage(images.register, x, y, imgWidth, imgHeight);
-        }
+
+        if (images.counter && images.counter.complete) { const desiredHeight = canvas.height * 0.10; ctx.drawImage(images.counter, 0, canvas.height - desiredHeight, canvas.width, desiredHeight); }
+        if (images.register && images.register.complete) { const imgHeight = canvas.height * REGISTER_SCALE; const imgWidth = images.register.width * (imgHeight / images.register.height); const x = canvas.width - imgWidth - REGISTER_X_OFFSET; const y = canvas.height - imgHeight - REGISTER_Y_OFFSET; ctx.drawImage(images.register, x, y, imgWidth, imgHeight); }
     }
-    
-    // --- Music Toggle & Game Start ---
-    document.getElementById('musicToggle').addEventListener('click', function() {
-      const bgMusic = document.getElementById('bgMusic');
-      if (bgMusic.paused) { bgMusic.play().catch(()=>{}); this.textContent = '🔊 Music Off'; }
-      else { bgMusic.pause(); this.textContent = '🔇 Music On'; }
+
+    // --- Event Listeners & Final Setup ---
+    document.getElementById('musicToggle').addEventListener('click', function () {
+        const bgMusic = document.getElementById('bgMusic');
+        if (bgMusic.paused) {
+            bgMusic.play().catch(() => { }); this.textContent = '🔇 Music Off';
+        } else {
+            bgMusic.pause(); this.textContent = '▶  Music On';
+        }
+    });
+
+    document.getElementById('fullscreenToggle').addEventListener('click', function() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
     });
     
-    // Initial and continuing checks for screen orientation
-    window.addEventListener('DOMContentLoaded', checkAspectRatio);
-    window.addEventListener('resize', checkAspectRatio);
-    window.addEventListener('orientationchange', checkAspectRatio);
-    
-    // --- Redefining draw functions to save space, they are unchanged ---
-    function drawStartScreen() { if (images.logo && images.logo.complete) { const imgWidth = 500; const imgHeight = images.logo.height * (imgWidth / images.logo.width); const x = canvas.width / 2 - imgWidth / 2; const y = (canvas.height / 2 - imgHeight / 2 - 50) + SCREEN_VERTICAL_SHIFT; ctx.drawImage(images.logo, x, y, imgWidth, imgHeight); } if (images.clickToPlay && images.clickToPlay.complete) { const btnWidth = 400 * PLAY_BUTTON_SCALE; const btnHeight = images.clickToPlay.height * (btnWidth / images.clickToPlay.width); const btnX = canvas.width / 2 - btnWidth / 2; const btnY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT; ctx.drawImage(images.clickToPlay, btnX, btnY, btnWidth, btnHeight); playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight }; } }
-    function drawGameOverScreen() { prizeLink.visible = false; if (images.gameOver && images.gameOver.complete) { const imgWidth  = 500; const imgHeight = images.gameOver.height * (imgWidth / images.gameOver.width); const x = canvas.width / 2 - imgWidth / 2; const y = (canvas.height / 2 - imgHeight / 2 - 90) + SCREEN_VERTICAL_SHIFT; ctx.drawImage(images.gameOver, x, y, imgWidth, imgHeight); } const scoreY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT; if (highScore >= PRIZE_SCORE_MIN) { const prizeFont = "bold 45px 'Comic Sans MS', Arial"; ctx.font = prizeFont; ctx.textAlign  = "center"; ctx.strokeStyle = "black"; ctx.lineWidth  = 4; ctx.fillStyle  = "#86C232"; ctx.strokeText(PRIZE_URL, canvas.width / 2, scoreY); ctx.fillText(PRIZE_URL, canvas.width / 2, scoreY); const textMetrics = ctx.measureText(PRIZE_URL); const textHeight  = 45; prizeLink = { x: canvas.width / 2 - textMetrics.width / 2, y: scoreY - textHeight, width: textMetrics.width, height: textHeight, visible:true }; } else { ctx.font = "bold 70px 'Comic Sans MS', Arial"; ctx.textAlign = "center"; ctx.strokeStyle = "black"; ctx.lineWidth = 5; ctx.fillStyle = "white"; ctx.strokeText(highScore, canvas.width / 2, scoreY); ctx.fillText(highScore, canvas.width / 2, scoreY); } if (images.playAgain && images.playAgain.complete) { const btnWidth  = 400 * PLAY_BUTTON_SCALE; const btnHeight = images.playAgain.height * (btnWidth / images.playAgain.width); const btnX = canvas.width / 2 - btnWidth / 2; const btnY = scoreY + 70; ctx.drawImage(images.playAgain, btnX, btnY, btnWidth, btnHeight); playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight }; } }
-    function drawNextLevelScreen() { if (images.nextLevel && images.nextLevel.complete) { const imgWidth = 500; const imgHeight = images.nextLevel.height * (imgWidth / images.nextLevel.width); const x = canvas.width / 2 - imgWidth / 2; const y = (canvas.height / 2 - imgHeight / 2) + SCREEN_VERTICAL_SHIFT; ctx.drawImage(images.nextLevel, x, y, imgWidth, imgHeight); } if (images.clickToPlay && images.clickToPlay.complete) { const btnWidth = 400 * PLAY_BUTTON_SCALE; const btnHeight = images.clickToPlay.height * (btnWidth / images.clickToPlay.width); const btnX = canvas.width / 2 - btnWidth / 2; const btnY = (canvas.height / 2 + 150) + SCREEN_VERTICAL_SHIFT; ctx.drawImage(images.clickToPlay, btnX, btnY, btnWidth, btnHeight); playButton = { x: btnX, y: btnY, width: btnWidth, height: btnHeight }; } }
+    // (MODIFIED) Replaced old listeners with a single, robust resize/orientation handler
+    window.addEventListener('DOMContentLoaded', resizeGame);
+    window.addEventListener('resize', resizeGame);
+    window.addEventListener('orientationchange', resizeGame);
 
-    window.onload = function() {
-      resetGame();
-      update();
+    window.onload = function () {
+        resetGame();
+        update();
+        resizeGame(); // Initial call to size the game correctly
     };
-  </script>
+</script>
 </body>
 </html>
