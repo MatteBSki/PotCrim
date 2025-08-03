@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <title>Clyde's Sandwich Stack</title>
     <style>
+        :root {
+            --button-bg-color: #86C232;
+            --text-color: #000;
+            --font-size-normal: 1rem; /* 16px base */
+            --font-size-large: 1.5rem;
+        }
+
         html,
         body {
             margin: 0;
@@ -18,25 +25,64 @@
             align-items: center;
         }
 
-        /* Canvas style is now minimal, JS will handle sizing and scaling */
+        /* Canvas is now scaled with CSS aspect-ratio */
         canvas {
             display: block;
+            /* Set width to fill the screen up to its max aspect ratio */
+            width: 100vw;
+            height: auto;
+            max-height: 100vh;
+            aspect-ratio: 16 / 9; /* Enforce the game's aspect ratio */
         }
 
+        /* UI Buttons */
+        .game-button {
+            position: fixed;
+            top: 20px;
+            z-index: 10000;
+            background-color: var(--button-bg-color);
+            color: var(--text-color);
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: var(--font-size-normal);
+            cursor: pointer;
+        }
+
+        #musicToggle {
+            right: 20px;
+        }
+
+        #fullscreenToggle {
+            right: 170px; /* Adjust as needed or use flexbox for the container */
+        }
+        
+        /* Orientation Overlay */
         #orientation-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             background-color: #000;
             color: #fff;
             z-index: 20000;
-            display: none;
+            display: none; /* Initially hidden */
             justify-content: center;
             align-items: center;
             text-align: center;
-            font-size: 1.5rem;
+            font-size: var(--font-size-large);
+        }
+        
+        /* Media query to show overlay only in portrait mode */
+        @media (orientation: portrait) {
+            #orientation-overlay {
+                display: flex;
+            }
+            canvas {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -53,37 +99,11 @@
         Your browser does not support the audio element.
     </audio>
 
-    <button id="musicToggle" style="
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 10000;
-    background-color: #86C232;
-    color: #000;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-  ">
+    <button id="musicToggle" class="game-button">
         ▶️ Music On
     </button>
     
-    <button id="fullscreenToggle" style="
-    position: fixed;
-    top: 20px;
-    right: 170px;
-    z-index: 10000;
-    background-color: #86C232;
-    color: #000;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-  ">
+    <button id="fullscreenToggle" class="game-button">
         ⛶ Fullscreen
     </button>
 
@@ -427,38 +447,6 @@
         }
     }
 
-    // (NEW) This single function handles all screen scaling and orientation logic
-    function resizeGame() {
-        const overlay = document.getElementById('orientation-overlay');
-        const isPortrait = window.innerHeight > window.innerWidth;
-        
-        // Show overlay if in portrait mode
-        if (isPortrait) {
-            overlay.style.display = 'flex';
-        } else {
-            overlay.style.display = 'none';
-
-            // Calculate the best fit for a 16:9 game in the current window
-            const aspectRatio = GAME_WIDTH / GAME_HEIGHT;
-            let newWidth = window.innerWidth;
-            let newHeight = window.innerHeight;
-            const windowAspectRatio = newWidth / newHeight;
-
-            if (windowAspectRatio > aspectRatio) {
-                // Window is wider than the game, so height is the limiter
-                newWidth = newHeight * aspectRatio;
-            } else {
-                // Window is taller than the game, so width is the limiter
-                newHeight = newWidth / aspectRatio;
-            }
-
-            // Set the canvas display size
-            canvas.style.width = `${newWidth}px`;
-            canvas.style.height = `${newHeight}px`;
-        }
-    }
-
-
     // --- Main Game Loop ---
     function update() {
         requestAnimationFrame(update);
@@ -585,26 +573,40 @@
     });
 
     document.getElementById('fullscreenToggle').addEventListener('click', function() {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => {
-                console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-            });
+        const elem = document.documentElement;
+
+        if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) { /* Firefox */
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE/Edge */
+                elem.msRequestFullscreen();
+            }
+
+            if (screen.orientation && typeof screen.orientation.lock === 'function') {
+                screen.orientation.lock('landscape').catch(err => {
+                    console.error(`Orientation lock failed: ${err.message} (${err.name})`);
+                });
+            }
         } else {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { /* Firefox */
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { /* IE/Edge */
+                document.msExitFullscreen();
             }
         }
     });
-    
-    // (MODIFIED) Replaced old listeners with a single, robust resize/orientation handler
-    window.addEventListener('DOMContentLoaded', resizeGame);
-    window.addEventListener('resize', resizeGame);
-    window.addEventListener('orientationchange', resizeGame);
 
     window.onload = function () {
         resetGame();
         update();
-        resizeGame(); // Initial call to size the game correctly
     };
 </script>
 </body>
