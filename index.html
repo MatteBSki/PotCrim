@@ -1,3 +1,162 @@
+
+Skip to content
+
+    MatteBSki
+    PotCrim
+
+Repository navigation
+
+    Code
+    Issues
+    Pull requests
+    Agents
+    Actions
+    Projects
+    Wiki
+    Security and quality
+    Insights
+    Settings
+
+Files
+tT
+
+    clydeImg
+    img
+    music
+    Sammich.html
+    about.html
+    birthday.html
+    clyde.html
+    countup.js
+    index.html
+    styles.css
+
+    PotCrim
+
+/
+in
+main
+
+    Edit
+    Preview
+
+Indent mode
+Indent size
+Line wrap mode
+Editing Sammich.html file contents
+ 
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+
+
+        if (images.counter && images.counter.complete) { const desiredHeight = canvas.height * 0.10; ctx.drawImage(images.counter, 0, canvas.height - desiredHeight, canvas.width, desiredHeight); }
+        if (images.register && images.register.complete) { const imgHeight = canvas.height * REGISTER_SCALE; const imgWidth = images.register.width * (imgHeight / images.register.height); const x = canvas.width - imgWidth - REGISTER_X_OFFSET; const y = canvas.height - imgHeight - REGISTER_Y_OFFSET; ctx.drawImage(images.register, x, y, imgWidth, imgHeight); }
+    }
+
+    // --- Event Listeners & Final Setup ---
+    document.getElementById('musicToggle').addEventListener('click', function () {
+        const bgMusic = document.getElementById('bgMusic');
+        if (bgMusic.paused) {
+            bgMusic.play().catch(() => { }); this.textContent = '🔇 Music Off';
+        } else {
+            bgMusic.pause(); this.textContent = '▶  Music On';
+        }
+    });
+
+    document.getElementById('fullscreenToggle').addEventListener('click', function() {
+        const elem = document.documentElement;
+
+        if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) { /* Firefox */
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE/Edge */
+                elem.msRequestFullscreen();
+            }
+
+            if (screen.orientation && typeof screen.orientation.lock === 'function') {
+                screen.orientation.lock('landscape').catch(err => {
+                    console.error(`Orientation lock failed: ${err.message} (${err.name})`);
+                });
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { /* Firefox */
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { /* IE/Edge */
+                document.msExitFullscreen();
+            }
+        }
+    });
+
+    window.onload = function () {
+        resetGame();
+        update();
+    };
+</script>
+</body>
+</html> 
+
+
 <template>
 <!DOCTYPE html>
 <html lang="en">
